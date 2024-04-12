@@ -12,6 +12,8 @@
     "dev": "tsx --watch src/index.ts",
     "start": "node build/index.js",
     "prestart": "pnpm run build",
+    "changeset": "changeset add",
+    "changeset:emtpy": "changeset add --empty",
     "build": "tsc -p tsconfig.build.json",
     "prebuild": "ts-patch install -s",
     "publish": "changeset publish",
@@ -25,6 +27,7 @@
     "test:coverage": "vitest --coverage"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "0.5.0",
     "@commitlint/cli": "19.2.1",
     "@commitlint/config-conventional": "19.1.0",
     "@commitlint/cz-commitlint": "19.2.0",
@@ -65,6 +68,7 @@
     ]
   },
   "dependencies": {
+    "@changesets/cli": "2.27.1",
     "typescript-transform-paths": "3.4.7"
   }
 }
