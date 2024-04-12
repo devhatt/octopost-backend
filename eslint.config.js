@@ -1,4 +1,3 @@
-import { createRequire } from 'node:module';
 import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import { defineFlatConfig } from 'eslint-define-config';
@@ -19,12 +18,7 @@ import globals from 'globals';
 export default defineFlatConfig([
   // global ignores
   {
-    ignores: [
-      'node_modules',
-      'coverage',
-      'dist',
-      'pnpm-lock.yaml',
-    ],
+    ignores: ['node_modules', 'coverage', 'dist', 'pnpm-lock.yaml'],
   },
 
   // override default eslint rules
@@ -87,11 +81,10 @@ export default defineFlatConfig([
       'unicorn/prevent-abbreviations': 'off',
     },
     settings: {
-      'import/parsers': {
-        espree: ['.js', '.cjs', '.mjs', '.jsx'],
-      },
       'import/resolver': {
-        node: true,
+        node: {
+          extensions: ['.js', '.ts'],
+        },
         typescript: true,
       },
     },
@@ -103,7 +96,7 @@ export default defineFlatConfig([
     languageOptions: {
       parser: tsEslint.parser,
       parserOptions: {
-        project: ['./tsconfig.json', './tsconfig.node.json'],
+        project: './tsconfig.json',
       },
     },
     plugins: {
@@ -144,7 +137,7 @@ export default defineFlatConfig([
 
   // testing with vitest
   {
-    files: ['**/*.spec.ts', '**/*.spec.tsx'],
+    files: ['**/*.test.ts', '**/*.test.tsx'],
     languageOptions: {
       globals: {
         ...globals.jest,
