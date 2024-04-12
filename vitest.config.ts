@@ -11,7 +11,7 @@ export default defineConfig({
     coverage: {
       include: ['src'],
       provider: 'istanbul',
-      reporter: ['html', 'json-summary', 'text-summary'],
+      reporter: ['html', 'json-summary', 'json', 'text-summary'],
       reportOnFailure: true,
       thresholds: {
         lines: 80,
