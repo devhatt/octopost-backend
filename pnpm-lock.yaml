@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      cross-env:
-        specifier: 7.0.3
-        version: 7.0.3
       dotenv:
         specifier: 16.4.5
         version: 16.4.5
@@ -42,9 +39,6 @@ importers:
       '@octopost/types':
         specifier: workspace:*
         version: link:packages/types
-      '@types/axios':
-        specifier: 0.14.0
-        version: 0.14.0
       '@types/express':
         specifier: 4.17.21
         version: 4.17.21
@@ -57,6 +51,9 @@ importers:
       commitizen:
         specifier: 4.3.0
         version: 4.3.0(@types/node@20.12.7)(typescript@5.4.5)
+      cross-env:
+        specifier: 7.0.3
+        version: 7.0.3
       eslint:
         specifier: 8.57.0
         version: 8.57.0
@@ -804,10 +801,6 @@ packages:
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
-
-  '@types/axios@0.14.0':
-    resolution: {integrity: sha512-KqQnQbdYE54D7oa/UmYVMZKq7CO4l8DEENzOKc4aBRwxCXSlJXGz83flFx5L7AWrOQnmuN3kVsRdt+GZPPjiVQ==}
-    deprecated: This is a stub types definition for axios (https://github.com/mzabriskie/axios). axios provides its own type definitions, so you don't need @types/axios installed!
 
   '@types/body-parser@1.19.5':
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
@@ -4222,12 +4215,6 @@ snapshots:
     optional: true
 
   '@sinclair/typebox@0.27.8': {}
-
-  '@types/axios@0.14.0':
-    dependencies:
-      axios: 1.6.8
-    transitivePeerDependencies:
-      - debug
 
   '@types/body-parser@1.19.5':
     dependencies:
