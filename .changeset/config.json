@@ -4,10 +4,10 @@
     "@changesets/changelog-github",
     { "repo": "devhatt/octopost-backend" }
   ],
-  "commit": false,
+  "commit": true,
   "fixed": [],
   "linked": [],
-  "access": "restricted",
+  "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": ["@octopost/backend"]

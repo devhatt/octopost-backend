@@ -1,0 +1,21 @@
+{
+  "name": "@octopost/types",
+  "version": "0.1.0",
+  "description": "",
+  "private": false,
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json",
+    "prebuild": "rimraf ./dist",
+    "version": "changeset version",
+    "publish": "changeset publish"
+  },
+  "author": "@devhat",
+  "license": "MIT",
+  "devDependencies": {
+    "rimraf": "5.0.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

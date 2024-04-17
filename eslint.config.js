@@ -2,18 +2,14 @@ import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import { defineFlatConfig } from 'eslint-define-config';
 import tsEslint from 'typescript-eslint';
-// import arrayFuncPlugin from 'eslint-plugin-array-func';
-// import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
+import arrayFuncPlugin from 'eslint-plugin-array-func';
 import importPlugin from 'eslint-plugin-import';
 import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import unicornPlugin, { configs as unicornConfig } from 'eslint-plugin-unicorn';
-// import promisePlugin from 'eslint-plugin-promise';
-// import noSecretsPlugin from 'eslint-plugin-no-secrets';
-// import regexpPlugin from 'eslint-plugin-regexp';
-// import writeGoodCommentsPlugin from 'eslint-plugin-write-good-comments';
-import onlyWarnPlugin from 'eslint-plugin-only-warn';
 import vitestPlugin from 'eslint-plugin-vitest';
 import globals from 'globals';
+
+import 'eslint-plugin-only-warn';
 
 export default defineFlatConfig([
   // global ignores
@@ -37,7 +33,7 @@ export default defineFlatConfig([
   },
 
   {
-    files: ['**/*'],
+    files: ['**/*.(js|ts)'],
     languageOptions: {
       parserOptions: {
         ecmaVersion: 'latest',
@@ -45,8 +41,8 @@ export default defineFlatConfig([
       },
     },
     plugins: {
+      'array-func': arrayFuncPlugin,
       import: importPlugin,
-      'only-warn': onlyWarnPlugin,
       perfectionist: perfectionistPlugin,
       unicorn: unicornPlugin,
     },
@@ -63,6 +59,7 @@ export default defineFlatConfig([
       'import/no-named-as-default-member': 'warn',
       'import/no-unused-modules': 'warn',
       'import/order': 'warn',
+      'import/no-default-export': 'warn',
 
       'perfectionist/sort-array-includes': 'warn',
       'perfectionist/sort-classes': 'warn',
@@ -79,8 +76,13 @@ export default defineFlatConfig([
 
       ...unicornConfig.recommended.rules,
       'unicorn/prevent-abbreviations': 'off',
+
+      ...arrayFuncPlugin.configs.recommended.rules,
     },
     settings: {
+      'import/parsers': {
+        espree: ['.js', '.cjs', '.mjs', '.jsx'],
+      },
       'import/resolver': {
         node: {
           extensions: ['.js', '.ts'],
@@ -121,6 +123,11 @@ export default defineFlatConfig([
       '@typescript-eslint/no-namespace': 'warn',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'warn',
       '@typescript-eslint/no-redundant-type-constituents': 'warn',
+      '@typescript-eslint/consistent-type-imports': [
+        'warn',
+        { prefer: 'type-imports' },
+      ],
+      '@typescript-eslint/consistent-type-exports': 'warn',
       '@typescript-eslint/no-this-alias': 'warn',
       '@typescript-eslint/no-unnecessary-type-assertion': 'warn',
       '@typescript-eslint/no-unnecessary-type-constraint': 'warn',
