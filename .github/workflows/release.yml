@@ -40,4 +40,4 @@ jobs:
           publish: pnpm run publish
           version: pnpm run version
           title: '[BUMP] Bump packages version'
-          commit: 'chore: bump packages version [skip ci]'
+          commit: 'chore: bump packages version'
