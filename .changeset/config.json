@@ -9,6 +9,5 @@
   "linked": [],
   "access": "public",
   "baseBranch": "main",
-  "updateInternalDependencies": "patch",
-  "ignore": ["@octopost/backend"]
+  "updateInternalDependencies": "patch"
 }

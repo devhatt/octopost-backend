@@ -1,15 +1,15 @@
-import http from 'node:http';
+import env from './config/env';
+import app from './config/app';
 
-// Create a local server to receive data from
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(
-    JSON.stringify({
-      data: 'Hello World!',
-    })
-  );
-});
+function startServer() {
+  const listener = app.listen(Number(env.PORT), env.HOSTNAME, () => {
+    console.log(`Server running at http://localhost:${env.PORT}`);
+  });
 
-server.listen(8000, () => {
-  console.log('listening on port 8000');
-});
+  listener.on('error', (err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}
+
+startServer();

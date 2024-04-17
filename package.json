@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "type": "module",
-  "private": "true",
+  "private": true,
   "engines": {
     "node": "20",
     "pnpm": "9"
