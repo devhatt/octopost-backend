@@ -1,5 +1,5 @@
-import type { Service } from '@/shared/protocols/service';
-import { UserCreateModel } from '../models/user-create-model';
+import type { Service } from '@/shared/protocols/service.js';
+import { UserCreateModel } from '../models/user-create-model.js';
 
 export class UserCreateService implements Service {
   constructor() {}

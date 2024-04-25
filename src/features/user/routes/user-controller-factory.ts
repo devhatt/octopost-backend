@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 
-import { Validator } from '@/shared/infra/validator/validator';
-import { UserController } from '../controllers/user-controller';
-import { UserCreateService } from '../services/user-create-service';
+import { Validator } from '@/shared/infra/validator/validator.js';
+import { UserController } from '../controllers/user-controller.js';
+import { UserCreateService } from '../services/user-create-service.js';
 
 export function userControllerFactory() {
   const userServiceFindAll = new UserCreateService();

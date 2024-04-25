@@ -1,5 +1,5 @@
-import { HttpError } from '@/shared/errors/HttpError';
-import { HttpStatusCode } from '@/shared/protocols/http-client';
+import { HttpError } from '@/shared/errors/HttpError.js';
+import { HttpStatusCode } from '@/shared/protocols/http-client.js';
 import { ErrorRequestHandler } from 'express';
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {

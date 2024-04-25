@@ -1,4 +1,4 @@
-import { errorHandler } from '@/middlewares/error-handler/error-handler';
+import { errorHandler } from '@/middlewares/error-handler/error-handler.js';
 import type { Express } from 'express';
 import { glob } from 'glob';
 import { resolve } from 'node:path';

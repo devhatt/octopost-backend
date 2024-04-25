@@ -8,8 +8,8 @@
     "node": "22"
   },
   "scripts": {
-    "dev": " cross-env MODE=DEV  tsx --watch src/index.ts",
-    "start": "node build/index.js",
+    "dev": " cross-env MODE=DEV tsx --watch src/index.ts",
+    "start": "cross-env MODE=PROD node build/index.js",
     "prestart": "pnpm run build",
     "changeset": "changeset add",
     "changeset:emtpy": "changeset add --empty",

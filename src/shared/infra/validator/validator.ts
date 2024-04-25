@@ -1,4 +1,4 @@
-import { ValidationError } from '@/shared/errors/ValidateError';
+import { ValidationError } from '@/shared/errors/ValidateError.js';
 import { ObjectSchema } from 'joi';
 
 export class Validator {

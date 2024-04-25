@@ -2,19 +2,19 @@ import dotenv from 'dotenv';
 
 if (process.env['MODE'] === 'DEV') {
   dotenv.config({
-    path: ['dev.env', '.env'],
+    path: ['.env.dev', '.env'],
   });
 }
 
 if (process.env['MODE'] === 'PROD') {
   dotenv.config({
-    path: ['prod.env', '.env'],
+    path: ['.env.prod', '.env'],
   });
 }
 
 if (process.env['MODE'] === 'QA') {
   dotenv.config({
-    path: ['qa.env', '.env'],
+    path: ['.env.qa', '.env'],
   });
 }
 

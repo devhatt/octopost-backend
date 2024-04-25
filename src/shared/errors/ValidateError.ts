@@ -1,5 +1,5 @@
-import { HttpStatusCode } from '../protocols/http-client';
-import { HttpError } from './HttpError';
+import { HttpStatusCode } from '../protocols/http-client.js';
+import { HttpError } from './HttpError.js';
 
 export class ValidationError extends HttpError {
   constructor(

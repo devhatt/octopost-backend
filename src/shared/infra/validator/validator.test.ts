@@ -1,6 +1,6 @@
 import Joi from 'joi';
-import { Validator } from './validator';
-import { ValidationError } from '@/shared/errors/ValidateError';
+import { Validator } from './validator.js';
+import { ValidationError } from '@/shared/errors/ValidateError.js';
 import { faker } from '@faker-js/faker';
 
 const makeSut = () => {

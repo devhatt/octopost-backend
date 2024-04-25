@@ -1,7 +1,7 @@
-import { HttpError } from '@/shared/errors/HttpError';
-import { UserController } from './user-controller';
-import type { Validator } from '@/shared/infra/validator/validator';
-import type { Service } from '@/shared/protocols/service';
+import { HttpError } from '@/shared/errors/HttpError.js';
+import { UserController } from './user-controller.js';
+import type { Validator } from '@/shared/infra/validator/validator.js';
+import type { Service } from '@/shared/protocols/service.js';
 
 const makeSut = () => {
   class ValidatorStub implements Validator {
