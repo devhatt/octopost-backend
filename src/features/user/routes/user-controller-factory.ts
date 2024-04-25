@@ -1,4 +1,4 @@
-/* istanbul ignore file */
+/* istanbul ignore file -- @preserve */
 
 import { Validator } from '@/shared/infra/validator/validator.js';
 import { UserController } from '../controllers/user-controller.js';

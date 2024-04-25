@@ -4,7 +4,7 @@ import { defineFlatConfig } from 'eslint-define-config';
 import tsEslint from 'typescript-eslint';
 import arrayFuncPlugin from 'eslint-plugin-array-func';
 import importPlugin from 'eslint-plugin-import';
-import perfectionistPlugin from 'eslint-plugin-perfectionist';
+import perfectionist from 'eslint-plugin-perfectionist';
 import unicornPlugin, { configs as unicornConfig } from 'eslint-plugin-unicorn';
 import vitestPlugin from 'eslint-plugin-vitest';
 import globals from 'globals';
@@ -33,7 +33,7 @@ export default defineFlatConfig([
   },
 
   {
-    files: ['**/*.(js|ts)'],
+    files: ['**/*.ts', '**/*.js'],
     languageOptions: {
       parserOptions: {
         ecmaVersion: 'latest',
@@ -43,7 +43,7 @@ export default defineFlatConfig([
     plugins: {
       'array-func': arrayFuncPlugin,
       import: importPlugin,
-      perfectionist: perfectionistPlugin,
+      perfectionist,
       unicorn: unicornPlugin,
     },
     rules: {
@@ -53,13 +53,13 @@ export default defineFlatConfig([
       'import/namespace': 'warn',
       'import/newline-after-import': 'warn',
       'import/no-absolute-path': 'warn',
+      'import/no-default-export': 'warn',
       'import/no-duplicates': 'warn',
       'import/no-extraneous-dependencies': 'warn',
       'import/no-named-as-default': 'warn',
       'import/no-named-as-default-member': 'warn',
       'import/no-unused-modules': 'warn',
       'import/order': 'warn',
-      'import/no-default-export': 'warn',
 
       'perfectionist/sort-array-includes': 'warn',
       'perfectionist/sort-classes': 'warn',
@@ -108,6 +108,11 @@ export default defineFlatConfig([
       '@typescript-eslint/await-thenable': 'warn',
       '@typescript-eslint/ban-ts-comment': 'warn',
       '@typescript-eslint/ban-types': 'warn',
+      '@typescript-eslint/consistent-type-exports': 'warn',
+      '@typescript-eslint/consistent-type-imports': [
+        'warn',
+        { prefer: 'type-imports' },
+      ],
       '@typescript-eslint/no-array-constructor': 'warn',
       '@typescript-eslint/no-base-to-string': 'warn',
       '@typescript-eslint/no-duplicate-enum-values': 'warn',
@@ -123,15 +128,21 @@ export default defineFlatConfig([
       '@typescript-eslint/no-namespace': 'warn',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'warn',
       '@typescript-eslint/no-redundant-type-constituents': 'warn',
-      '@typescript-eslint/consistent-type-imports': [
-        'warn',
-        { prefer: 'type-imports' },
-      ],
-      '@typescript-eslint/consistent-type-exports': 'warn',
       '@typescript-eslint/no-this-alias': 'warn',
       '@typescript-eslint/no-unnecessary-type-assertion': 'warn',
       '@typescript-eslint/no-unnecessary-type-constraint': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_',
+        },
+      ],
       '@typescript-eslint/no-var-requires': 'warn',
       '@typescript-eslint/prefer-as-const': 'warn',
       '@typescript-eslint/require-await': 'warn',
@@ -139,6 +150,13 @@ export default defineFlatConfig([
       '@typescript-eslint/restrict-template-expressions': 'warn',
       '@typescript-eslint/triple-slash-reference': 'warn',
       '@typescript-eslint/unbound-method': 'warn',
+    },
+  },
+
+  {
+    files: ['**/routes/*-routes.ts'],
+    rules: {
+      'typescript-eslint/no-misused-promises': 'warn',
     },
   },
 
@@ -154,6 +172,8 @@ export default defineFlatConfig([
       vitest: vitestPlugin,
     },
     rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/unbound-method': 'off',
       'vitest/expect-expect': 'warn',
       'vitest/no-commented-out-tests': 'warn',
       'vitest/no-identical-title': 'warn',

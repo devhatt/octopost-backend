@@ -1,11 +1,15 @@
-import { HttpError } from '@/shared/errors/HttpError.js';
+import { HttpError } from '@/shared/errors/http-error.js';
 import { UserController } from './user-controller.js';
 import type { Validator } from '@/shared/infra/validator/validator.js';
 import type { Service } from '@/shared/protocols/service.js';
+import {
+  getMockResponse,
+  getMockRequest,
+} from '@/shared/testHelpers/express/express.mock.js';
 
 const makeSut = () => {
   class ValidatorStub implements Validator {
-    public validate(schema: any, data: any): boolean {
+    public validate(_: any, __: any): boolean {
       return true;
     }
   }
@@ -21,17 +25,8 @@ const makeSut = () => {
 
   const userController = new UserController(validator, userCreateService);
 
-  let req: any = {
-    body: {
-      email: 'valid_email@domain.com',
-      password: 'valid_password',
-    },
-  };
-  let next: any = vi.fn();
-  let res: any = {
-    json: vi.fn(),
-    status: vi.fn().mockReturnThis(),
-  };
+  const { res, next } = getMockResponse();
+  const req = getMockRequest();
 
   return {
     validator,
@@ -63,7 +58,7 @@ describe('[Controllers] UserController', () => {
     });
 
     it('should call service with correctly params', async () => {
-      const { userController, userCreateService, res, req, next } = makeSut();
+      const { userController, userCreateService, req, res, next } = makeSut();
 
       const serviceSpy = vi.spyOn(userCreateService, 'execute');
 
@@ -100,18 +95,13 @@ describe('[Controllers] UserController', () => {
       expect(res.json).toHaveBeenCalledWith(response);
     });
 
-    it('should call next when an error ', async () => {
+    it('should call next when an error', async () => {
       const { userController, userCreateService, res, req, next } = makeSut();
       const error = new HttpError(500, 'error');
 
       vi.spyOn(userCreateService, 'execute').mockRejectedValueOnce(
         new HttpError(500, 'error')
       );
-
-      const response = {
-        email: 'valid_email@domain.com',
-        password: 'valid_password',
-      };
 
       await userController.create(req, res, next);
 
