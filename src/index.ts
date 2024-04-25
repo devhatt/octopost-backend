@@ -3,7 +3,7 @@ import app from './config/app.js';
 
 function startServer() {
   const listener = app.listen(Number(env.PORT), env.HOSTNAME, () => {
-    console.log(`Server running at http://localhost:${env.PORT}`);
+    console.log(`Server running at http://${env.HOSTNAME}:${env.PORT}`);
   });
 
   listener.on('error', (err) => {
