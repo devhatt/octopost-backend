@@ -1,6 +1,6 @@
 import type { Express } from 'express';
 import { cors } from '@/middlewares/cors/cors';
-import { bodyParser } from '@/middlewares/body-parser';
+import { bodyParser } from '@/middlewares/body-parser/body-parser';
 
 export default function setupMiddlewares(app: Express): void {
   app.use(bodyParser);
