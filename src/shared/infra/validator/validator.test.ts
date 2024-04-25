@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { Validator } from './validator';
-import { ValidateError } from '@/shared/errors/ValidateError';
+import { ValidationError } from '@/shared/errors/ValidateError';
 import { faker } from '@faker-js/faker';
 
 const makeSut = () => {
@@ -34,7 +34,7 @@ describe('UserValidator', () => {
 
       expect(() => {
         validator.validate(schema, payload);
-      }).toThrow(ValidateError);
+      }).toThrow(ValidationError);
     });
   });
 });

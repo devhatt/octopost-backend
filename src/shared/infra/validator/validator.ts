@@ -1,4 +1,4 @@
-import { ValidateError } from '@/shared/errors/ValidateError';
+import { ValidationError } from '@/shared/errors/ValidateError';
 import { ObjectSchema } from 'joi';
 
 export class Validator {
@@ -7,7 +7,14 @@ export class Validator {
       abortEarly: false,
       presence: 'required',
     });
-    if (error) throw new ValidateError(error.message);
+
+    if (error) {
+      throw new ValidationError(
+        error.message,
+        error.details.map(({ message }) => message)
+      );
+    }
+
     return true;
   }
 }

@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { Validator } from '@/shared/infra/validator/validator';
 import { UserController } from '../controllers/user-controller';
 import { UserCreateService } from '../services/user-create-service';

@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { Router } from 'express';
 import { userControllerFactory } from './user-controller-factory';
 
