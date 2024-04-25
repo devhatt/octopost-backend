@@ -5,7 +5,7 @@
   "type": "module",
   "private": true,
   "engines": {
-    "node": "20",
+    "node": "22",
     "pnpm": "9"
   },
   "scripts": {
@@ -24,7 +24,8 @@
     "commit": "git-cz",
     "typecheck": "tsc -p tsconfig.build.json --noEmit",
     "test": "vitest",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --watch --ui"
   },
   "devDependencies": {
     "@changesets/changelog-github": "0.5.0",
@@ -33,11 +34,11 @@
     "@commitlint/config-conventional": "19.1.0",
     "@commitlint/cz-commitlint": "19.2.0",
     "@eslint/js": "9.0.0",
-    "@octopost/types": "workspace:*",
+    "@faker-js/faker": "8.4.1",
     "@types/express": "4.17.21",
     "@vitest/coverage-istanbul": "1.5.0",
-    "axios": "1.6.8",
     "commitizen": "4.3.0",
+    "cross-env": "7.0.3",
     "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-define-config": "2.1.0",
@@ -52,19 +53,21 @@
     "husky": "9.0.11",
     "lint-staged": "15.2.2",
     "prettier": "3.2.5",
+    "prisma": "5.13.0",
     "ts-patch": "3.1.2",
     "tsx": "4.7.2",
     "typescript": "5.4.5",
     "typescript-eslint": "7.6.0",
     "typescript-transform-paths": "3.4.7",
     "vite-tsconfig-paths": "4.3.2",
-    "cross-env": "7.0.3",
     "vitest": "1.5.0"
   },
   "dependencies": {
+    "axios": "1.6.8",
     "dotenv": "16.4.5",
     "express": "4.19.2",
-    "glob": "10.3.12"
+    "glob": "10.3.12",
+    "joi": "17.13.0"
   },
   "config": {
     "commitizen": {

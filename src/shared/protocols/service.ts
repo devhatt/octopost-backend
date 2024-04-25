@@ -1,7 +1,5 @@
 import type { HttpRequest } from './http';
 
-export interface Service<R> {
-  execute(httpRequest: HttpRequest): Promise<R>;
+export interface Service<P = any, R = any> {
+  execute(params: P): Promise<R>;
 }
-
-export type ServiceRedirect = Service<string>;
