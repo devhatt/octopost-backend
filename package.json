@@ -13,7 +13,7 @@
     "start": "cross-env MODE=PROD node build/index.js",
     "prestart": "pnpm run build",
     "build": "tsc -p tsconfig.build.json",
-    "prebuild": "ts-patch install -s",
+    "prebuild": "prisma generate && ts-patch install -s",
     "lint": "eslint . --max-warnings=0 --no-warn-ignored",
     "format": "prettier . --check --ignore-unknown",
     "prepare": "husky",
