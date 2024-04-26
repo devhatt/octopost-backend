@@ -1,3 +1,5 @@
+/* istanbul ignore file -- @preserve */
+
 import env from './config/env.js';
 import app from './config/app.js';
 

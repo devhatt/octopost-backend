@@ -1,7 +1,8 @@
 node_modules
 .vscode
+!.vscode/settings.json
 build
 dist
 coverage
-.env
 .idea/
+*.env*

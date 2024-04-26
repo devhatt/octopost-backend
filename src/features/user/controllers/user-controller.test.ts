@@ -1,11 +1,10 @@
+import { mockDeep } from 'vitest-mock-extended';
+import type { Request, Response } from 'express';
 import { UserController } from './user-controller.js';
 import { HttpError } from '@/shared/errors/http-error.js';
 import type { Validator } from '@/shared/infra/validator/validator.js';
 import type { Service } from '@/shared/protocols/service.js';
-import {
-  getMockRequest,
-  getMockResponse,
-} from '@/shared/testHelpers/express/express.mock.js';
+import { UserMock } from '@/shared/testHelpers/mocks/user.mock.js';
 
 const makeSut = () => {
   class ValidatorStub implements Validator {
@@ -25,8 +24,9 @@ const makeSut = () => {
 
   const userController = new UserController(validator, userCreateService);
 
-  const { next, res } = getMockResponse();
-  const req = getMockRequest();
+  const req = mockDeep<Request>();
+  const res = mockDeep<Response>();
+  const next = vi.fn();
 
   return {
     next,
@@ -45,10 +45,7 @@ describe('[Controllers] UserController', () => {
 
       const validateSpy = vi.spyOn(validator, 'validate');
 
-      const body = {
-        email: 'valid_email@domain.com',
-        password: 'valid_password',
-      };
+      const body = UserMock.create();
 
       req.body = body;
 
@@ -77,7 +74,7 @@ describe('[Controllers] UserController', () => {
       });
     });
 
-    it('should response 200 with password and email', async () => {
+    it('should response 204 with password and email', async () => {
       const { next, req, res, userController, userCreateService } = makeSut();
 
       const serviceSpy = vi.spyOn(userCreateService, 'execute');
@@ -91,8 +88,7 @@ describe('[Controllers] UserController', () => {
 
       await userController.create(req, res, next);
 
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(response);
+      expect(res.status).toHaveBeenCalledWith(204);
     });
 
     it('should call next when an error', async () => {
