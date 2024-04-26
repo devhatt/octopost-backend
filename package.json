@@ -5,7 +5,8 @@
   "type": "module",
   "private": true,
   "engines": {
-    "node": "22"
+    "node": "22",
+    "pnpm": "8"
   },
   "scripts": {
     "dev": " cross-env MODE=DEV tsx --watch src/index.ts",

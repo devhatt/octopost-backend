@@ -1,399 +1,398 @@
 /* istanbul ignore file -- @preserve */
 
-import type { IncomingMessage } from 'http';
-import type { Readable } from 'stream';
-import type { NextFunction, Request } from 'express';
+import type {
+  IncomingMessage,
+  OutgoingMessage,
+  ServerResponse,
+} from 'node:http';
+import type { Readable, Writable } from 'node:stream';
+import type { NextFunction, Request, Response } from 'express';
 import type { Mock } from 'vitest';
 
-// Types
-import type { ServerResponse, OutgoingMessage } from 'http';
-import type { Writable } from 'stream';
-import type { Response } from 'express';
-
-// Local Types
-
 interface StreamWritable extends EventEventEmitter {
-  writable?: Writable['writable'];
-  writableEnded?: Writable['writableEnded'];
-  writableFinished?: Writable['writableFinished'];
-  writableHighWaterMark?: Writable['writableHighWaterMark'];
-  writableLength?: Writable['writableLength'];
-  writableObjectMode?: Writable['writableObjectMode'];
-  writableCorked?: Writable['writableCorked'];
-  destroyed?: Writable['destroyed'];
+  _destroy?: Mock;
+  // Local Types
+
+  _final?: Mock;
   _write?: Mock;
   _writev?: Mock;
-  _destroy?: Mock;
-  _final?: Mock;
-  write?: Mock;
-  setDefaultEncoding?: Mock;
-  end?: Mock;
-  cork?: Mock;
-  uncork?: Mock;
-  destroy?: Mock;
   addListener?: Mock;
+  cork?: Mock;
+  destroy?: Mock;
+  destroyed?: Writable['destroyed'];
   emit?: Mock;
+  end?: Mock;
   on?: Mock;
   once?: Mock;
   prependListener?: Mock;
   prependOnceListener?: Mock;
   removeListener?: Mock;
+  setDefaultEncoding?: Mock;
+  uncork?: Mock;
+  writable?: Writable['writable'];
+  writableCorked?: Writable['writableCorked'];
+  writableEnded?: Writable['writableEnded'];
+  writableFinished?: Writable['writableFinished'];
+  writableHighWaterMark?: Writable['writableHighWaterMark'];
+  writableLength?: Writable['writableLength'];
+  writableObjectMode?: Writable['writableObjectMode'];
+  write?: Mock;
 }
 
 interface HttpOutgoingMessage extends StreamWritable {
-  req?: Partial<IncomingMessage>;
-  chunkedEncoding?: OutgoingMessage['chunkedEncoding'];
-  shouldKeepAlive?: OutgoingMessage['shouldKeepAlive'];
-  useChunkedEncodingByDefault?: OutgoingMessage['useChunkedEncodingByDefault'];
-  sendDate?: OutgoingMessage['sendDate'];
-  finished?: OutgoingMessage['finished'];
-  headersSent?: OutgoingMessage['headersSent'];
-  connection?: Partial<OutgoingMessage['connection']>;
-  socket?: Partial<OutgoingMessage['socket']>;
-  setTimeout?: Mock;
-  setHeader?: Mock;
-  getHeader?: Mock;
-  getHeaders?: Mock;
-  getHeaderNames?: Mock;
-  hasHeader?: Mock;
-  removeHeader?: Mock;
   addTrailers?: Mock;
+  chunkedEncoding?: OutgoingMessage['chunkedEncoding'];
+  connection?: Partial<OutgoingMessage['connection']>;
+  finished?: OutgoingMessage['finished'];
   flushHeaders?: Mock;
+  getHeader?: Mock;
+  getHeaderNames?: Mock;
+  getHeaders?: Mock;
+  hasHeader?: Mock;
+  headersSent?: OutgoingMessage['headersSent'];
+  removeHeader?: Mock;
+  req?: Partial<IncomingMessage>;
+  sendDate?: OutgoingMessage['sendDate'];
+  setHeader?: Mock;
+  setTimeout?: Mock;
+  shouldKeepAlive?: OutgoingMessage['shouldKeepAlive'];
+  socket?: Partial<OutgoingMessage['socket']>;
+  useChunkedEncodingByDefault?: OutgoingMessage['useChunkedEncodingByDefault'];
 }
 
 interface HttpServerResponse extends HttpOutgoingMessage {
-  statusCode?: ServerResponse['statusCode'];
-  statusMessage?: ServerResponse['statusMessage'];
   assignSocket?: Mock;
   detachSocket?: Mock;
+  statusCode?: ServerResponse['statusCode'];
+  statusMessage?: ServerResponse['statusMessage'];
   writeContinue?: Mock;
   writeHead?: Mock;
   writeProcessing?: Mock;
 }
 
 export interface MockResponse extends HttpServerResponse {
-  status?: Mock;
-  sendStatus?: Mock;
-  links?: Mock;
-  send?: Mock;
-  json?: Mock;
-  jsonp?: Mock;
-  sendFile?: Mock;
-  sendfile?: Mock;
-  download?: Mock;
-  contentType?: Mock;
-  type?: Mock;
-  format?: Mock;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+  app?: Partial<Response['app']>;
+  append?: Mock;
   attachment?: Mock;
-  set?: Mock;
+  charset?: Response['charset'];
+  clearCookie?: Mock;
+  contentType?: Mock;
+  cookie?: Mock;
+  download?: Mock;
+  format?: Mock;
+  get?: Mock;
   header?: Mock;
   headersSent?: Response['headersSent'];
-  get?: Mock;
-  clearCookie?: Mock;
-  cookie?: Mock;
+  json?: Mock;
+  jsonp?: Mock;
+  links?: Mock;
+  locals?: Partial<Response['locals']>;
   location?: Mock;
   redirect?: Mock;
   render?: Mock;
-  locals?: Partial<Response['locals']>;
-  charset?: Response['charset'];
-  vary?: Mock;
-  app?: Partial<Response['app']>;
-  append?: Mock;
   req?: Partial<Response['req']>;
+  send?: Mock;
+  sendfile?: Mock;
+  sendFile?: Mock;
+  sendStatus?: Mock;
+  set?: Mock;
+  status?: Mock;
+  type?: Mock;
 
   // allow custom properties to be provided
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
+  vary?: Mock;
 }
 
 export interface EventEventEmitter {
   addListener?: Mock;
+  emit?: Mock;
+  eventNames?: Mock;
+  getMaxListeners?: Mock;
+  listenerCount?: Mock;
+  listeners?: Mock;
+  off?: Mock;
   on?: Mock;
   once?: Mock;
-  removeListener?: Mock;
-  off?: Mock;
-  removeAllListeners?: Mock;
-  setMaxListeners?: Mock;
-  getMaxListeners?: Mock;
-  listeners?: Mock;
-  rawListeners?: Mock;
-  emit?: Mock;
-  listenerCount?: Mock;
   prependListener?: Mock;
   prependOnceListener?: Mock;
-  eventNames?: Mock;
+  rawListeners?: Mock;
+  removeAllListeners?: Mock;
+  removeListener?: Mock;
+  setMaxListeners?: Mock;
 }
 
 interface StreamReadable extends EventEventEmitter {
+  _destroy?: Mock;
+  _read?: Mock;
+  addListener?: Mock;
+  destroy?: Mock;
+  destroyed?: Readable['destroyed'];
+  emit?: Mock;
+  isPaused?: Mock;
+  on?: Mock;
+  once?: Mock;
+  pause?: Mock;
+  prependListener?: Mock;
+  prependOnceListener?: Mock;
+  push?: Mock;
+  read?: Mock;
   readable?: Readable['readable'];
   readableHighWaterMark?: Readable['readableHighWaterMark'];
   readableLength?: Readable['readableLength'];
   readableObjectMode?: Readable['readableObjectMode'];
-  destroyed?: Readable['destroyed'];
-  _read?: Mock;
-  read?: Mock;
-  setEncoding?: Mock;
-  pause?: Mock;
+  removeListener?: Mock;
   resume?: Mock;
-  isPaused?: Mock;
+  setEncoding?: Mock;
   unpipe?: Mock;
   unshift?: Mock;
   wrap?: Mock;
-  push?: Mock;
-  _destroy?: Mock;
-  addListener?: Mock;
-  emit?: Mock;
-  on?: Mock;
-  once?: Mock;
-  prependListener?: Mock;
-  prependOnceListener?: Mock;
-  removeListener?: Mock;
-  destroy?: Mock;
 }
 
 interface HttpIncomingMessage extends StreamReadable {
   aborted?: IncomingMessage['aborted'];
+  complete?: IncomingMessage['complete'];
+  connection?: Partial<IncomingMessage['connection']>;
+  destroy?: Mock;
+  headers?: Partial<IncomingMessage['headers']>;
   httpVersion?: IncomingMessage['httpVersion'];
   httpVersionMajor?: IncomingMessage['httpVersionMajor'];
   httpVersionMinor?: IncomingMessage['httpVersionMinor'];
-  complete?: IncomingMessage['complete'];
-  connection?: Partial<IncomingMessage['connection']>;
-  socket?: Partial<IncomingMessage['socket']>;
-  headers?: Partial<IncomingMessage['headers']>;
   rawHeaders?: IncomingMessage['rawHeaders'];
-  trailers?: IncomingMessage['trailers'];
   rawTrailers?: IncomingMessage['rawTrailers'];
   setTimeout?: Mock;
+  socket?: Partial<IncomingMessage['socket']>;
   statusCode?: IncomingMessage['statusCode'];
   statusMessage?: IncomingMessage['statusMessage'];
-  destroy?: Mock;
+  trailers?: IncomingMessage['trailers'];
 }
 
 export interface MockRequest extends HttpIncomingMessage {
-  params?: Request['params'];
-  query?: Request['query'];
-  body?: Request['body'];
-  cookies?: Request['cookies'];
-  method?: Request['method'];
-  protocol?: Request['protocol'];
-  secure?: Request['secure'];
-  ip?: Request['ip'];
-  ips?: Request['ips'];
-  subdomains?: Request['subdomains'];
-  path?: Request['path'];
-  hostname?: Request['hostname'];
-  host?: Request['host'];
-  fresh?: Request['fresh'];
-  stale?: Request['stale'];
-  xhr?: Request['xhr'];
-  route?: Request['route'];
-  signedCookies?: Request['signedCookies'];
-  originalUrl?: Request['originalUrl'];
-  url?: Request['url'];
-  baseUrl?: Request['baseUrl'];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
   accepted?: Request['accepted'];
-  get?: Mock;
-  header?: Mock;
   accepts?: Mock;
   acceptsCharsets?: Mock;
   acceptsEncodings?: Mock;
   acceptsLanguages?: Mock;
-  range?: Mock;
-  param?: Mock;
-  is?: Mock;
   app?: Partial<Request['app']>;
-  res?: Partial<Request['res']>;
+  baseUrl?: Request['baseUrl'];
+  body?: Request['body'];
+  cookies?: Request['cookies'];
+  fresh?: Request['fresh'];
+  get?: Mock;
+  header?: Mock;
+  host?: Request['host'];
+  hostname?: Request['hostname'];
+  ip?: Request['ip'];
+  ips?: Request['ips'];
+  is?: Mock;
+  method?: Request['method'];
   next?: Mock;
+  originalUrl?: Request['originalUrl'];
+  param?: Mock;
+  params?: Request['params'];
+  path?: Request['path'];
+  protocol?: Request['protocol'];
+  query?: Request['query'];
+  range?: Mock;
+  res?: Partial<Request['res']>;
+  route?: Request['route'];
+  secure?: Request['secure'];
+  signedCookies?: Request['signedCookies'];
+  stale?: Request['stale'];
+  subdomains?: Request['subdomains'];
+  url?: Request['url'];
 
   // allow custom properties to be provided
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
+  xhr?: Request['xhr'];
 }
 
 export const getMockRequest = <T extends Request>(
   values: MockRequest = {}
 ): T => {
   const {
-    /* express.Request */
-    params = {},
-    query = {},
-    body = {},
-    cookies = {},
-    method = '',
-    protocol = '',
-    secure = false,
-    ip = '',
-    ips = [],
-    subdomains = [],
-    path = '',
-    hostname = '',
-    host = '',
-    fresh = false,
-    stale = false,
-    xhr = false,
-    route = {},
-    signedCookies = {},
-    originalUrl = '',
-    url = '',
-    baseUrl = '',
+    _destroy = vi.fn().mockName('_destroy mock default'),
+    _read = vi.fn().mockName('_read mock default'),
+    aborted = false,
     accepted = [],
-    get = vi.fn().mockName('get mock default'),
-    header = vi.fn().mockName('header mock default'),
     accepts = vi.fn().mockName('accepts mock default'),
     acceptsCharsets = vi.fn().mockName('acceptsCharsets mock default'),
     acceptsEncodings = vi.fn().mockName('acceptsEncodings mock default'),
     acceptsLanguages = vi.fn().mockName('acceptsLanguages mock default'),
-    range = vi.fn().mockName('range mock default'),
-    param = vi.fn().mockName('param mock default'),
-    is = vi.fn().mockName('is mock default'),
+    addListener = vi.fn().mockName('addListener mock default'),
     app = {},
-    res = vi.fn().mockName('res mock default'),
-    next = vi.fn().mockName('next mock default'),
-    aborted = false,
+    baseUrl = '',
+    body = {},
+    complete = false,
+    connection = {},
+    cookies = {},
+    destroy = vi.fn().mockName('destroy mock default'),
+    destroyed = false,
+    emit = vi.fn().mockName('emit mock default'),
+    eventNames = vi.fn().mockName('eventNames mock default'),
+    fresh = false,
+    get = vi.fn().mockName('get mock default'),
+    getMaxListeners = vi.fn().mockName('getMaxListeners mock default'),
+    header = vi.fn().mockName('header mock default'),
+    headers = {},
+    host = '',
+    hostname = '',
     httpVersion = '',
     httpVersionMajor = 0,
     httpVersionMinor = 0,
-    complete = false,
-    connection = {},
-    socket = {},
-    headers = {},
+    ip = '',
+    ips = [],
+    is = vi.fn().mockName('is mock default'),
+    isPaused = vi.fn().mockName('isPaused mock default'),
+    listenerCount = vi.fn().mockName('listenerCount mock default'),
+    listeners = vi.fn().mockName('listeners mock default'),
+    method = '',
+    next = vi.fn().mockName('next mock default'),
+    off = vi.fn().mockName('off mock default'),
+    on = vi.fn().mockName('on mock default'),
+    once = vi.fn().mockName('once mock default'),
+    originalUrl = '',
+    param = vi.fn().mockName('param mock default'),
+    /* express.Request */
+    params = {},
+    path = '',
+    pause = vi.fn().mockName('pause mock default'),
+    prependListener = vi.fn().mockName('prependListener mock default'),
+    prependOnceListener = vi.fn().mockName('prependOnceListener mock default'),
+    protocol = '',
+    push = vi.fn().mockName('push mock default'),
+    query = {},
+    range = vi.fn().mockName('range mock default'),
     rawHeaders = [],
-    trailers = {},
+    rawListeners = vi.fn().mockName('rawListeners mock default'),
     rawTrailers = [],
-    setTimeout = vi.fn().mockName('setTimeout mock default'),
-    statusCode = 0,
-    statusMessage = '',
-    destroy = vi.fn().mockName('destroy mock default'),
+    read = vi.fn().mockName('read mock default'),
     readable = false,
     readableHighWaterMark = 0,
     readableLength = 0,
     readableObjectMode = false,
-    destroyed = false,
-    _read = vi.fn().mockName('_read mock default'),
-    read = vi.fn().mockName('read mock default'),
-    setEncoding = vi.fn().mockName('setEncoding mock default'),
-    pause = vi.fn().mockName('pause mock default'),
+    removeAllListeners = vi.fn().mockName('removeAllListeners mock default'),
+    removeListener = vi.fn().mockName('removeListener mock default'),
+    res = vi.fn().mockName('res mock default'),
     resume = vi.fn().mockName('resume mock default'),
-    isPaused = vi.fn().mockName('isPaused mock default'),
+    route = {},
+    secure = false,
+    setEncoding = vi.fn().mockName('setEncoding mock default'),
+    setMaxListeners = vi.fn().mockName('setMaxListeners mock default'),
+    setTimeout = vi.fn().mockName('setTimeout mock default'),
+    signedCookies = {},
+    socket = {},
+    stale = false,
+    statusCode = 0,
+    statusMessage = '',
+    subdomains = [],
+    trailers = {},
     unpipe = vi.fn().mockName('unpipe mock default'),
     unshift = vi.fn().mockName('unshift mock default'),
+    url = '',
     wrap = vi.fn().mockName('wrap mock default'),
-    push = vi.fn().mockName('push mock default'),
-    _destroy = vi.fn().mockName('_destroy mock default'),
-    addListener = vi.fn().mockName('addListener mock default'),
-    emit = vi.fn().mockName('emit mock default'),
-    on = vi.fn().mockName('on mock default'),
-    once = vi.fn().mockName('once mock default'),
-    prependListener = vi.fn().mockName('prependListener mock default'),
-    prependOnceListener = vi.fn().mockName('prependOnceListener mock default'),
-    removeListener = vi.fn().mockName('removeListener mock default'),
-    off = vi.fn().mockName('off mock default'),
-    removeAllListeners = vi.fn().mockName('removeAllListeners mock default'),
-    setMaxListeners = vi.fn().mockName('setMaxListeners mock default'),
-    getMaxListeners = vi.fn().mockName('getMaxListeners mock default'),
-    listeners = vi.fn().mockName('listeners mock default'),
-    rawListeners = vi.fn().mockName('rawListeners mock default'),
-    listenerCount = vi.fn().mockName('listenerCount mock default'),
-    eventNames = vi.fn().mockName('eventNames mock default'),
+    xhr = false,
     ...extraProvidedValues
   } = values;
 
   const request = {
-    /* express.Request */
-    params,
-    query,
-    body,
-    cookies,
-    method,
-    protocol,
-    secure,
-    ip,
-    ips,
-    subdomains,
-    path,
-    hostname,
-    host,
-    fresh,
-    stale,
-    xhr,
-    route,
-    signedCookies,
-    originalUrl,
-    url,
-    baseUrl,
+    _destroy,
+    _read,
+    /* http.IncomingMessage */
+    aborted,
     accepted,
-    get,
-    header,
     accepts,
     acceptsCharsets,
     acceptsEncodings,
     acceptsLanguages,
-    range,
-    param,
-    is,
+    addListener,
     app,
-    res,
-    next,
-
-    /* http.IncomingMessage */
-    aborted,
+    baseUrl,
+    body,
+    complete,
+    connection,
+    cookies,
+    destroy,
+    destroyed,
+    emit,
+    // prependOnceListener - is handled/overridden as part of stream.Readable
+    eventNames,
+    fresh,
+    get,
+    getMaxListeners,
+    header,
+    headers,
+    host,
+    hostname,
     httpVersion,
     httpVersionMajor,
     httpVersionMinor,
-    complete,
-    connection,
-    socket,
-    headers,
-    rawHeaders,
-    trailers,
-    rawTrailers,
-    setTimeout,
-    statusCode,
-    statusMessage,
-    destroy,
+    ip,
+    ips,
+    is,
+    isPaused,
+    // emit - is handled/overridden as part of stream.Readable
+    listenerCount,
 
+    listeners,
+    method,
+    next,
+    // removeListener - is handled/overridden as part of stream.Readable
+    off,
+    on,
+    once,
+    originalUrl,
+    param,
+    /* express.Request */
+    params,
+    path,
+    pause,
+    prependListener,
+    prependOnceListener,
+    protocol,
+    push,
+
+    query,
+    range,
+    rawHeaders,
+    rawListeners,
+    rawTrailers,
+    read,
     /* stream.Readable */
     readable,
     readableHighWaterMark,
     readableLength,
     readableObjectMode,
-    destroyed,
-    _read,
-    read,
-    setEncoding,
-    pause,
-    resume,
-    isPaused,
-    unpipe,
-    unshift,
-    wrap,
-    push,
-    _destroy,
-    addListener,
-    emit,
-    on,
-    once,
-    prependListener,
-    prependOnceListener,
+    removeAllListeners,
     removeListener,
+    res,
+    resume,
+    route,
+    secure,
+    setEncoding,
+    setMaxListeners,
+    setTimeout,
+    signedCookies,
+    socket,
+    stale,
+    statusCode,
     // destroy - is handled/overridden as part of http.IncomingMessage
 
     /* event.EventEmitter */
     // addListener - is handled/overridden as part of stream.Readable
     // on - is handled/overridden as part of stream.Readable
     // once - is handled/overridden as part of stream.Readable
-    // removeListener - is handled/overridden as part of stream.Readable
-    off,
-    removeAllListeners,
-    setMaxListeners,
-    getMaxListeners,
-    listeners,
-    rawListeners,
-    // emit - is handled/overridden as part of stream.Readable
-    listenerCount,
+    statusMessage,
+    subdomains,
+    trailers,
+    unpipe,
+    unshift,
+    url,
+    wrap,
     // prependListener - is handled/overridden as part of stream.Readable
-    // prependOnceListener - is handled/overridden as part of stream.Readable
-    eventNames,
+    xhr,
 
     // custom values
     ...extraProvidedValues,
@@ -405,221 +404,221 @@ export const getMockRequest = <T extends Request>(
 export const getMockResponse = <T extends Response>(
   values: MockResponse = {}
 ): {
-  res: T;
-  next: NextFunction;
-  mockClear: () => void;
   clearMockRes: () => void;
+  mockClear: () => void;
+  next: NextFunction;
+  res: T;
 } => {
   const next = vi.fn();
   const {
-    /* express.Response */
-    status = vi.fn().mockName('status mock default'),
-    sendStatus = vi.fn().mockName('sendStatus mock default'),
-    links = vi.fn().mockName('links mock default'),
-    send = vi.fn().mockName('send mock default'),
-    json = vi.fn().mockName('json mock default'),
-    jsonp = vi.fn().mockName('jsonp mock default'),
-    sendFile = vi.fn().mockName('sendFile mock default'),
-    sendfile = vi.fn().mockName('sendfile mock default'),
-    download = vi.fn().mockName('download mock default'),
-    contentType = vi.fn().mockName('contentType mock default'),
-    type = vi.fn().mockName('type mock default'),
-    format = vi.fn().mockName('format mock default'),
-    attachment = vi.fn().mockName('attachment mock default'),
-    set = vi.fn().mockName('set mock default'),
-    header = vi.fn().mockName('header mock default'),
-    headersSent = false,
-    get = vi.fn().mockName('get mock default'),
-    clearCookie = vi.fn().mockName('clearCookie mock default'),
-    cookie = vi.fn().mockName('cookie mock default'),
-    location = vi.fn().mockName('location mock default'),
-    redirect = vi.fn().mockName('redirect mock default'),
-    render = vi.fn().mockName('render mock default'),
-    locals = {},
-    charset = '',
-    vary = vi.fn().mockName('vary mock default'),
-    app = {},
-    append = vi.fn().mockName('append mock default'),
-    req = {},
-
-    /* http.ServerResponse */
-    statusCode = 0,
-    statusMessage = '',
-    assignSocket = vi.fn().mockName('assignSocket mock default'),
-    detachSocket = vi.fn().mockName('detachSocket mock default'),
-    writeContinue = vi.fn().mockName('writeContinue mock default'),
-    writeHead = vi.fn().mockName('writeHead mock default'),
-    writeProcessing = vi.fn().mockName('writeProcessing mock default'),
-
-    /* http.OutgoingMessage */
-    // req - is handled/overridden as part of express.Response
-    chunkedEncoding = false,
-    shouldKeepAlive = false,
-    useChunkedEncodingByDefault = false,
-    sendDate = false,
-    finished = false,
-    // headersSent - is handled/overridden as part of express.Response
-    connection = {},
-    socket = {},
-    setTimeout = vi.fn().mockName('setTimeout mock default'),
-    setHeader = vi.fn().mockName('setHeader mock default'),
-    getHeader = vi.fn().mockName('getHeader mock default'),
-    getHeaders = vi.fn().mockName('getHeaders mock default'),
-    getHeaderNames = vi.fn().mockName('getHeaderNames mock default'),
-    hasHeader = vi.fn().mockName('hasHeader mock default'),
-    removeHeader = vi.fn().mockName('removeHeader mock default'),
-    addTrailers = vi.fn().mockName('addTrailers mock default'),
-    flushHeaders = vi.fn().mockName('flushHeaders mock default'),
-
-    /* stream.Writable */
-    writable = false,
-    writableEnded = false,
-    writableFinished = false,
-    writableHighWaterMark = 0,
-    writableLength = 0,
-    writableObjectMode = false,
-    writableCorked = 0,
-    destroyed = false,
-    _write = vi.fn().mockName('_write mock default'),
-    _writev = vi.fn().mockName('_writev mock default'),
     _destroy = vi.fn().mockName('_destroy mock default'),
     _final = vi.fn().mockName('_final mock default'),
-    write = vi.fn().mockName('write mock default'),
-    setDefaultEncoding = vi.fn().mockName('setDefaultEncoding mock default'),
-    end = vi.fn().mockName('end mock default'),
-    cork = vi.fn().mockName('cork mock default'),
-    uncork = vi.fn().mockName('uncork mock default'),
-    destroy = vi.fn().mockName('destroy mock default'),
+    _write = vi.fn().mockName('_write mock default'),
+    _writev = vi.fn().mockName('_writev mock default'),
     addListener = vi.fn().mockName('addListener mock default'),
+    addTrailers = vi.fn().mockName('addTrailers mock default'),
+    app = {},
+    append = vi.fn().mockName('append mock default'),
+    assignSocket = vi.fn().mockName('assignSocket mock default'),
+    attachment = vi.fn().mockName('attachment mock default'),
+    charset = '',
+    // req - is handled/overridden as part of express.Response
+    chunkedEncoding = false,
+    clearCookie = vi.fn().mockName('clearCookie mock default'),
+    // headersSent - is handled/overridden as part of express.Response
+    connection = {},
+    contentType = vi.fn().mockName('contentType mock default'),
+    cookie = vi.fn().mockName('cookie mock default'),
+    cork = vi.fn().mockName('cork mock default'),
+    destroy = vi.fn().mockName('destroy mock default'),
+    destroyed = false,
+    detachSocket = vi.fn().mockName('detachSocket mock default'),
+    download = vi.fn().mockName('download mock default'),
     emit = vi.fn().mockName('emit mock default'),
+    end = vi.fn().mockName('end mock default'),
+    // prependOnceListener - is handled/overridden as part of stream.Writable
+    eventNames = vi.fn().mockName('eventNames mock default'),
+    finished = false,
+    flushHeaders = vi.fn().mockName('flushHeaders mock default'),
+    format = vi.fn().mockName('format mock default'),
+    get = vi.fn().mockName('get mock default'),
+
+    getHeader = vi.fn().mockName('getHeader mock default'),
+    getHeaderNames = vi.fn().mockName('getHeaderNames mock default'),
+    getHeaders = vi.fn().mockName('getHeaders mock default'),
+    getMaxListeners = vi.fn().mockName('getMaxListeners mock default'),
+    hasHeader = vi.fn().mockName('hasHeader mock default'),
+    header = vi.fn().mockName('header mock default'),
+    headersSent = false,
+
+    /* http.OutgoingMessage */
+    json = vi.fn().mockName('json mock default'),
+    jsonp = vi.fn().mockName('jsonp mock default'),
+    links = vi.fn().mockName('links mock default'),
+    // emit - is handled/overridden as part of stream.Writable
+    listenerCount = vi.fn().mockName('listenerCount mock default'),
+    listeners = vi.fn().mockName('listeners mock default'),
+    locals = {},
+    location = vi.fn().mockName('location mock default'),
+    // removeListener - is handled/overridden as part of stream.Writable
+    off = vi.fn().mockName('off mock default'),
     on = vi.fn().mockName('on mock default'),
     once = vi.fn().mockName('once mock default'),
     prependListener = vi.fn().mockName('prependListener mock default'),
     prependOnceListener = vi.fn().mockName('prependOnceListener mock default'),
+    rawListeners = vi.fn().mockName('rawListeners mock default'),
+    redirect = vi.fn().mockName('redirect mock default'),
+    removeAllListeners = vi.fn().mockName('removeAllListeners mock default'),
+    removeHeader = vi.fn().mockName('removeHeader mock default'),
+
     removeListener = vi.fn().mockName('removeListener mock default'),
+    render = vi.fn().mockName('render mock default'),
+    req = {},
+    send = vi.fn().mockName('send mock default'),
+    sendDate = false,
+    sendfile = vi.fn().mockName('sendfile mock default'),
+    sendFile = vi.fn().mockName('sendFile mock default'),
+    sendStatus = vi.fn().mockName('sendStatus mock default'),
+    set = vi.fn().mockName('set mock default'),
+    setDefaultEncoding = vi.fn().mockName('setDefaultEncoding mock default'),
+    setHeader = vi.fn().mockName('setHeader mock default'),
+    setMaxListeners = vi.fn().mockName('setMaxListeners mock default'),
+    setTimeout = vi.fn().mockName('setTimeout mock default'),
+    shouldKeepAlive = false,
+    socket = {},
+    /* express.Response */
+    status = vi.fn().mockName('status mock default'),
+    /* http.ServerResponse */
+    statusCode = 0,
+    statusMessage = '',
+    type = vi.fn().mockName('type mock default'),
+    uncork = vi.fn().mockName('uncork mock default'),
+    useChunkedEncodingByDefault = false,
+    vary = vi.fn().mockName('vary mock default'),
+    /* stream.Writable */
+    writable = false,
+    writableCorked = 0,
+    writableEnded = false,
 
     /* event.EventEmitter */
     // addListener - is handled/overridden as part of stream.Writable
     // on - is handled/overridden as part of stream.Writable
     // once - is handled/overridden as part of stream.Writable
-    // removeListener - is handled/overridden as part of stream.Writable
-    off = vi.fn().mockName('off mock default'),
-    removeAllListeners = vi.fn().mockName('removeAllListeners mock default'),
-    setMaxListeners = vi.fn().mockName('setMaxListeners mock default'),
-    getMaxListeners = vi.fn().mockName('getMaxListeners mock default'),
-    listeners = vi.fn().mockName('listeners mock default'),
-    rawListeners = vi.fn().mockName('rawListeners mock default'),
-    // emit - is handled/overridden as part of stream.Writable
-    listenerCount = vi.fn().mockName('listenerCount mock default'),
+    writableFinished = false,
+    writableHighWaterMark = 0,
+    writableLength = 0,
+    writableObjectMode = false,
+    write = vi.fn().mockName('write mock default'),
+    writeContinue = vi.fn().mockName('writeContinue mock default'),
+    writeHead = vi.fn().mockName('writeHead mock default'),
     // prependListener - is handled/overridden as part of stream.Writable
-    // prependOnceListener - is handled/overridden as part of stream.Writable
-    eventNames = vi.fn().mockName('eventNames mock default'),
+    writeProcessing = vi.fn().mockName('writeProcessing mock default'),
 
     // custom values
     ...extraProvidedValues
   } = values;
 
   const response = {
-    /* express.Response */
-    status,
-    sendStatus,
-    links,
-    send,
-    json,
-    jsonp,
-    sendFile,
-    sendfile,
-    download,
-    contentType,
-    type,
-    format,
-    attachment,
-    set,
-    header,
-    get,
-    clearCookie,
-    cookie,
-    location,
-    redirect,
-    render,
-    vary,
-    append,
-    headersSent,
-    locals,
-    charset,
-    app,
-    req,
-
-    /* http.ServerResponse */
-    statusCode,
-    statusMessage,
-    assignSocket,
-    detachSocket,
-    writeContinue,
-    writeHead,
-    writeProcessing,
-
-    /* http.OutgoingMessage */
-    chunkedEncoding,
-    shouldKeepAlive,
-    useChunkedEncodingByDefault,
-    sendDate,
-    finished,
-    connection,
-    socket,
-    setTimeout,
-    setHeader,
-    getHeader,
-    getHeaders,
-    getHeaderNames,
-    hasHeader,
-    removeHeader,
-    addTrailers,
-    flushHeaders,
-
-    /* stream.Writable */
-    writable,
-    writableEnded,
-    writableFinished,
-    writableHighWaterMark,
-    writableLength,
-    writableObjectMode,
-    writableCorked,
-    destroyed,
-    _write,
-    _writev,
     _destroy,
     _final,
-    write,
-    setDefaultEncoding,
-    end,
-    cork,
-    uncork,
-    destroy,
+    _write,
+    _writev,
     addListener,
+    addTrailers,
+    app,
+    append,
+    assignSocket,
+    attachment,
+    charset,
+    /* http.OutgoingMessage */
+    chunkedEncoding,
+    clearCookie,
+    connection,
+    contentType,
+    cookie,
+    cork,
+    destroy,
+    destroyed,
+    detachSocket,
+    download,
     emit,
+    end,
+    // prependOnceListener - is handled/overridden as part of stream.Writable
+    eventNames,
+    finished,
+    flushHeaders,
+    format,
+    get,
+
+    getHeader,
+    getHeaderNames,
+    getHeaders,
+    getMaxListeners,
+    hasHeader,
+    header,
+    headersSent,
+
+    json,
+    jsonp,
+    links,
+    // emit - is handled/overridden as part of stream.Writable
+    listenerCount,
+    listeners,
+    locals,
+    location,
+    // removeListener - is handled/overridden as part of stream.Writable
+    off,
     on,
     once,
     prependListener,
     prependOnceListener,
+    rawListeners,
+    redirect,
+    removeAllListeners,
+    removeHeader,
+
     removeListener,
+    render,
+    req,
+    send,
+    sendDate,
+    sendfile,
+    sendFile,
+    sendStatus,
+    set,
+    setDefaultEncoding,
+    setHeader,
+    setMaxListeners,
+    setTimeout,
+    shouldKeepAlive,
+    socket,
+    /* express.Response */
+    status,
+    /* http.ServerResponse */
+    statusCode,
+    statusMessage,
+    type,
+    uncork,
+    useChunkedEncodingByDefault,
+    vary,
+    /* stream.Writable */
+    writable,
+    writableCorked,
+    writableEnded,
 
     /* event.EventEmitter */
     // addListener - is handled/overridden as part of stream.Writable
     // on - is handled/overridden as part of stream.Writable
     // once - is handled/overridden as part of stream.Writable
-    // removeListener - is handled/overridden as part of stream.Writable
-    off,
-    removeAllListeners,
-    setMaxListeners,
-    getMaxListeners,
-    listeners,
-    rawListeners,
-    // emit - is handled/overridden as part of stream.Writable
-    listenerCount,
+    writableFinished,
+    writableHighWaterMark,
+    writableLength,
+    writableObjectMode,
+    write,
+    writeContinue,
+    writeHead,
     // prependListener - is handled/overridden as part of stream.Writable
-    // prependOnceListener - is handled/overridden as part of stream.Writable
-    eventNames,
+    writeProcessing,
 
     // custom values
     ...extraProvidedValues,
@@ -753,9 +752,9 @@ export const getMockResponse = <T extends Response>(
   };
 
   return {
-    res: response as unknown as T,
-    next: next as NextFunction,
-    mockClear: clearAllMocks,
     clearMockRes: clearAllMocks,
+    mockClear: clearAllMocks,
+    next: next as NextFunction,
+    res: response as unknown as T,
   };
 };

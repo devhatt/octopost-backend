@@ -17,8 +17,8 @@ describe('UserCreateService', () => {
 
     expect(response).toStrictEqual({
       email: 'valid_email@email.com',
-      password: 'valid_password',
       id: '1',
+      password: 'valid_password',
     });
   });
 });

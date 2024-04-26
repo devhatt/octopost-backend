@@ -1,14 +1,14 @@
+import type { UserCreateModel } from '../models/user-create-model.js';
 import type { Service } from '@/shared/protocols/service.js';
-import { UserCreateModel } from '../models/user-create-model.js';
 
-export class UserCreateService implements Service {
+export class UserCreateService implements Service<UserCreateModel> {
   constructor() {}
 
-  async execute({ email, password }: UserCreateModel) {
-    return {
+  execute({ email, password }: UserCreateModel) {
+    return Promise.resolve({
       email,
-      password,
       id: '1',
-    };
+      password,
+    });
   }
 }

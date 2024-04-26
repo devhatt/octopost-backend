@@ -1,8 +1,8 @@
+import type { ErrorRequestHandler } from 'express';
 import { HttpError } from '@/shared/errors/http-error.js';
 import { HttpStatusCode } from '@/shared/protocols/http-client.js';
-import { ErrorRequestHandler } from 'express';
 
-export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+export const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
   if (res.headersSent) {
     return next(err);
   }

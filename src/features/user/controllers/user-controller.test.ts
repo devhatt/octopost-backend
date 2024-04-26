@@ -1,10 +1,10 @@
-import { HttpError } from '@/shared/errors/http-error.js';
 import { UserController } from './user-controller.js';
+import { HttpError } from '@/shared/errors/http-error.js';
 import type { Validator } from '@/shared/infra/validator/validator.js';
 import type { Service } from '@/shared/protocols/service.js';
 import {
-  getMockResponse,
   getMockRequest,
+  getMockResponse,
 } from '@/shared/testHelpers/express/express.mock.js';
 
 const makeSut = () => {
@@ -25,23 +25,23 @@ const makeSut = () => {
 
   const userController = new UserController(validator, userCreateService);
 
-  const { res, next } = getMockResponse();
+  const { next, res } = getMockResponse();
   const req = getMockRequest();
 
   return {
-    validator,
-    userCreateService,
-    userController,
+    next,
     req,
     res,
-    next,
+    userController,
+    userCreateService,
+    validator,
   };
 };
 
 describe('[Controllers] UserController', () => {
   describe('create', () => {
     it('should call validator with correctly params', async () => {
-      const { userController, res, req, next, validator } = makeSut();
+      const { next, req, res, userController, validator } = makeSut();
 
       const validateSpy = vi.spyOn(validator, 'validate');
 
@@ -58,7 +58,7 @@ describe('[Controllers] UserController', () => {
     });
 
     it('should call service with correctly params', async () => {
-      const { userController, userCreateService, req, res, next } = makeSut();
+      const { next, req, res, userController, userCreateService } = makeSut();
 
       const serviceSpy = vi.spyOn(userCreateService, 'execute');
 
@@ -78,7 +78,7 @@ describe('[Controllers] UserController', () => {
     });
 
     it('should response 200 with password and email', async () => {
-      const { userController, userCreateService, res, req, next } = makeSut();
+      const { next, req, res, userController, userCreateService } = makeSut();
 
       const serviceSpy = vi.spyOn(userCreateService, 'execute');
 
@@ -96,7 +96,7 @@ describe('[Controllers] UserController', () => {
     });
 
     it('should call next when an error', async () => {
-      const { userController, userCreateService, res, req, next } = makeSut();
+      const { next, req, res, userController, userCreateService } = makeSut();
       const error = new HttpError(500, 'error');
 
       vi.spyOn(userCreateService, 'execute').mockRejectedValueOnce(

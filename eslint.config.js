@@ -14,7 +14,7 @@ import 'eslint-plugin-only-warn';
 export default defineFlatConfig([
   // global ignores
   {
-    ignores: ['node_modules', 'coverage', 'dist', 'pnpm-lock.yaml'],
+    ignores: ['node_modules', 'coverage', 'dist', 'build', 'pnpm-lock.yaml'],
   },
 
   // override default eslint rules
@@ -156,7 +156,21 @@ export default defineFlatConfig([
   {
     files: ['**/routes/*-routes.ts'],
     rules: {
-      'typescript-eslint/no-misused-promises': 'warn',
+      '@typescript-eslint/no-misused-promises': 'off',
+      'import/no-default-export': 'off',
+    },
+  },
+
+  // config files
+  {
+    files: ['**/*.ts', '**/*.js'],
+    ignores: [
+      'src/features/**/*.ts',
+      'src/shared/**/*.ts',
+      'src/middlewares/**/*.ts',
+    ],
+    rules: {
+      'import/no-default-export': 'off',
     },
   },
 

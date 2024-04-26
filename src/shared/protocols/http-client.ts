@@ -1,28 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type HttpClientRequest = {
-  url: string;
-  method: HttpMethod;
   body?: any;
   headers?: any;
+  method: HttpMethod;
+  url: string;
 };
 
 export interface HttpClient {
   request: <T>(data: HttpClientRequest) => Promise<HttpClientResponse<T>>;
 }
 
-export type HttpMethod = 'post' | 'get' | 'put' | 'delete';
+export type HttpMethod = 'delete' | 'get' | 'post' | 'put';
 
 export enum HttpStatusCode {
-  ok = 200,
-  noContent = 204,
   badRequest = 400,
-  unauthorized = 401,
   forbidden = 403,
+  noContent = 204,
   notFound = 404,
+  ok = 200,
   serverError = 500,
+  unauthorized = 401,
 }
 
 export type HttpClientResponse<T = any> = {
-  statusCode: HttpStatusCode;
   body?: T;
+  statusCode: HttpStatusCode;
 };

@@ -9,6 +9,6 @@ const { userController } = userControllerFactory();
 router.get('/create', userController.create);
 
 export default {
-  router,
   prefix: 'user',
+  router,
 };

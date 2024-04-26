@@ -1,5 +1,3 @@
-import type { HttpRequest } from './http.js';
-
-export interface Service<P = any, R = any> {
+export interface Service<P = unknown, R = unknown> {
   execute(params: P): Promise<R>;
 }

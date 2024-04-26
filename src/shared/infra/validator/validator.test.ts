@@ -1,20 +1,20 @@
 import Joi from 'joi';
-import { Validator } from './validator.js';
-import { ValidationError } from '@/shared/errors/ValidateError.js';
 import { faker } from '@faker-js/faker';
+import { Validator } from './validator.js';
+import { ValidationError } from '@/shared/errors/validation-error.js';
 
 const makeSut = () => {
   const validator = new Validator();
 
   const schema = Joi.object({ username: Joi.string().required() });
 
-  return { validator, schema };
+  return { schema, validator };
 };
 
 describe('UserValidator', () => {
   describe('create', () => {
     it('should return true if payload is valid', () => {
-      const { validator, schema } = makeSut();
+      const { schema, validator } = makeSut();
 
       const payload = {
         username: faker.internet.userName(),

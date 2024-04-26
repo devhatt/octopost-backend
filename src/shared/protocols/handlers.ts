@@ -1,4 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import type { NextFunction, Request, Response } from 'express';
 
 export type AsyncRequestHandler<
   Req = Request,

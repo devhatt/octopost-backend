@@ -3,7 +3,7 @@ import { ValidationError } from './validation-error.js';
 
 describe('[Errors]', () => {
   describe('http-error', () => {
-    it('should parse to json correctly', async () => {
+    it('should parse to json correctly', () => {
       const error = new HttpError(200, 'error');
 
       expect(error.toJSON()).toStrictEqual({

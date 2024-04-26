@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import type { NextFunction, Response, Request } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { cors } from './cors.js';
 
 const makeSut = () => {
@@ -15,7 +15,7 @@ describe('[Middlewares] Cors', () => {
 
     app.use(cors);
 
-    app.get('/test', (req: Request, res: Response, _: NextFunction): void => {
+    app.get('/test', (_: Request, res: Response, __: NextFunction): void => {
       res.send('Test response');
     });
 

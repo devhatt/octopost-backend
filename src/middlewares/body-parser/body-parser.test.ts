@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import type { NextFunction, Response, Request } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { bodyParser } from './body-parser.js';
 
 const makeSut = () => {

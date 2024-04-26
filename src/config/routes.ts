@@ -1,16 +1,17 @@
-import { errorHandler } from '@/middlewares/error-handler/error-handler.js';
+import path from 'node:path';
 import type { Express } from 'express';
 import { glob } from 'glob';
-import { resolve } from 'node:path';
+import { errorHandler } from '@/middlewares/error-handler/error-handler.js';
 
 export default function setupRoutes(app: Express) {
   const routes = glob.sync([
-    resolve(import.meta.dirname, '../features/**/routes/*-routes.ts'),
+    path.resolve(import.meta.dirname, '../features/**/routes/*-routes.ts'),
   ]);
 
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   routes.map(async (file) => {
-    const { router, prefix } = (await import(file)).default;
+    const route = await import(file);
+    const { prefix, router } = route.default;
     app.use(`/${prefix}`, router, errorHandler);
   });
 }

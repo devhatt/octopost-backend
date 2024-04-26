@@ -1,6 +1,6 @@
-import type { Request, Response, NextFunction } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
-export const cors = (req: Request, res: Response, next: NextFunction): void => {
+export const cors = (_: Request, res: Response, next: NextFunction): void => {
   res.set('access-control-allow-origin', '*');
   res.set('access-control-allow-headers', '*');
   res.set('access-control-allow-methods', '*');

@@ -9,8 +9,8 @@ export default defineConfig({
   ],
   test: {
     coverage: {
-      include: ['src'],
       exclude: ['src/config'],
+      include: ['src'],
       provider: 'istanbul',
       reporter: ['html', 'json-summary', 'json', 'text-summary'],
       reportOnFailure: true,
