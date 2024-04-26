@@ -1,13 +1,13 @@
 import type { UserCreateModel } from '../models/user-create-model.js';
+import type { UserRepository } from '../repositories/user-repository/user-repository.js';
 import type { Service } from '@/shared/protocols/service.js';
 
 export class UserCreateService implements Service<UserCreateModel> {
-  constructor() {}
+  constructor(private readonly userRepository: UserRepository) {}
 
-  execute({ email, password }: UserCreateModel) {
-    return Promise.resolve({
+  async execute({ email, password }: UserCreateModel) {
+    await this.userRepository.create({
       email,
-      id: '1',
       password,
     });
   }

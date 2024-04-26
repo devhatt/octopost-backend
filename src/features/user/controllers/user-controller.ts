@@ -4,6 +4,7 @@ import type { Controller } from '@/shared/protocols/controller.js';
 import type { Service } from '@/shared/protocols/service.js';
 import type { Validator } from '@/shared/infra/validator/validator.js';
 import type { AsyncRequestHandler } from '@/shared/protocols/handlers.js';
+import { HttpStatusCode } from '@/shared/protocols/http-client.js';
 
 export class UserController implements Controller {
   create: AsyncRequestHandler = async (req, res, next) => {
@@ -17,7 +18,7 @@ export class UserController implements Controller {
         password: req.body.password,
       });
 
-      return res.status(200).json(response);
+      return res.status(HttpStatusCode.noContent).json(response);
     } catch (error) {
       next(error);
     }

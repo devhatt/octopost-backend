@@ -55,7 +55,6 @@ export default defineFlatConfig([
       'import/no-absolute-path': 'warn',
       'import/no-default-export': 'warn',
       'import/no-duplicates': 'warn',
-      'import/no-extraneous-dependencies': 'warn',
       'import/no-named-as-default': 'warn',
       'import/no-named-as-default-member': 'warn',
       'import/no-unused-modules': 'warn',
@@ -187,6 +186,7 @@ export default defineFlatConfig([
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/unbound-method': 'off',
       'vitest/expect-expect': 'warn',
       'vitest/no-commented-out-tests': 'warn',

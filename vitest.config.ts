@@ -5,11 +5,14 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [
-    tsconfigPaths({ root: path.dirname(url.fileURLToPath(import.meta.url)) }),
+    tsconfigPaths({
+      projects: ['tsconfig.json', 'tsconfig.build.json'],
+      root: path.dirname(url.fileURLToPath(import.meta.url)),
+    }),
   ],
   test: {
     coverage: {
-      exclude: ['src/config'],
+      exclude: ['src/config', 'src/tests'],
       include: ['src'],
       provider: 'istanbul',
       reporter: ['html', 'json-summary', 'json', 'text-summary'],
@@ -20,6 +23,7 @@ export default defineConfig({
     },
     globals: true,
     include: ['src/**/*.test.ts'],
+    setupFiles: ['src/tests/setup-tests.ts'],
     watch: false,
   },
 });
