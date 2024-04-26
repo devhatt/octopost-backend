@@ -1,7 +1,7 @@
 # octopost-backend
 
-
 ## Nomenclatura
+
 ### Verbos
 
 FindById - Buscar um por Id

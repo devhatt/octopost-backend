@@ -1,13 +1,11 @@
-name: Tests
+name: Build and Test
 
 on:
-  push:
-    branches: ['main']
   pull_request:
     branches: ['main']
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Code Checkout
@@ -17,7 +15,7 @@ jobs:
         uses: ./.github/actions/install-deps
 
       - name: Run unit Tests
-        run: pnpm test:coverage --silent
+        run: pnpm vitest --coverage --silent
 
       - name: 'Report Coverage'
         if: ${{ always() && !github.event.pull_request.head.repo.fork }}
@@ -29,6 +27,15 @@ jobs:
         with:
           name: coverage
           path: coverage
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup deps
+        uses: ./.github/actions/install-deps
 
       - name: Build
         run: pnpm build
