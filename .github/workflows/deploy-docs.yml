@@ -20,7 +20,7 @@ jobs:
         uses: ./.github/actions/install-deps
 
       - name: Build
-        run: pnpm run build:docs
+        run: pnpm run docs:build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
