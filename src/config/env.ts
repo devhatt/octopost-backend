@@ -30,6 +30,6 @@ switch (process.env['MODE']) {
 }
 
 export default {
-  HOSTNAME: process.env['HOSTNAME'],
-  PORT: process.env['PORT'],
+  HOSTNAME: process.env['HOSTNAME'] || 'localhost',
+  PORT: process.env['PORT'] || 3000,
 } as Record<string, string>;
