@@ -12,6 +12,6 @@ export default function setupRoutes(app: Express) {
   routes.map(async (file) => {
     const route = await import(file);
     const { prefix, router } = route.default;
-    app.use(`/${prefix}`, router, errorHandler);
+    app.use(`/api/${prefix}`, router, errorHandler);
   });
 }
