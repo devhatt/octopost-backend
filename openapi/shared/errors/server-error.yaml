@@ -1,0 +1,12 @@
+description: Something went wrong on the server
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 500
+        message:
+          type: string
+          example: An unexpected error occurred

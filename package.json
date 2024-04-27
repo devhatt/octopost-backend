@@ -23,7 +23,10 @@
     "test:coverage": "vitest --coverage --watch",
     "test:ui": "vitest --coverage --ui --watch",
     "migrate": "dotenv -e .env.dev -- npx prisma migrate deploy",
-    "migrate:dev": "dotenv -e .env.dev -- npx prisma migrate dev"
+    "migrate:dev": "dotenv -e .env.dev -- npx prisma migrate dev",
+    "docs:serve": "redocly preview-docs ./openapi/main.yaml",
+    "docs:build": "redocly build-docs ./openapi/main.yaml --output build-docs/index.html",
+    "docs:lint": "redocly lint --extends minimal ./openapi/main.yaml"
   },
   "devDependencies": {
     "@commitlint/cli": "19.2.1",
@@ -31,6 +34,7 @@
     "@commitlint/cz-commitlint": "19.2.0",
     "@eslint/js": "9.0.0",
     "@faker-js/faker": "8.4.1",
+    "@redocly/cli": "1.12.0",
     "@types/express": "4.17.21",
     "@types/supertest": "6.0.2",
     "@vitest/coverage-istanbul": "1.5.0",
@@ -75,6 +79,10 @@
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devhatt/octopost-backend.git"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

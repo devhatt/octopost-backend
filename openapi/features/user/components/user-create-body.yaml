@@ -1,0 +1,17 @@
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        password:
+          type: string
+          description: Password for the new user account
+          example: 'alexandre-123'
+        email:
+          type: string
+          description: Email address for the new user account
+          example: 'alexandre@gmail.com'
+      required:
+        - password
+        - email
