@@ -1,0 +1,19 @@
+description: Cannot process the request because of validation errors
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 400
+        message:
+          type: string
+          example: Validation error
+        errors:
+          type: array
+          items:
+            type: string
+            example:
+              - 'email is required'
+              - 'password is required'

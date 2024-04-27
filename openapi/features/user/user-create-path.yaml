@@ -1,0 +1,17 @@
+post:
+  operationId: createUser
+  summary: Create a new user account
+  description: This endpoint allows you to create a new user account for the application.
+  tags:
+    - user
+
+  requestBody:
+    $ref: './components/user-create-body.yaml'
+
+  responses:
+    '204':
+      description: User account created successfully
+    '400':
+      $ref: '../../shared/errors/validation-error.yaml'
+    '500':
+      $ref: '../../shared/errors/server-error.yaml'

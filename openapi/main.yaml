@@ -1,0 +1,15 @@
+openapi: 3.0.0
+info:
+  title: Octopost API
+  version: 0.0.1
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+  - url: https://octopost-backend-production.up.railway.app/api
+    description: Production server
+tags:
+  - name: user
+    description: Operations about user
+paths:
+  /user/create:
+    $ref: './features/user/user-create-path.yaml'
