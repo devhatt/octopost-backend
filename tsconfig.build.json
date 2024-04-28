@@ -5,5 +5,5 @@
     "plugins": [{ "transform": "typescript-transform-paths" }]
   },
   "include": ["src"],
-  "exclude": ["src/**/*.test.*", "src/shared/testHelpers", "src/tests"]
+  "exclude": ["src/**/*.test.*", "src/shared/test-helpers", "src/tests"]
 }

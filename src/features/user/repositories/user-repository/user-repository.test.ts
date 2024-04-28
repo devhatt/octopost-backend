@@ -1,6 +1,6 @@
 import { UserRepository } from './user-repository.js';
 import { prisma } from 'mocks/prisma.js';
-import { UserMock } from '@/shared/testHelpers/mocks/user.mock.js';
+import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
 
 const makeSut = () => {
   const repository = new UserRepository();

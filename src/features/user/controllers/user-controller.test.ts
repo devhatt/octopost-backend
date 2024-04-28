@@ -4,7 +4,7 @@ import { UserController } from './user-controller.js';
 import { HttpError } from '@/shared/errors/http-error.js';
 import type { Validator } from '@/shared/infra/validator/validator.js';
 import type { Service } from '@/shared/protocols/service.js';
-import { UserMock } from '@/shared/testHelpers/mocks/user.mock.js';
+import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
 
 const makeSut = () => {
   class ValidatorStub implements Validator {

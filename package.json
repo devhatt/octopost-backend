@@ -22,8 +22,8 @@
     "test": "vitest",
     "test:coverage": "vitest --coverage --watch",
     "test:ui": "vitest --coverage --ui --watch",
-    "migrate": "dotenv -e .env.dev -- npx prisma migrate deploy",
-    "migrate:dev": "dotenv -e .env.dev -- npx prisma migrate dev",
+    "migrate:production": "dotenv -e .env.dev -- npx prisma migrate deploy",
+    "migrate": "dotenv -e .env.dev -- npx prisma migrate dev",
     "docs:serve": "redocly preview-docs ./openapi/main.yaml",
     "docs:build": "redocly build-docs ./openapi/main.yaml --output build-docs/index.html",
     "docs:lint": "redocly lint --extends minimal ./openapi/main.yaml"
