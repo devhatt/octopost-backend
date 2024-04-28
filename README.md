@@ -9,10 +9,6 @@
 [![GitHub Contributors](https://img.shields.io/github/contributors/devhatt/octopost)](https://github.com/devhatt/octopost/contributors)
 [![GitHub stars](https://img.shields.io/github/stars/devhatt/octopost.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/devhatt/octopost/stargazers/)
 
-Bem-vindo ao OctoPost! O OctoPost é um aplicativo de redes sociais único que permite aos usuários fazerem publicações em
-várias plataformas de mídia social, tudo dentro de uma única interface unificada. Este documento README irá guiá-lo
-através das informações básicas sobre o projeto, seu propósito e como contribuir de forma eficaz.
-
 [**Junte-se a nós na DevHatt e transforme sua paixão por tecnologia em impacto real!**](https://discord.gg/devhatt)
 
 ## Índice
@@ -26,7 +22,9 @@ através das informações básicas sobre o projeto, seu propósito e como contr
 
 ## Projeto
 
-[Explicação sobre o Projeto]
+Bem-vindo ao OctoPost! O OctoPost é um aplicativo de redes sociais único que permite aos usuários fazerem publicações em
+várias plataformas de mídia social, tudo em uma única interface unificada. Este documento README irá guiá-lo
+através das informações básicas sobre o projeto, seu propósito e como contribuir de forma eficaz.
 
 ## Como rodar
 
