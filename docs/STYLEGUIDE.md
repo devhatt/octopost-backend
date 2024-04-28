@@ -82,7 +82,7 @@ Os serviços são responsáveis por executar a lógica principal do nosso servi�
 Os serviços devem implementar a interface `Service` contida em `src/shared/protocols/service.ts` e
 terem os seus generics resolvidos para as interfaces de entrada e saída definidos dentro da pasta models de cada módulo.
 
-*Use o mesmo padrão de nomenclatura para definir essas interfaces.*
+_Use o mesmo padrão de nomenclatura para definir essas interfaces._
 
 #### Controllers
 
