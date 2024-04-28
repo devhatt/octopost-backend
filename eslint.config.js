@@ -32,6 +32,7 @@ export default defineFlatConfig([
     },
   },
 
+  unicornPlugin.configs['flat/recommended'],
   {
     files: ['**/*.ts', '**/*.js'],
     languageOptions: {
@@ -44,7 +45,6 @@ export default defineFlatConfig([
       'array-func': arrayFuncPlugin,
       import: importPlugin,
       perfectionist,
-      unicorn: unicornPlugin,
     },
     rules: {
       'import/consistent-type-specifier-style': ['warn', 'prefer-top-level'],
@@ -73,10 +73,7 @@ export default defineFlatConfig([
       'perfectionist/sort-objects': 'warn',
       'perfectionist/sort-union-types': 'warn',
 
-      ...unicornConfig.recommended.rules,
       'unicorn/prevent-abbreviations': 'off',
-
-      ...arrayFuncPlugin.configs.recommended.rules,
     },
     settings: {
       'import/parsers': {
