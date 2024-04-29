@@ -4,14 +4,28 @@ content:
     schema:
       type: object
       properties:
-        password:
+        name:
           type: string
-          description: Password for the new user account
-          example: 'alexandre-123'
+          description: User account name
+          example: "John Doe"
+        username:
+          type: string
+          description: User name
+          example: "johndoe123"
         email:
           type: string
           description: Email address for the new user account
-          example: 'alexandre@gmail.com'
+          example: 'johndoe@example.com'
+        password:
+          type: string
+          description: Password for the new user account
+          example: '001@Mypassword'
+        repeatPassword:
+          type: string
+          description: Confirming the user's new password
+          example: '001@Mypassword'
+        
       required:
         - password
         - email
+        

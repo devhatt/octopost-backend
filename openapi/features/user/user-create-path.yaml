@@ -9,9 +9,11 @@ post:
     $ref: './components/user-create-body.yaml'
 
   responses:
-    '204':
-      description: User account created successfully
+    "201":
+      description: N/A
     '400':
       $ref: '../../shared/errors/validation-error.yaml'
     '500':
       $ref: '../../shared/errors/server-error.yaml'
+    
+
