@@ -26,6 +26,9 @@ content:
           example: '001@Mypassword'
         
       required:
-        - password
+        - name
+        - username
         - email
+        - password
+        - repeatPassword
         
