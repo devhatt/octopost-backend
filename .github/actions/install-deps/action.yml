@@ -45,7 +45,7 @@ runs:
 
     - name: Prisma
       shell: bash
-      uses: pnpm prisma generate
+      run: pnpm prisma generate
 
     - name: Build dependencies
       shell: bash
