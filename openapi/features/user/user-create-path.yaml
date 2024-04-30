@@ -9,11 +9,9 @@ post:
     $ref: './components/user-create-body.yaml'
 
   responses:
-    "201":
+    '201':
       description: N/A
     '400':
       $ref: '../../shared/errors/validation-error.yaml'
     '500':
       $ref: '../../shared/errors/server-error.yaml'
-    
-

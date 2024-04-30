@@ -7,11 +7,11 @@ content:
         name:
           type: string
           description: User account name
-          example: "John Doe"
+          example: 'John Doe'
         username:
           type: string
           description: User name
-          example: "johndoe123"
+          example: 'johndoe123'
         email:
           type: string
           description: Email address for the new user account
@@ -24,11 +24,10 @@ content:
           type: string
           description: Confirming the user's new password
           example: '001@Mypassword'
-        
+
       required:
         - name
         - username
         - email
         - password
         - repeatPassword
-        
