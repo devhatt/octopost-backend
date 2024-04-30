@@ -13,45 +13,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model users {
   id        String    @id @default(uuid())
   email     String    @unique
   name      String?
   password  String
-  account   Account[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
-  deletedAt DateTime?
+  account   accounts[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
 }
 
-model Account {
+model accounts {
   id            String   @id @default(uuid())
-  avatarUrl     String
-  userId        String?
-  socialMediaId Int?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  avatar_url     String
+  user_id        String?
+  social_media_id Int?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
 
-  user        User?        @relation(fields: [userId], references: [id])
-  socialMedia SocialMedia? @relation(fields: [socialMediaId], references: [id])
-  Token       Token?
+  user        users?        @relation(fields: [user_id], references: [id])
+  social_media social_media? @relation(fields: [social_media_id], references: [id])
+  token       tokens?
 }
 
-model Token {
+model tokens {
   id        Int      @id @default(autoincrement())
-  authToken String
+  auth_token String
   token     String
-  issuedAt  DateTime
-  expireIn  Int
-  accountId String   @unique
+  issued_at  DateTime
+  expire_in  Int
+  account_id String   @unique
 
-  account Account? @relation(fields: [accountId], references: [id])
+  account accounts? @relation(fields: [account_id], references: [id])
 }
 
-model SocialMedia {
+model social_media {
   id          Int    @id @default(autoincrement())
   name        String
   description String
 
-  account Account[]
+  account accounts[]
 }

@@ -17,7 +17,7 @@ describe('[Repositories] UserRepository', () => {
 
       await repository.create(user);
 
-      expect(prisma.user.create).toHaveBeenCalledWith({
+      expect(prisma.users.create).toHaveBeenCalledWith({
         data: user,
       });
     });
@@ -27,7 +27,7 @@ describe('[Repositories] UserRepository', () => {
 
       const user = UserMock.create();
 
-      prisma.user.create.mockImplementationOnce(() => {
+      prisma.users.create.mockImplementationOnce(() => {
         throw new Error('error');
       });
 
