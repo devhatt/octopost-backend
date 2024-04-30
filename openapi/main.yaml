@@ -11,7 +11,7 @@ tags:
   - name: user
     description: Operations about user
 paths:
-  /user/create:
+  /api/users:
     $ref: './features/user/user-create-path.yaml'
   /auth/login:
     $ref: './features/auth/login-path.yaml'
