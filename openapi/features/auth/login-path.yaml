@@ -1,5 +1,5 @@
 post:
-  summary: Logs user into the system
+  summary: User login for system authentication
   description: This endpoint allows the user to authenticate into the application.
   tags:
     - user
