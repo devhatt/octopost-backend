@@ -14,4 +14,18 @@ export class UserRepository {
       },
     });
   }
+
+  async findById(id: string) {
+    const user = await database.user.findUnique({
+      select: {
+        email: true,
+        id: true,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return user;
+  }
 }
