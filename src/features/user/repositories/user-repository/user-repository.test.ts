@@ -17,8 +17,10 @@ describe('[Repositories] UserRepository', () => {
 
       await repository.create(user);
 
+      const { id, ...userWithoutId } = user;
+
       expect(prisma.user.create).toHaveBeenCalledWith({
-        data: user,
+        data: userWithoutId,
       });
     });
 
@@ -34,6 +36,51 @@ describe('[Repositories] UserRepository', () => {
       const response = repository.create(user);
 
       await expect(response).rejects.toThrowError();
+    });
+  });
+
+  describe('findById', () => {
+    it('should return user if found', async () => {
+      const { repository } = makeSut();
+
+      const user = UserMock.create();
+
+      prisma.user.findUnique.mockResolvedValue(user);
+
+      const result = await repository.findById(user.id);
+
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        select: {
+          email: true,
+          id: true,
+        },
+        where: {
+          id: user.id,
+        },
+      });
+
+      expect(result).toEqual(user);
+    });
+
+    it('should return null if user is not found', async () => {
+      const { repository } = makeSut();
+
+      // eslint-disable-next-line unicorn/no-null
+      prisma.user.findUnique.mockResolvedValue(null);
+
+      const result = await repository.findById('non_existent_id');
+
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        select: {
+          email: true,
+          id: true,
+        },
+        where: {
+          id: 'non_existent_id',
+        },
+      });
+
+      expect(result).toBeNull();
     });
   });
 });
