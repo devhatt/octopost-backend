@@ -21,7 +21,7 @@ model User {
   account   Account[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
-  deletedAt DateTime
+  deletedAt DateTime?
 }
 
 model Account {
@@ -52,7 +52,6 @@ model SocialMedia {
   id          Int    @id @default(autoincrement())
   name        String
   description String
-  httpVerb    String
 
   account Account[]
 }
