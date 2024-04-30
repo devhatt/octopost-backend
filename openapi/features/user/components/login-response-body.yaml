@@ -1,0 +1,18 @@
+description: User successfully authenticated
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        token:
+          type: string
+          description: User Access Token
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+        issuedAt:
+          type: string
+          description: Timestamp that indicates the time at which the token was issued
+          example: '1714233677'
+        expireAt:
+          type: string
+          description: Token expiration time
+          example: '1714237277'

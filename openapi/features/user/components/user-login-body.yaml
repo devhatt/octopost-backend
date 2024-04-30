@@ -1,0 +1,17 @@
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The username for login
+          example: 'johndoe123'
+        password:
+          type: string
+          description: The password for login
+          example: '001@Mypassword'
+      required:
+        - username
+        - password

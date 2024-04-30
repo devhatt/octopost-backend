@@ -1,0 +1,19 @@
+post:
+  summary: Logs user into the system
+  description: This endpoint allows the user to authenticate into the application.
+  tags:
+    - user
+
+  requestBody:
+    $ref: './components/user-login-body.yaml'
+
+  responses:
+    '200':
+      description: User successfully authenticated
+      $ref: './components/login-response-body.yaml'
+    '400':
+      $ref: '../../shared/errors/validation-error.yaml'
+    '401':
+      $ref: '../../shared/errors/unauthorized-error.yaml'
+    '500':
+      $ref: '../../shared/errors/server-error.yaml'
