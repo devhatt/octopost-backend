@@ -9,11 +9,10 @@ post:
 
   responses:
     '200':
-      description: User successfully authenticated
       $ref: './components/login-response-body.yaml'
     '400':
       $ref: '../../shared/errors/validation-error.yaml'
     '401':
-      $ref: '../../shared/errors/unauthorized-error.yaml'
+      $ref: './errors/unauthorized-error.yaml'
     '500':
       $ref: '../../shared/errors/server-error.yaml'

@@ -1,4 +1,4 @@
-description: Incorrect username or password
+description: Unable to authenticate user
 content:
   application/json:
     schema:
@@ -9,4 +9,4 @@ content:
           example: 401
         message:
           type: string
-          example: Incorrect username or password
+          example: Not authenticated

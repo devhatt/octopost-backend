@@ -14,4 +14,4 @@ paths:
   /user/create:
     $ref: './features/user/user-create-path.yaml'
   /auth/login:
-    $ref: './features/user/user-login-path.yaml'
+    $ref: './features/auth/login-path.yaml'
