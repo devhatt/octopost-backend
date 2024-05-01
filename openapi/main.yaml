@@ -15,3 +15,6 @@ paths:
     $ref: './features/user/user-create-path.yaml'
   /auth/login:
     $ref: './features/auth/login-path.yaml'
+  /api/users/{id}:
+    $ref: './features/user/get-user-by-id.yaml'
+    

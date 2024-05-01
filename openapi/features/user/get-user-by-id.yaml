@@ -1,0 +1,41 @@
+get:
+  operationId: getUserById
+  summary: Get a user by id
+  description: This endpoint allows you to get a user by id.
+  tags:
+    - user
+
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      description: The user ID.
+
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                example: '1'
+              name:
+                type: string
+                example: 'John Doe'
+              username:
+                type: string
+                example: 'johndoe123'
+              email:
+                type: string
+                example: 'johndoe@example.com'
+    '400':
+      $ref: '../../shared/errors/validation-error.yaml'
+    '404':
+      description: User not found
+    '500':
+      $ref: '../../shared/errors/server-error.yaml'
