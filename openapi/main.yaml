@@ -13,3 +13,5 @@ tags:
 paths:
   /api/users:
     $ref: './features/user/user-create-path.yaml'
+  /auth/login:
+    $ref: './features/auth/login-path.yaml'
