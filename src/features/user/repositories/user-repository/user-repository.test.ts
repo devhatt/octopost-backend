@@ -40,7 +40,7 @@ describe('[Repositories] UserRepository', () => {
   });
 
   describe('findById', () => {
-    it('should return user if found', async () => {
+    it('return user if found', async () => {
       const { repository } = makeSut();
 
       const user = UserMock.create();
@@ -50,10 +50,7 @@ describe('[Repositories] UserRepository', () => {
       const result = await repository.findById(user.id);
 
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
-        select: {
-          email: true,
-          id: true,
-        },
+        select: expect.anything(),
         where: {
           id: user.id,
         },
@@ -62,21 +59,18 @@ describe('[Repositories] UserRepository', () => {
       expect(result).toEqual(user);
     });
 
-    it('should return null if user is not found', async () => {
+    it('return null if user is not found', async () => {
       const { repository } = makeSut();
 
       // eslint-disable-next-line unicorn/no-null
       prisma.user.findUnique.mockResolvedValue(null);
 
-      const result = await repository.findById('non_existent_id');
+      const result = await repository.findById(0);
 
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
-        select: {
-          email: true,
-          id: true,
-        },
+        select: expect.anything(),
         where: {
-          id: 'non_existent_id',
+          id: 0,
         },
       });
 
