@@ -15,7 +15,7 @@ export class UserRepository {
     });
   }
 
-  async findById(id: number) {
+  async findById(id: string) {
     const user = await database.user.findUnique({
       select: expect.anything(),
       where: {
