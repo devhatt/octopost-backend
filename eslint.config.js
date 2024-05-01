@@ -2,10 +2,9 @@ import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import { defineFlatConfig } from 'eslint-define-config';
 import tsEslint from 'typescript-eslint';
-import arrayFuncPlugin from 'eslint-plugin-array-func';
 import importPlugin from 'eslint-plugin-import';
 import perfectionist from 'eslint-plugin-perfectionist';
-import unicornPlugin, { configs as unicornConfig } from 'eslint-plugin-unicorn';
+import unicornPlugin from 'eslint-plugin-unicorn';
 import vitestPlugin from 'eslint-plugin-vitest';
 import globals from 'globals';
 
@@ -42,7 +41,6 @@ export default defineFlatConfig([
       },
     },
     plugins: {
-      'array-func': arrayFuncPlugin,
       import: importPlugin,
       perfectionist,
     },
@@ -73,6 +71,7 @@ export default defineFlatConfig([
       'perfectionist/sort-objects': 'warn',
       'perfectionist/sort-union-types': 'warn',
 
+      'unicorn/no-null': 'off',
       'unicorn/prevent-abbreviations': 'off',
     },
     settings: {

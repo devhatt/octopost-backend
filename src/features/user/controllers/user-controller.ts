@@ -15,10 +15,12 @@ export class UserController implements Controller {
 
       const response = await this.serviceCreate.execute({
         email: req.body.email,
+        name: req.body.name,
         password: req.body.password,
+        username: req.body.username,
       });
 
-      return res.status(HttpStatusCode.noContent).json(response);
+      return res.status(HttpStatusCode.created).json(response);
     } catch (error) {
       next(error);
     }

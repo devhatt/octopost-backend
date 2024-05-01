@@ -61,7 +61,9 @@ describe('[Controllers] UserController', () => {
 
       const body = {
         email: 'valid_email@domain.com',
+        name: 'valid_name',
         password: 'valid_password',
+        username: 'valid_username',
       };
 
       req.body = body;
@@ -70,7 +72,9 @@ describe('[Controllers] UserController', () => {
 
       expect(serviceSpy).toHaveBeenCalledWith({
         email: body.email,
+        name: body.name,
         password: body.password,
+        username: body.username,
       });
     });
 
@@ -88,7 +92,7 @@ describe('[Controllers] UserController', () => {
 
       await userController.create(req, res, next);
 
-      expect(res.status).toHaveBeenCalledWith(204);
+      expect(res.status).toHaveBeenCalledWith(201);
     });
 
     it('should call next when an error', async () => {

@@ -14,7 +14,53 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  email    String @unique
-  password String
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String?
+  username  String    @unique
+  password  String
+  account   Account[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("users")
+}
+
+model Account {
+  id            String   @id @default(uuid())
+  avatarUrl     String
+  userId        String?  @map("user_id")
+  socialMediaId Int?     @map("social_media_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  user        User?        @relation(fields: [userId], references: [id])
+  socialMedia SocialMedia? @relation(fields: [socialMediaId], references: [id])
+  token       Token?
+
+  @@map("accounts")
+}
+
+model Token {
+  id        Int       @id @default(autoincrement())
+  authToken String?   @map("auth_token")
+  token     String?
+  issuedAt  DateTime? @map("issued_at")
+  expireIn  Int?      @map("expire_in")
+  accountId String    @unique @map("account_id")
+
+  account Account? @relation(fields: [accountId], references: [id])
+
+  @@map("tokens")
+}
+
+model SocialMedia {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+
+  account Account[]
+
+  @@map("social_media")
 }
