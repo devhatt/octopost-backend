@@ -14,6 +14,7 @@ export type HttpMethod = 'delete' | 'get' | 'post' | 'put';
 
 export enum HttpStatusCode {
   badRequest = 400,
+  created = 201,
   forbidden = 403,
   noContent = 204,
   notFound = 404,

@@ -3,11 +3,16 @@ import { UserCreateService } from './user-create-service.js';
 
 const makeSut = () => {
   class UserRepositoryStub implements UserRepository {
-    create({ email, password }: any) {
+    create({ email, name, password, username }: any) {
       return Promise.resolve({
+        createdAt: new Date(2024, 5, 1),
+        deletedAt: null,
         email,
         id: 'valid_id',
+        name,
         password,
+        updatedAt: new Date(2024, 5, 1),
+        username,
       });
     }
   }
@@ -27,12 +32,16 @@ describe('UserCreateService', () => {
 
     await userCreateService.execute({
       email: 'valid_email@email.com',
+      name: 'valid_name',
       password: 'valid_password',
+      username: 'valid_username',
     });
 
     expect(repositorySpy).toHaveBeenCalledWith({
       email: 'valid_email@email.com',
+      name: 'valid_name',
       password: 'valid_password',
+      username: 'valid_username',
     });
   });
 
@@ -45,7 +54,9 @@ describe('UserCreateService', () => {
 
     const response = userCreateService.execute({
       email: 'valid_email@email.com',
+      name: 'valid_name',
       password: 'valid_password',
+      username: 'valid_username',
     });
 
     await expect(response).rejects.toThrowError();
