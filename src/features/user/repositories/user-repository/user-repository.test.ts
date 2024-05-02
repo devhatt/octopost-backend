@@ -45,7 +45,18 @@ describe('[Repositories] UserRepository', () => {
 
       const user = UserMock.create();
 
-      prisma.user.findUnique.mockResolvedValue(user);
+      const expectedResult = {
+        createdAt: new Date(),
+        deletedAt: null,
+        email: user.email,
+        id: user.id,
+        name: user.name,
+        password: user.password,
+        updatedAt: new Date(),
+        username: user.username,
+      };
+
+      prisma.user.findUnique.mockResolvedValue(expectedResult);
 
       const result = await repository.findById(user.id);
 
@@ -56,7 +67,7 @@ describe('[Repositories] UserRepository', () => {
         },
       });
 
-      expect(result).toEqual(user);
+      expect(result).toEqual(expectedResult);
     });
 
     it('return null if user is not found', async () => {
