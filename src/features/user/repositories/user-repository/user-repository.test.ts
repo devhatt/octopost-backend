@@ -62,15 +62,14 @@ describe('[Repositories] UserRepository', () => {
     it('return null if user is not found', async () => {
       const { repository } = makeSut();
 
-      // eslint-disable-next-line unicorn/no-null
       prisma.user.findUnique.mockResolvedValue(null);
 
-      const result = await repository.findById(0);
+      const result = await repository.findById('non_existent_id');
 
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
         select: expect.anything(),
         where: {
-          id: 0,
+          id: 'non_existent_id',
         },
       });
 
