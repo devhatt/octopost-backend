@@ -13,3 +13,6 @@ tags:
 paths:
   /user/create:
     $ref: './features/user/user-create-path.yaml'
+
+  /users/:id/accounts:
+    $ref: './features/user/user-consult-accounts.yaml'
