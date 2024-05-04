@@ -1,32 +1,33 @@
 import { AuthRepository } from './auth-repository.js';
 import { prisma } from 'mocks/prisma.js';
 import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
-import { UserRepository } from '@/features/user/repositories/user-repository/user-repository.js';
 
 const makeSut = () => {
   const repository = new AuthRepository();
-  const userRepository = new UserRepository();
 
-  return { repository, userRepository };
+  return { repository };
 };
 
 describe('[Repositories] AuthRepository', () => {
-  describe('findPasswordByUsername', () => {
+  describe('findUserByCredentials', () => {
     it('should call service with correctly params', async () => {
       const { repository } = makeSut();
       const user = UserMock.create();
 
-      await repository.findPasswordByUsername(user.username);
+      await repository.findUserByCredentials({
+        password: user.password,
+        username: user.username,
+      });
 
-      expect(prisma.user.findUnique).toHaveBeenCalledWith({
-        where: { username: user.username },
+      expect(prisma.user.findFirst).toHaveBeenCalledWith({
+        where: { password: user.password, username: user.username },
       });
     });
-    it('should return an object with correct password', async () => {
+    it('should return an object with user without password', async () => {
       const { repository } = makeSut();
       const user = UserMock.create();
 
-      prisma.user.findUnique.mockResolvedValue({
+      prisma.user.findFirst.mockResolvedValue({
         createdAt: new Date(),
         deletedAt: null,
         email: user.email,
@@ -37,9 +38,19 @@ describe('[Repositories] AuthRepository', () => {
         username: user.username,
       });
 
-      const password = await repository.findPasswordByUsername(user.username);
+      const userData = await repository.findUserByCredentials({
+        password: user.password,
+        username: user.username,
+      });
 
-      expect(password.password).toBe(user.password);
+      const expectedUser = {
+        email: user.email,
+        id: '1',
+        name: user.name,
+        username: user.username,
+      };
+
+      expect(expectedUser).toMatchObject(userData);
     });
 
     it('should throw an error if an error occurs', async () => {
@@ -47,11 +58,14 @@ describe('[Repositories] AuthRepository', () => {
 
       const user = UserMock.create();
 
-      prisma.user.findUnique.mockImplementationOnce(() => {
+      prisma.user.findFirst.mockImplementationOnce(() => {
         throw new Error('error');
       });
 
-      const response = repository.findPasswordByUsername(user.username);
+      const response = repository.findUserByCredentials({
+        password: user.password,
+        username: user.username,
+      });
 
       await expect(response).rejects.toThrowError();
     });
@@ -70,6 +84,33 @@ describe('[Repositories] AuthRepository', () => {
       });
     });
 
+    it('should return an object with user without password', async () => {
+      const { repository } = makeSut();
+      const user = UserMock.create();
+
+      prisma.user.findUnique.mockResolvedValue({
+        createdAt: new Date(),
+        deletedAt: null,
+        email: user.email,
+        id: '1',
+        name: user.name,
+        password: user.password,
+        updatedAt: new Date(),
+        username: user.username,
+      });
+
+      const userData = await repository.findUserByUsername(user.username);
+
+      const expectedUser = {
+        email: user.email,
+        id: '1',
+        name: user.name,
+        username: user.username,
+      };
+
+      expect(expectedUser).toMatchObject(userData);
+    });
+
     it('should throw an error if an error occurs', async () => {
       const { repository } = makeSut();
 
@@ -79,7 +120,7 @@ describe('[Repositories] AuthRepository', () => {
         throw new Error('error');
       });
 
-      const response = repository.findPasswordByUsername(user.username);
+      const response = repository.findUserByUsername(user.username);
 
       await expect(response).rejects.toThrowError();
     });

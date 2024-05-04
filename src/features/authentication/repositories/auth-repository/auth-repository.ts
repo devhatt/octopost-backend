@@ -1,16 +1,29 @@
 import { database } from '@/shared/infra/database/database.js';
 
+type findUserByCredentialsParams = {
+  password: string;
+  username: string;
+};
 export class AuthRepository {
-  async findPasswordByUsername(username: string) {
-    const user = await database.user.findUnique({
+  async findUserByCredentials({
+    password,
+    username,
+  }: findUserByCredentialsParams) {
+    const user = await database.user.findFirst({
       where: {
+        password,
         username,
       },
     });
 
-    return {
-      password: user?.password,
+    const userWithoutPassword = {
+      email: user?.email,
+      id: user?.id,
+      name: user?.name,
+      username: user?.username,
     };
+
+    return userWithoutPassword;
   }
 
   async findUserByUsername(username: string) {
@@ -20,6 +33,13 @@ export class AuthRepository {
       },
     });
 
-    return user;
+    const userWithoutPassword = {
+      email: user?.email,
+      id: user?.id,
+      name: user?.name,
+      username: user?.username,
+    };
+
+    return userWithoutPassword;
   }
 }
