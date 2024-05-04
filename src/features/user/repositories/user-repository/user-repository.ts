@@ -17,7 +17,12 @@ export class UserRepository {
 
   async findById(id: string) {
     const user = await database.user.findUnique({
-      select: expect.anything(),
+      select: {
+        email: true,
+        id: true,
+        name: true,
+        username: true,
+      },
       where: {
         id,
       },
