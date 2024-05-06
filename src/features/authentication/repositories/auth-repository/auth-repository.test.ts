@@ -4,15 +4,14 @@ import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
 
 const makeSut = () => {
   const repository = new AuthRepository();
-
   return { repository };
 };
+const user = UserMock.create();
 
 describe('[Repositories] AuthRepository', () => {
   describe('findUserByCredentials', () => {
     it('should call service with correctly params', async () => {
       const { repository } = makeSut();
-      const user = UserMock.create();
 
       await repository.findUserByCredentials({
         password: user.password,
@@ -25,7 +24,6 @@ describe('[Repositories] AuthRepository', () => {
     });
     it('should return an object with user without password', async () => {
       const { repository } = makeSut();
-      const user = UserMock.create();
 
       prisma.user.findFirst.mockResolvedValue({
         createdAt: new Date(),
@@ -56,8 +54,6 @@ describe('[Repositories] AuthRepository', () => {
     it('should throw an error if an error occurs', async () => {
       const { repository } = makeSut();
 
-      const user = UserMock.create();
-
       prisma.user.findFirst.mockImplementationOnce(() => {
         throw new Error('error');
       });
@@ -75,8 +71,6 @@ describe('[Repositories] AuthRepository', () => {
     it('should call service with correctly params', async () => {
       const { repository } = makeSut();
 
-      const user = UserMock.create();
-
       await repository.findUserByUsername(user.username);
 
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
@@ -86,7 +80,6 @@ describe('[Repositories] AuthRepository', () => {
 
     it('should return an object with user without password', async () => {
       const { repository } = makeSut();
-      const user = UserMock.create();
 
       prisma.user.findUnique.mockResolvedValue({
         createdAt: new Date(),
@@ -113,8 +106,6 @@ describe('[Repositories] AuthRepository', () => {
 
     it('should throw an error if an error occurs', async () => {
       const { repository } = makeSut();
-
-      const user = UserMock.create();
 
       prisma.user.findUnique.mockImplementationOnce(() => {
         throw new Error('error');

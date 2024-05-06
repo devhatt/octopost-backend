@@ -1,6 +1,6 @@
 import { database } from '@/shared/infra/database/database.js';
 
-type findUserByCredentialsParams = {
+type FindUserByCredentialsParams = {
   password: string;
   username: string;
 };
@@ -8,7 +8,7 @@ export class AuthRepository {
   async findUserByCredentials({
     password,
     username,
-  }: findUserByCredentialsParams) {
+  }: FindUserByCredentialsParams) {
     const user = await database.user.findFirst({
       where: {
         password,
