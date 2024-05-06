@@ -1,0 +1,6 @@
+- in: path
+  name: id
+  required: true
+  schema:
+    type: string
+  description: The user ID.s
