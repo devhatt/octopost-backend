@@ -15,4 +15,4 @@ paths:
     $ref: './features/user/user-create-path.yaml'
 
   /users/:id/accounts:
-    $ref: './features/user/user-consult-accounts.yaml'
+    $ref: './features/user/user-network-find-all.yaml'

@@ -7,7 +7,7 @@ get:
 
   responses:
     '200':
-      $ref: './components/user-network-consult-body.yaml'
+      $ref: './components/user-network-find-all-body.yaml'
     '400':
       $ref: '../../shared/errors/validation-error.yaml'
     '500':
