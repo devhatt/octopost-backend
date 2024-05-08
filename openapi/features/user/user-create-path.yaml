@@ -13,7 +13,7 @@ post:
       description: N/A
     '400':
       $ref: '../../shared/errors/validation-error.yaml'
-    '500':
-      $ref: '../../shared/errors/server-error.yaml'
     '409':
       $ref: './components/user-conflict-password-error.yaml'
+    '500':
+      $ref: '../../shared/errors/server-error.yaml'
