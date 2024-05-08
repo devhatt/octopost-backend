@@ -14,6 +14,6 @@ get:
     '400':
       $ref: '../../shared/errors/validation-error.yaml'
     '404':
-      $ref: '../../shared/errors/user-not-found-error.yaml'
+      $ref: './components/user-not-found-error.yaml'
     '500':
       $ref: '../../shared/errors/server-error.yaml'
