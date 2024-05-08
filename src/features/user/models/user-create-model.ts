@@ -6,6 +6,8 @@ export type UserModel = {
   username: string;
 };
 
-export type UserCreateModel = Omit<UserModel, 'id'>;
+export type UserCreateModel = Omit<UserModel, 'id'> & {
+  repeatPassword: string;
+};
 
 export type UserCreateResponse = void;

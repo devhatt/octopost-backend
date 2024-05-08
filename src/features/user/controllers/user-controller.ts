@@ -17,6 +17,7 @@ export class UserController implements Controller {
         email: req.body.email,
         name: req.body.name,
         password: req.body.password,
+        repeatPassword: req.body.password,
         username: req.body.username,
       });
 

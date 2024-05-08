@@ -63,6 +63,7 @@ describe('[Controllers] UserController', () => {
         email: 'valid_email@domain.com',
         name: 'valid_name',
         password: 'valid_password',
+        repeatPassword: 'valid_password',
         username: 'valid_username',
       };
 
@@ -74,6 +75,7 @@ describe('[Controllers] UserController', () => {
         email: body.email,
         name: body.name,
         password: body.password,
+        repeatPassword: body.repeatPassword,
         username: body.username,
       });
     });

@@ -6,16 +6,18 @@ import type { Service } from '@/shared/protocols/service.js';
 export class UserCreateService implements Service<UserCreateModel> {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async execute({ email, name, password, username }: UserCreateModel) {
-    const user = await this.userRepository.findByUsernameOrEmail(
-      username,
-      email
-    );
-
-    if (user) {
-      throw new ConflictError('The username or email is already on use.');
+  async execute({
+    email,
+    name,
+    password,
+    repeatPassword,
+    username,
+  }: UserCreateModel) {
+    if (password != repeatPassword) {
+      throw new ConflictError(
+        'The password and the repetition of the password dont match. '
+      );
     }
-
     await this.userRepository.create({
       email,
       name,
