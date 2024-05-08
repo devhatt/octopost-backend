@@ -15,3 +15,5 @@ post:
       $ref: '../../shared/errors/validation-error.yaml'
     '500':
       $ref: '../../shared/errors/server-error.yaml'
+    '409':
+      $ref: './components/user-conflict-password-error.yaml'
