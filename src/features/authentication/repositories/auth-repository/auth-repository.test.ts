@@ -4,14 +4,14 @@ import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
 
 const makeSut = () => {
   const repository = new AuthRepository();
-  return { repository };
+  const user = UserMock.create();
+  return { repository, user };
 };
-const user = UserMock.create();
 
 describe('[Repositories] AuthRepository', () => {
   describe('findUserByCredentials', () => {
     it('should call service with correctly params', async () => {
-      const { repository } = makeSut();
+      const { repository, user } = makeSut();
 
       await repository.findUserByCredentials({
         password: user.password,
@@ -19,40 +19,31 @@ describe('[Repositories] AuthRepository', () => {
       });
 
       expect(prisma.user.findFirst).toHaveBeenCalledWith({
+        select: {
+          email: true,
+          id: true,
+          name: true,
+          username: true,
+        },
         where: { password: user.password, username: user.username },
       });
     });
     it('should return an object with user without password', async () => {
-      const { repository } = makeSut();
+      const { repository, user } = makeSut();
+      const expectedUser = UserMock.findByID();
 
-      prisma.user.findFirst.mockResolvedValue({
-        createdAt: new Date(),
-        deletedAt: null,
-        email: user.email,
-        id: '1',
-        name: user.name,
-        password: user.password,
-        updatedAt: new Date(),
-        username: user.username,
-      });
+      prisma.user.findFirst.mockResolvedValue(expectedUser);
 
       const userData = await repository.findUserByCredentials({
         password: user.password,
         username: user.username,
       });
 
-      const expectedUser = {
-        email: user.email,
-        id: '1',
-        name: user.name,
-        username: user.username,
-      };
-
-      expect(expectedUser).toMatchObject(userData);
+      expect(expectedUser).toStrictEqual(userData);
     });
 
     it('should throw an error if an error occurs', async () => {
-      const { repository } = makeSut();
+      const { repository, user } = makeSut();
 
       prisma.user.findFirst.mockImplementationOnce(() => {
         throw new Error('error');
@@ -69,43 +60,34 @@ describe('[Repositories] AuthRepository', () => {
 
   describe('findUserByUsername', () => {
     it('should call service with correctly params', async () => {
-      const { repository } = makeSut();
+      const { repository, user } = makeSut();
 
       await repository.findUserByUsername(user.username);
 
       expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        select: {
+          email: true,
+          id: true,
+          name: true,
+          username: true,
+        },
         where: { username: user.username },
       });
     });
 
     it('should return an object with user without password', async () => {
-      const { repository } = makeSut();
+      const { repository, user } = makeSut();
+      const expectedUser = UserMock.findByID();
 
-      prisma.user.findUnique.mockResolvedValue({
-        createdAt: new Date(),
-        deletedAt: null,
-        email: user.email,
-        id: '1',
-        name: user.name,
-        password: user.password,
-        updatedAt: new Date(),
-        username: user.username,
-      });
+      prisma.user.findUnique.mockResolvedValueOnce(expectedUser);
 
       const userData = await repository.findUserByUsername(user.username);
 
-      const expectedUser = {
-        email: user.email,
-        id: '1',
-        name: user.name,
-        username: user.username,
-      };
-
-      expect(expectedUser).toMatchObject(userData);
+      expect(expectedUser).toStrictEqual(userData);
     });
 
     it('should throw an error if an error occurs', async () => {
-      const { repository } = makeSut();
+      const { repository, user } = makeSut();
 
       prisma.user.findUnique.mockImplementationOnce(() => {
         throw new Error('error');

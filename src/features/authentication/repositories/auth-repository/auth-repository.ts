@@ -10,36 +10,34 @@ export class AuthRepository {
     username,
   }: FindUserByCredentialsParams) {
     const user = await database.user.findFirst({
+      select: {
+        email: true,
+        id: true,
+        name: true,
+        username: true,
+      },
       where: {
         password,
         username,
       },
     });
 
-    const userWithoutPassword = {
-      email: user?.email,
-      id: user?.id,
-      name: user?.name,
-      username: user?.username,
-    };
-
-    return userWithoutPassword;
+    return user;
   }
 
   async findUserByUsername(username: string) {
     const user = await database.user.findUnique({
+      select: {
+        email: true,
+        id: true,
+        name: true,
+        username: true,
+      },
       where: {
         username,
       },
     });
 
-    const userWithoutPassword = {
-      email: user?.email,
-      id: user?.id,
-      name: user?.name,
-      username: user?.username,
-    };
-
-    return userWithoutPassword;
+    return user;
   }
 }
