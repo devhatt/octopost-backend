@@ -15,6 +15,15 @@ const makeSut = () => {
         username,
       });
     }
+
+    findById(): Promise<{
+      email: string;
+      id: string;
+      name: null | string;
+      username: string;
+    } | null> {
+      throw new Error('Method not implemented.');
+    }
   }
 
   const userRepository = new UserRepositoryStub();
@@ -34,6 +43,7 @@ describe('UserCreateService', () => {
       email: 'valid_email@email.com',
       name: 'valid_name',
       password: 'valid_password',
+      repeatPassword: 'valid_password',
       username: 'valid_username',
     });
 
@@ -56,6 +66,7 @@ describe('UserCreateService', () => {
       email: 'valid_email@email.com',
       name: 'valid_name',
       password: 'valid_password',
+      repeatPassword: 'valid_password',
       username: 'valid_username',
     });
 
