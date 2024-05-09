@@ -2,10 +2,16 @@ version: '3.8'
 
 services:
   octopost-db:
-    image: postgres:latest
+    image: postgres:alpine3.19
     ports:
       - '5432:5432'
     environment:
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'password'
       POSTGRES_DB: 'octopost'
+      PGDATA: '/var/lib/postgresql/mydata'
+    volumes:
+      - db:/var/lib/postgresql/mydata
+
+volumes:
+  db:
