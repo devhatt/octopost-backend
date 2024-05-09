@@ -30,14 +30,4 @@ export class UserRepository {
 
     return user;
   }
-
-  async getAccounts(userId: string) {
-    const userAccounts = await database.account.findMany({
-      where: {
-        userId: userId,
-      },
-    });
-
-    return userAccounts || [];
-  }
 }
