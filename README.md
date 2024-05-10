@@ -42,7 +42,7 @@ as [instruções no site do GitHub](https://docs.github.com/pt/pull-requests/col
 Após clonar o projeto, acesse a pasta raiz do projeto e execute o comando:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 Esse comando irá criar um banco de dados PostgresSQL na porta 5432 utilizando um container Docker.

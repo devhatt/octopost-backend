@@ -1,0 +1,22 @@
+description: User not found
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 404
+        message:
+          type: string
+          example: User not found
+        details:
+          type: string
+          example: The user with the provided ID does not exist in our records
+        errors:
+          type: array
+          items:
+            type: string
+            example:
+              - 'User ID is invalid'
+              - 'User does not exist'

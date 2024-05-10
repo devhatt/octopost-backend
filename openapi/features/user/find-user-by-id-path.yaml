@@ -1,0 +1,19 @@
+get:
+  operationId: findUserById
+  summary: Find a user by id
+  description: This endpoint allows you to find a user by id.
+  tags:
+    - user
+
+  parameters:
+    - $ref: './components/find-user-by-id-parameters.yaml'
+
+  responses:
+    '200':
+      $ref: './components/find-user-by-id-body.yaml'
+    '400':
+      $ref: '../../shared/errors/validation-error.yaml'
+    '404':
+      $ref: '../../shared/errors/user-not-found-error.yaml'
+    '500':
+      $ref: '../../shared/errors/server-error.yaml'
