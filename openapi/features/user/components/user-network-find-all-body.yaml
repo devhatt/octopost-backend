@@ -1,7 +1,7 @@
 description: Successful retrieval of user social networks
-content: 
-  application/json: 
-    schema: 
+content:
+  application/json:
+    schema:
       type: array
       items:
         type: object
