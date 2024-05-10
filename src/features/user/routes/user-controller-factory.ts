@@ -7,9 +7,9 @@ import { Validator } from '@/shared/infra/validator/validator.js';
 
 export function userControllerFactory() {
   const userRepository = new UserRepository();
-  const userServiceFindAll = new UserCreateService(userRepository);
+  const userService = new UserCreateService(userRepository);
   const validator = new Validator();
-  const userController = new UserController(validator, userServiceFindAll);
+  const userController = new UserController(validator, userService);
 
   return { userController };
 }
