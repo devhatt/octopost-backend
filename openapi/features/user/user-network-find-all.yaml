@@ -1,0 +1,14 @@
+get:
+  operationId: consultUserAccounts
+  summary: Consult user social networks
+  description: Retrieves information about the social networks associated with a user.
+  tags:
+    - user
+
+  responses:
+    '200':
+      $ref: './components/user-network-find-all-body.yaml'
+    '400':
+      $ref: '../../shared/errors/validation-error.yaml'
+    '500':
+      $ref: '../../shared/errors/server-error.yaml'
