@@ -12,4 +12,3 @@ get:
       $ref: '../../shared/errors/validation-error.yaml'
     '500':
       $ref: '../../shared/errors/server-error.yaml'
-
