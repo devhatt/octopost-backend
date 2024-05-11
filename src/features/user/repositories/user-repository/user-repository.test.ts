@@ -45,16 +45,7 @@ describe('[Repositories] UserRepository', () => {
 
       const user = UserMock.create();
 
-      const expectedResult = {
-        createdAt: new Date(),
-        deletedAt: null,
-        email: user.email,
-        id: user.id,
-        name: user.name,
-        password: user.password,
-        updatedAt: new Date(),
-        username: user.username,
-      };
+      const expectedResult = UserMock.findByID();
 
       prisma.user.findUnique.mockResolvedValue(expectedResult);
 

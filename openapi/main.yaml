@@ -13,6 +13,8 @@ tags:
 paths:
   /api/users:
     $ref: './features/user/user-create-path.yaml'
+  /users/:id/accounts:
+    $ref: './features/user/user-network-find-all.yaml'
   /auth/login:
     $ref: './features/auth/login-path.yaml'
   /users/{id}:

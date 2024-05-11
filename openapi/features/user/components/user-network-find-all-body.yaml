@@ -1,0 +1,31 @@
+description: Successful retrieval of user social networks
+content:
+  application/json:
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: The user ID (UUID).
+            example: 'd215f543-f05c-40c2-a665-1a98f108bb5c'
+          avatarUrl:
+            type: string
+            description: URL for the user's avatar image.
+            example: 'https://backend/files/image.png'
+          socialMedia:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: The ID of the social media platform.
+                example: 1
+              name:
+                type: string
+                description: The name of the social media platform.
+                example: 'Facebook'
+        required:
+          - id
+          - avatarUrl
+          - socialMedia
