@@ -15,6 +15,10 @@ const makeSut = () => {
         username,
       });
     }
+    findById(): any {}
+    findByUsernameOrEmail(): any {
+      return null;
+    }
   }
 
   const userRepository = new UserRepositoryStub();
