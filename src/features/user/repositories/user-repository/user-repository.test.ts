@@ -87,4 +87,61 @@ describe('[Repositories] UserRepository', () => {
       expect(result).toBeNull();
     });
   });
+
+  describe('findByUsernameOrEmail', () => {
+    it('return user if found', async () => {
+      const { repository } = makeSut();
+
+      const user = UserMock.create();
+
+      const expectedResult = {
+        createdAt: new Date(),
+        deletedAt: null,
+        email: user.email,
+        id: user.id,
+        name: user.name,
+        password: user.password,
+        updatedAt: new Date(),
+        username: user.username,
+      };
+
+      prisma.user.findFirst.mockResolvedValue(expectedResult);
+
+      const result = await repository.findByUsernameOrEmail(
+        user.username,
+        user.email
+      );
+
+      expect(prisma.user.findFirst).toHaveBeenCalledWith({
+        select: expect.anything(),
+        where: {
+          email: user.email,
+          username: user.username,
+        },
+      });
+
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('return null if user is not found', async () => {
+      const { repository } = makeSut();
+
+      prisma.user.findFirst.mockResolvedValue(null);
+
+      const result = await repository.findByUsernameOrEmail(
+        'non_existent_username',
+        'non_existent_email'
+      );
+
+      expect(prisma.user.findFirst).toHaveBeenCalledWith({
+        select: expect.anything(),
+        where: {
+          email: 'non_existent_email',
+          username: 'non_existent_username',
+        },
+      });
+
+      expect(result).toBeNull();
+    });
+  });
 });
