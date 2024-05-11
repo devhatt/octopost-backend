@@ -30,4 +30,21 @@ export class UserRepository {
 
     return user;
   }
+
+  async findByUsernameOrEmail(username: string, email: string) {
+    const user = await database.user.findFirst({
+      select: {
+        email: true,
+        id: true,
+        name: true,
+        username: true,
+      },
+      where: {
+        email,
+        username,
+      },
+    });
+
+    return user;
+  }
 }
