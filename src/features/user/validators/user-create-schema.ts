@@ -10,7 +10,3 @@ const userCreateBodySchema = Joi.object({
 export const userCreateSchema = Joi.object({
   body: userCreateBodySchema,
 });
-
-export const userGetSchema = Joi.object({
-  id: Joi.string().required().pattern(new RegExp('^\\d+$')),
-});

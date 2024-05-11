@@ -7,9 +7,9 @@ const router = Router();
 
 const { userController } = userControllerFactory();
 router.post('/create', userController.create);
-router.get('/:id', userController.getUser);
+router.get('/:id', userController.userFindById);
 
 export default {
-  prefix: 'user',
+  prefix: 'users',
   router,
 };

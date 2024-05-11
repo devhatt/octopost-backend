@@ -1,6 +1,6 @@
 import type { UserCreateModel } from '../models/user-create-model.js';
-import { userCreateSchema, userGetSchema } from '../validators/index.js';
-import type { UserRepository } from '../repositories/user-repository/user-repository.js';
+import { userCreateSchema, userFindByIdSchema } from '../validators/index.js';
+import type { UserFindByIdModel } from '../models/user-find-by-id-model.js';
 import type { Controller } from '@/shared/protocols/controller.js';
 import type { Service } from '@/shared/protocols/service.js';
 import type { Validator } from '@/shared/infra/validator/validator.js';
@@ -27,15 +27,18 @@ export class UserController implements Controller {
     }
   };
 
-  getUser: AsyncRequestHandler = async (req, res, next) => {
+  userFindById: AsyncRequestHandler = async (req, res, next) => {
     try {
-      const userId = req.params.id;
-
-      this.validator.validate(userGetSchema, {
-        id: userId,
+      this.validator.validate(userFindByIdSchema, {
+        body: req.body,
+        params: req.params,
+        path: req.path,
+        query: req.query,
       });
 
-      let user = await this.userRepository.findById(userId);
+      const user = await this.serviceFindById.execute({
+        id: req.params.id,
+      });
 
       if (!user) {
         return res
@@ -52,6 +55,6 @@ export class UserController implements Controller {
   constructor(
     private validator: Validator,
     private serviceCreate: Service<UserCreateModel>,
-    private userRepository: UserRepository
+    private serviceFindById: Service<UserFindByIdModel>
   ) {}
 }
