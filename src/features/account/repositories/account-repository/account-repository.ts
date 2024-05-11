@@ -8,6 +8,6 @@ export class AccountRepository {
       },
     });
 
-    return userAccounts || [];
+    return userAccounts;
   }
 }
