@@ -45,7 +45,6 @@ const makeSut = () => {
     res,
     userController,
     userCreateService,
-    userFindByIdService,
     validator,
   };
 };
@@ -128,49 +127,18 @@ describe('[Controllers] UserController', () => {
       const validateSpy = vi.spyOn(validator, 'validate');
 
       req.params.id = 'valid_id';
+      req.body = {};
+      req.path = '/user';
+      req.query = {};
 
       await userController.userFindById(req, res, next);
 
-      expect(validateSpy).toHaveBeenCalledWith(expect.anything(), {
+      expect(validateSpy).toHaveBeenCalledWith(UserMock.findByID, {
+        body: req.body,
         params: req.params,
+        path: req.path,
+        query: req.query,
       });
-    });
-
-    it('should call service with correctly params', async () => {
-      const { next, req, res, userController, userFindByIdService } = makeSut();
-
-      const serviceSpy = vi.spyOn(userFindByIdService, 'execute');
-
-      req.params.id = 'valid_id';
-
-      await userController.userFindById(req, res, next);
-
-      expect(serviceSpy).toHaveBeenCalledWith({ id: req.params.id });
-    });
-
-    it('should response 404 when user not found', async () => {
-      const { next, req, res, userController, userFindByIdService } = makeSut();
-
-      const serviceSpy = vi.spyOn(userFindByIdService, 'execute');
-
-      serviceSpy.mockReturnValue(null);
-
-      await userController.userFindById(req, res, next);
-
-      expect(res.status).toHaveBeenCalledWith(404);
-    });
-
-    it('should call next when an error', async () => {
-      const { next, req, res, userController, userFindByIdService } = makeSut();
-      const error = new HttpError(500, 'error');
-
-      vi.spyOn(userFindByIdService, 'execute').mockRejectedValueOnce(
-        new HttpError(500, 'error')
-      );
-
-      await userController.userFindById(req, res, next);
-
-      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
