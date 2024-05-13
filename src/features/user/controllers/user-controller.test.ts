@@ -128,7 +128,7 @@ describe('[Controllers] UserController', () => {
 
       req.body = {};
       req.params = { id: 'valid_id' };
-      req.path = '/user';
+      req.path = '/users';
       req.query = {};
 
       await userController.userFindById(req, res, next);
