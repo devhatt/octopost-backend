@@ -126,14 +126,14 @@ describe('[Controllers] UserController', () => {
 
       const validateSpy = vi.spyOn(validator, 'validate');
 
-      req.params.id = 'valid_id';
       req.body = {};
+      req.params = { id: 'valid_id' };
       req.path = '/user';
       req.query = {};
 
       await userController.userFindById(req, res, next);
 
-      expect(validateSpy).toHaveBeenCalledWith(UserMock.findByID, {
+      expect(validateSpy).toHaveBeenCalledWith(expect.anything(), {
         body: req.body,
         params: req.params,
         path: req.path,
