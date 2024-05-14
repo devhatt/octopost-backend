@@ -64,4 +64,18 @@ describe('UserCreateService', () => {
 
     await expect(response).rejects.toThrowError();
   });
+
+  it('should conflict when password and repeatPassword dont match', async () => {
+    const { userCreateService } = makeSut();
+
+    const response = userCreateService.execute({
+      email: 'valid_email@email.com',
+      name: 'valid_name',
+      password: 'valid_password',
+      repeatPassword: 'invalid_password',
+      username: 'valid_username',
+    });
+
+    await expect(response).rejects.toThrowError();
+  });
 });
