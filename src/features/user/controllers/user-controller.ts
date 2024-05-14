@@ -30,10 +30,8 @@ export class UserController implements Controller {
   userFindById: AsyncRequestHandler = async (req, res, next) => {
     try {
       this.validator.validate(userFindByIdSchema, {
-        body: req.body,
         params: req.params,
         path: req.path,
-        query: req.query,
       });
 
       const user = await this.serviceFindById.execute({

@@ -5,8 +5,6 @@ export const userFindByIdParamsSchema = Joi.object({
 });
 
 export const userFindByIdSchema = Joi.object({
-  body: Joi.object().required(),
   params: userFindByIdParamsSchema,
   path: Joi.string().required(),
-  query: Joi.object().required(),
 });

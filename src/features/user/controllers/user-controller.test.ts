@@ -45,6 +45,7 @@ const makeSut = () => {
     res,
     userController,
     userCreateService,
+    userFindByIdService,
     validator,
   };
 };
@@ -126,19 +127,64 @@ describe('[Controllers] UserController', () => {
 
       const validateSpy = vi.spyOn(validator, 'validate');
 
-      req.body = {};
-      req.params = { id: 'valid_id' };
+      const uuid = crypto.randomUUID();
+
+      req.params = { id: uuid };
       req.path = '/users';
-      req.query = {};
 
       await userController.userFindById(req, res, next);
 
       expect(validateSpy).toHaveBeenCalledWith(expect.anything(), {
-        body: req.body,
         params: req.params,
         path: req.path,
-        query: req.query,
       });
+    });
+
+    it('should call service with correctly params', async () => {
+      const { next, req, res, userController, userFindByIdService } = makeSut();
+
+      const serviceSpy = vi.spyOn(userFindByIdService, 'execute');
+
+      const uuid = crypto.randomUUID();
+
+      req.params.id = uuid;
+
+      await userController.userFindById(req, res, next);
+
+      expect(serviceSpy).toHaveBeenCalledWith({
+        id: req.params.id,
+      });
+    });
+
+    it('should response 404 if user is not found', async () => {
+      const { next, req, res, userController, userFindByIdService } = makeSut();
+
+      const serviceSpy = vi.spyOn(userFindByIdService, 'execute');
+
+      const response = undefined;
+
+      serviceSpy.mockReturnValue(response);
+
+      const uuid = crypto.randomUUID();
+
+      req.params.id = uuid;
+
+      await userController.userFindById(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+    });
+
+    it('should call next when an error', async () => {
+      const { next, req, res, userController, userFindByIdService } = makeSut();
+      const error = new HttpError(500, 'error');
+
+      vi.spyOn(userFindByIdService, 'execute').mockRejectedValueOnce(
+        new HttpError(500, 'error')
+      );
+
+      await userController.userFindById(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
