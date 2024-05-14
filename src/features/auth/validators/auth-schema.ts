@@ -1,3 +1,10 @@
 import Joi from 'joi';
 
-export const authBodySchema = Joi.object();
+const authBodySchema = Joi.object({
+  password: Joi.string().required(),
+  username: Joi.string().required(),
+});
+
+export const authSchema = Joi.object({
+  body: authBodySchema,
+});

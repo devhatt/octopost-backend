@@ -1,4 +1,4 @@
-import { authBodySchema } from '../validators/auth-schema.js';
+import { authSchema } from '../validators/auth-schema.js';
 import type { Validator } from '@/shared/infra/validator/validator.js';
 import type { Controller } from '@/shared/protocols/controller.js';
 import type { AsyncRequestHandler } from '@/shared/protocols/handlers.js';
@@ -8,7 +8,7 @@ import type { Service } from '@/shared/protocols/service.js';
 export class AuthController implements Controller {
   login: AsyncRequestHandler = async (req, res, next) => {
     try {
-      this.validator.validate(authBodySchema, {
+      this.validator.validate(authSchema, {
         body: req.body,
       });
       const response = await this.authService.execute({
