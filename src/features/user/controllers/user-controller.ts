@@ -5,7 +5,7 @@ import type { Service } from '@/shared/protocols/service.js';
 import type { Validator } from '@/shared/infra/validator/validator.js';
 import type { AsyncRequestHandler } from '@/shared/protocols/handlers.js';
 import { HttpStatusCode } from '@/shared/protocols/http-client.js';
-import prismaErrorHandler from '@/shared/errors/prisma-error.js';
+import { prismaErrorHandler } from '@/shared/errors/prisma-error.js';
 
 export class UserController implements Controller {
   create: AsyncRequestHandler = async (req, res, next) => {
