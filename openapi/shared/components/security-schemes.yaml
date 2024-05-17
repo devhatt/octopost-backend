@@ -1,0 +1,16 @@
+securitySchemes:
+  bearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
+    in: header
+
+  OAuth2:
+    type: oauth2
+    flows:
+      authorizationCode:
+        authorizationUrl: https://api.example.com/oauth/authorize
+        tokenUrl: https://api.example.com/oauth/token
+        scopes:
+          read:social_medias: Read available social medias
+    in: header

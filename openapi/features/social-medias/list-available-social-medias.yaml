@@ -1,0 +1,17 @@
+get:
+  summary: List all available social medias
+  description: This endpoint allows the user to list all available social medias
+  tags:
+    - social-medias
+
+  responses:
+    '200':
+      $ref: './components/social-medias-response-body.yaml'
+    '401':
+      $ref: './errors/unauthorized-error.yaml'
+    '500':
+      $ref: '../../shared/errors/server-error.yaml'
+
+  security:
+    - bearerAuth: []
+    - OAuth2: [read:social_medias]
