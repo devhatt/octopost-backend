@@ -4,12 +4,18 @@ import { UserController } from '../controllers/user-controller.js';
 import { UserRepository } from '../repositories/user-repository/user-repository.js';
 import { UserCreateService } from '../services/user-create-service.js';
 import { Validator } from '@/shared/infra/validator/validator.js';
+import type { Service } from '@/shared/protocols/service.js';
 
 export function userControllerFactory() {
   const userRepository = new UserRepository();
-  const userService = new UserCreateService(userRepository);
+  const userServiceFindAll = new UserCreateService(userRepository);
+  const userServiceFindById = {} as Service;
   const validator = new Validator();
-  const userController = new UserController(validator, userService);
+  const userController = new UserController(
+    validator,
+    userServiceFindAll,
+    userServiceFindById
+  );
 
   return { userController };
 }

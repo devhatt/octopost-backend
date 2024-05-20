@@ -1,0 +1,12 @@
+description: Access token is missing or invalid
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 401
+        message:
+          type: string
+          example: Not authenticated

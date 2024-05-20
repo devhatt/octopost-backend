@@ -10,6 +10,8 @@ servers:
 tags:
   - name: user
     description: Operations about user
+  - name: social-medias
+    description: Operations about social medias
 paths:
   /api/users:
     $ref: './features/user/user-create-path.yaml'
@@ -19,3 +21,8 @@ paths:
     $ref: './features/auth/login-path.yaml'
   /users/{id}:
     $ref: './features/user/find-user-by-id-path.yaml'
+  /socialmedias:
+    $ref: './features/social-medias/list-available-social-medias.yaml'
+
+components:
+  $ref: './shared/components/security-schemes.yaml'

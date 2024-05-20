@@ -1,0 +1,19 @@
+description: Successful retrieval available social medias
+content:
+  application/json:
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: The ID of the social media platform
+          name:
+            type: string
+            description: The name of the social media platform
+      example:
+        - id: 1
+          name: 'Facebook'
+        - id: 2
+          name: 'Instagram'
