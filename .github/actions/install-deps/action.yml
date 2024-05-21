@@ -45,4 +45,4 @@ runs:
 
     - name: Prisma
       shell: bash
-      run: pnpm prisma generate
+      run: pnpm dlx prisma generate
