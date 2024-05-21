@@ -15,7 +15,7 @@ const makeSut = () => {
         username,
       });
     }
-    
+
     findById(id: string): Promise<{
       email: string;
       id: string;
