@@ -15,7 +15,15 @@ const makeSut = () => {
         username,
       });
     }
-    findById(): any {}
+
+    findById(): Promise<{
+      email: string;
+      id: string;
+      name: null | string;
+      username: string;
+    } | null> {
+      throw new Error('Method not implemented.');
+    }
   }
 
   const userRepository = new UserRepositoryStub();

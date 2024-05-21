@@ -1,6 +1,6 @@
 import type { UserCreateModel } from '../models/user-create-model.js';
 import type { UserRepository } from '../repositories/user-repository/user-repository.js';
-import { ConflictError } from '@/shared/errors/conflict-error.js';
+import { ValidationError } from '@/shared/errors/validation-error.js';
 import type { Service } from '@/shared/protocols/service.js';
 
 export class UserCreateService implements Service<UserCreateModel> {
@@ -14,8 +14,9 @@ export class UserCreateService implements Service<UserCreateModel> {
     username,
   }: UserCreateModel) {
     if (password != repeatPassword) {
-      throw new ConflictError(
-        'The password and the repetition of the password dont match. '
+      throw new ValidationError(
+        '400',
+        'Cannot process the request because of validation errors'
       );
     }
     await this.userRepository.create({

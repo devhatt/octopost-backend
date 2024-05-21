@@ -3,6 +3,7 @@ export type UserModel = {
   id: string;
   name: string;
   password: string;
+  repeatPassword: string;
   username: string;
 };
 
