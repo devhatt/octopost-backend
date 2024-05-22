@@ -5,6 +5,12 @@ export class UserFindByIdService implements Service {
   constructor(private readonly userRepository: UserRepository) {}
 
   async execute(id: string) {
-    return await this.userRepository.findById(id);
+    const user = await this.userRepository.findById(id);
+
+    if (user === null || user === undefined) {
+      return null;
+    }
+
+    return user;
   }
 }
