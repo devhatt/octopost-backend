@@ -1,5 +1,4 @@
 import type { Request, Response } from 'express';
-import { beforeEach, describe, expect, it } from 'vitest';
 import { AuthenticationJWT } from './auth-jwt.js';
 import type { UserRepository } from '@/features/user/repositories/user-repository/user-repository.js';
 import { JWTHelper } from '@/shared/infra/jwt/jwt.js';
@@ -21,9 +20,7 @@ const makeSut = () => {
       });
     }
 
-    findById(
-      id: string
-    ): Promise<{
+    findById(id: string): Promise<{
       email: string;
       id: string;
       name: null | string;
