@@ -7,11 +7,6 @@ export class ListSocialMediasService implements Service<SocialMediaModel> {
 
   async execute() {
     const avaiableSocialMedias = await this.SocialMediaRepository.List();
-
-    if (!avaiableSocialMedias) {
-      throw new Error('No social medias avaiable');
-    }
-
     return avaiableSocialMedias;
   }
 }
