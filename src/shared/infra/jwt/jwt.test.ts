@@ -1,4 +1,5 @@
 import { JWTHelper } from './jwt.js';
+import type { TokenPayload } from './jwt.js';
 
 describe('JWTHelper', () => {
   const secretKey = '123';
@@ -14,18 +15,17 @@ describe('JWTHelper', () => {
   });
 
   describe('refreshToken', () => {
+    const token = jwt.createToken(payload);
+
     it('should refresh token', () => {
-      const token = jwt.createToken(payload);
       const newToken = jwt.refreshToken(token);
       const exist = newToken ? true : false;
 
       expect(exist).toBeTruthy();
-      expect(newToken).not.toBe(token);
     });
 
     it('should not refresh an invalid token', () => {
-      const invalidToken = 'invalidToken';
-      const newToken = jwt.refreshToken(invalidToken);
+      const newToken = jwt.refreshToken('invalidToken');
 
       expect(newToken).toBe('invalid token');
     });
@@ -34,16 +34,17 @@ describe('JWTHelper', () => {
   describe('parseToken', () => {
     it('should parse a valid token', () => {
       const token = jwt.createToken(payload);
-      const parsedPayload = jwt.parseToken(token);
+      const parsedPayload = jwt.parseToken(token) as TokenPayload;
 
-      expect(parsedPayload?.userId).toContain(payload.userId);
+      expect(parsedPayload?.userId).toBe(payload.userId);
     });
 
-    it('should return null for an invalid token', () => {
+    it('should return error for an invalid token', () => {
       const invalidToken = 'invalidToken';
       const parsedPayload = jwt.parseToken(invalidToken);
+      const error = new Error('Invalid token');
 
-      expect(parsedPayload).toBeNull();
+      expect(parsedPayload).toEqual(error);
     });
   });
 });

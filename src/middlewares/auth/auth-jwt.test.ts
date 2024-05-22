@@ -81,7 +81,7 @@ describe('jwtAuth middleware', () => {
   });
 
   it('should return status code 401 with error message invalid token', async () => {
-    const token = 'token';
+    const token = 'invalidToken';
 
     req = { headers: { authorization: `Bearer ${token}` } };
 

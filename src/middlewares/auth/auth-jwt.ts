@@ -16,7 +16,7 @@ export class AuthenticationJWT {
       }
 
       const payload = this.jwtHelper.parseToken(token);
-      if (!payload) {
+      if (payload instanceof Error) {
         return res.status(401).json({ error: 'Invalid token' });
       }
 
