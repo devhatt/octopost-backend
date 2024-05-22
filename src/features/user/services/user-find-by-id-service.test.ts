@@ -31,17 +31,23 @@ const makeSut = () => {
 };
 
 describe('UserFindByIdService', () => {
-  it('call userRepository with correct params', async () => {
+  it('returns user data if found', async () => {
     const { userFindByIdService, userRepository } = makeSut();
 
     const repositorySpy = vi.spyOn(userRepository, 'findById');
 
-    await userFindByIdService.execute('valid_id');
+    const result = await userFindByIdService.execute('valid_id');
 
     expect(repositorySpy).toHaveBeenCalledWith('valid_id');
+    expect(result).toEqual({
+      email: 'valid_email@email.com',
+      id: 'valid_id',
+      name: 'valid_name',
+      username: 'valid_username',
+    });
   });
 
-  it('throw error when userRepository.findById fails', async () => {
+  it('throws error if repository fails', async () => {
     const { userFindByIdService, userRepository } = makeSut();
 
     vi.spyOn(userRepository, 'findById').mockImplementationOnce(async () => {
@@ -53,20 +59,7 @@ describe('UserFindByIdService', () => {
     await expect(response).rejects.toThrowError();
   });
 
-  it('return user data correctly', async () => {
-    const { userFindByIdService } = makeSut();
-
-    const result = await userFindByIdService.execute('valid_id');
-
-    expect(result).toEqual({
-      email: 'valid_email@email.com',
-      id: 'valid_id',
-      name: 'valid_name',
-      username: 'valid_username',
-    });
-  });
-
-  it('return null if user not found', async () => {
+  it('returns null if user not found', async () => {
     const { userFindByIdService, userRepository } = makeSut();
 
     vi.spyOn(userRepository, 'findById').mockImplementationOnce(
