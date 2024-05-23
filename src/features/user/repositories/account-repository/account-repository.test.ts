@@ -1,6 +1,5 @@
 import { AccountRepository } from './account-repository.js';
 import { AccountMock } from '@/shared/test-helpers/mocks/account.mock.js';
-import { prisma } from 'mocks/prisma.js';
 
 const makeSut = () => {
   const repository = new AccountRepository();
@@ -12,14 +11,14 @@ describe('[Repositories] AccountRepository', () => {
   it('should call service for create account', async () => {
     const { repository } = makeSut();
 
+    const repositorySpy = vi.spyOn(repository, 'create');
+
     const account = AccountMock.create();
 
     await repository.create(account);
 
-    const { userId } = account;
-
-    expect(prisma.account.create).toHaveBeenCalledWith({
-      data: userId,
+    expect(repositorySpy).toHaveBeenCalledWith({
+      repository,
     });
   });
 });
