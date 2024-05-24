@@ -2,6 +2,7 @@ import type { Service } from '@/shared/protocols/service.js';
 import type { UserModel } from '@/features/user/models/user-model.js';
 import type { UserRepository } from '@/features/user/repositories/user-repository/user-repository.js';
 import type { AccountRepository } from '@/features/account/repositories/account-repository/account-repository.js';
+import { UserNotFound } from '@/shared/errors/user-not-found-error.js';
 
 export class GetUserAccountsService implements Service<UserModel> {
   constructor(
@@ -12,7 +13,7 @@ export class GetUserAccountsService implements Service<UserModel> {
   async execute({ id }: UserModel) {
     const user = await this.userRepository.findById(id);
     if (!user) {
-      throw new Error('User not found');
+      throw new UserNotFound();
     }
     return await this.accountRepository.getAccounts(id);
   }

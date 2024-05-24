@@ -21,7 +21,7 @@ const makeSut = () => {
 };
 
 describe('GetUserAccountsService', () => {
-  it('should call userRepository.findById with correct id', async () => {
+  it('calls userRepository.findById with correct id', async () => {
     const { getUserAccountsService, userRepository } = makeSut();
     const user = UserMock.create();
 
@@ -34,7 +34,7 @@ describe('GetUserAccountsService', () => {
     expect(userRepository.findById).toHaveBeenCalledWith(user.id);
   });
 
-  it('should call accountRepository.getAccounts with correct user id', async () => {
+  it('calls accountRepository.getAccounts with correct user id', async () => {
     const { accountRepository, getUserAccountsService, userRepository } =
       makeSut();
     const user = UserMock.create();
@@ -46,7 +46,7 @@ describe('GetUserAccountsService', () => {
     expect(accountRepository.getAccounts).toHaveBeenCalledWith(user.id);
   });
 
-  it('should throw an error if userRepository.findById returns null', async () => {
+  it('throws an error if userRepository.findById returns null', async () => {
     const { getUserAccountsService, userRepository } = makeSut();
     const user = UserMock.create();
     userRepository.findById.mockResolvedValueOnce(null);
@@ -56,7 +56,7 @@ describe('GetUserAccountsService', () => {
     await expect(response).rejects.toThrowError('User not found');
   });
 
-  it('should not throw an error if userRepository.findById returns a user', async () => {
+  it('throws an error if userRepository.findById does not return a user.', async () => {
     const { getUserAccountsService, userRepository } = makeSut();
     const user = UserMock.create();
     userRepository.findById.mockResolvedValueOnce(user);
