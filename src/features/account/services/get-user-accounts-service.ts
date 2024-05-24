@@ -1,9 +1,9 @@
-import type { UserModel } from '../models/user-model.js';
-import type { UserRepository } from '../repositories/user-repository/user-repository.js';
 import type { Service } from '@/shared/protocols/service.js';
+import type { UserModel } from '@/features/user/models/user-model.js';
+import type { UserRepository } from '@/features/user/repositories/user-repository/user-repository.js';
 import type { AccountRepository } from '@/features/account/repositories/account-repository/account-repository.js';
 
-export class UserService implements Service<UserModel> {
+export class GetUserAccountsService implements Service<UserModel> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly accountRepository: AccountRepository
@@ -14,6 +14,6 @@ export class UserService implements Service<UserModel> {
     if (!user) {
       throw new Error('User not found');
     }
-    await this.accountRepository.getAccounts(id);
+    return await this.accountRepository.getAccounts(id);
   }
 }
