@@ -22,8 +22,6 @@ export class AccountRepository {
         userId: id,
       },
     });
-
-    console.log(socialMidias);
     return socialMidias;
   }
 }
