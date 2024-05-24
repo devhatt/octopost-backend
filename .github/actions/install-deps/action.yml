@@ -41,7 +41,7 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: pnpm install --frozen-lockfile -r default
+      run: pnpm install --frozen-lockfile
 
     - name: Prisma
       shell: bash
