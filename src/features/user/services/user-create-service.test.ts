@@ -16,13 +16,13 @@ const makeSut = () => {
       });
     }
 
-    findById(): Promise<{
+    findById(id: string): Promise<{
       email: string;
       id: string;
       name: null | string;
       username: string;
     } | null> {
-      throw new Error('Method not implemented.');
+      throw new Error('Method not implemented. ' + id);
     }
   }
 
@@ -67,6 +67,20 @@ describe('UserCreateService', () => {
       name: 'valid_name',
       password: 'valid_password',
       repeatPassword: 'valid_password',
+      username: 'valid_username',
+    });
+
+    await expect(response).rejects.toThrowError();
+  });
+
+  it('should conflict when password and repeatPassword dont match', async () => {
+    const { userCreateService } = makeSut();
+
+    const response = userCreateService.execute({
+      email: 'valid_email@email.com',
+      name: 'valid_name',
+      password: 'valid_password',
+      repeatPassword: 'invalid_password',
       username: 'valid_username',
     });
 
