@@ -1,10 +1,12 @@
 import { mockDeep } from 'vitest-mock-extended';
 import type { Request, Response } from 'express';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/react-native.js';
 import { UserController } from './user-controller.js';
 import { HttpError } from '@/shared/errors/http-error.js';
 import type { Validator } from '@/shared/infra/validator/validator.js';
 import type { Service } from '@/shared/protocols/service.js';
 import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
+import { ConflictError } from '@/shared/errors/conflict-error.js';
 
 const makeSut = () => {
   class ValidatorStub implements Validator {
@@ -75,7 +77,7 @@ describe('[Controllers] UserController', () => {
         email: 'valid_email@domain.com',
         name: 'valid_name',
         password: 'valid_password',
-        repeatPassowrd: 'valid_password',
+        repeatPassword: 'valid_password',
         username: 'valid_username',
       };
 
@@ -87,7 +89,7 @@ describe('[Controllers] UserController', () => {
         email: body.email,
         name: body.name,
         password: body.password,
-        repeatPassword: body.repeatPassowrd,
+        repeatPassword: body.repeatPassword,
         username: body.username,
       });
     });
@@ -107,6 +109,26 @@ describe('[Controllers] UserController', () => {
       await userController.create(req, res, next);
 
       expect(res.status).toHaveBeenCalledWith(201);
+    });
+
+    it('should throw conflict error if existing username or email', async () => {
+      const { next, req, res, userController, userCreateService } = makeSut();
+      const error = new ConflictError(
+        'There is already a user with this email or username'
+      );
+      vi.spyOn(userCreateService, 'execute').mockRejectedValueOnce(
+        new PrismaClientKnownRequestError(
+          'There is already a user with this email or username',
+          {
+            clientVersion: '5.13.0',
+            code: 'P2002',
+          }
+        )
+      );
+
+      await userController.create(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
 
     it('should call next when an error', async () => {
