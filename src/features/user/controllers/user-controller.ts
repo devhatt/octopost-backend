@@ -11,6 +11,7 @@ import type { AsyncRequestHandler } from '@/shared/protocols/handlers.js';
 import { HttpStatusCode } from '@/shared/protocols/http-client.js';
 import type { Service } from '@/shared/protocols/service.js';
 
+
 export class UserController implements Controller {
   create: AsyncRequestHandler = async (req, res, next) => {
     try {
