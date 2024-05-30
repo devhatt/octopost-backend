@@ -7,7 +7,7 @@ type CreateAccountParams = Prisma.Args<
 >['data'];
 export class AccountRepository {
   async create({ avatarUrl, socialMediaId, userId }: CreateAccountParams) {
-    return database.account.create({
+    return await database.account.create({
       data: {
         avatarUrl,
         socialMediaId,
