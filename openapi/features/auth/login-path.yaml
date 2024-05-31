@@ -5,7 +5,7 @@ post:
     - user
 
   requestBody:
-    $ref: './components/user-login-body.yaml'
+    $ref: './components/login-request-body.yaml'
 
   responses:
     '200':
