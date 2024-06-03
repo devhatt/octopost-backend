@@ -1,6 +1,8 @@
+import type { RequestHandler } from 'express';
 import type { UserCreateModel } from '../models/user-create-model.js';
 import { userCreateSchema, userFindByIdSchema } from '../validators/index.js';
 import type { UserFindByIdModel } from '../models/user-find-by-id-model.js';
+import { userIdParamsSchema } from '../validators/user-id-schema.js';
 import type { Controller } from '@/shared/protocols/controller.js';
 import type { Service } from '@/shared/protocols/service.js';
 import type { Validator } from '@/shared/infra/validator/validator.js';
@@ -30,6 +32,18 @@ export class UserController implements Controller {
     }
   };
 
+  getAccounts: RequestHandler = (req, res, next) => {
+    try {
+      this.validator.validate(userIdParamsSchema, {
+        params: req.params,
+      });
+
+      return res.status(HttpStatusCode.ok).json({});
+    } catch (error) {
+      next(error);
+    }
+  };
+
   userFindById: AsyncRequestHandler = async (req, res, next) => {
     try {
       this.validator.validate(userFindByIdSchema, {
@@ -52,6 +66,7 @@ export class UserController implements Controller {
       next(error);
     }
   };
+
 
   constructor(
     private validator: Validator,
