@@ -10,4 +10,17 @@ export class AccountRepository {
 
     return userAccounts;
   }
+
+  async softDeleteAccountsBySocialMediaId(
+    socialMediaId: number
+  ): Promise<void> {
+    await database.account.updateMany({
+      data: {
+        deletedAt: new Date(),
+      },
+      where: {
+        socialMediaId: socialMediaId,
+      },
+    });
+  }
 }
