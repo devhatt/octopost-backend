@@ -31,13 +31,13 @@ export class UserRepository {
     return user;
   }
 
-  async updateIsActiveStatus(id: string): Promise<void> {
+  async updateIsActiveStatus(userId: string): Promise<void> {
     await database.user.update({
       data: {
         isActive: true,
       },
       where: {
-        id: id,
+        id: userId,
       },
     });
   }
