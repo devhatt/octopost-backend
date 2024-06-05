@@ -6,12 +6,12 @@ import { UserFindByIdService } from '@/features/user/services/user-find-by-id-se
 
 export function userControllerFactory() {
   const userRepository = new UserRepository();
-  const userServiceFindAll = new UserCreateService(userRepository);
+  const userServiceCreate = new UserCreateService(userRepository);
   const userServiceFindById = new UserFindByIdService(userRepository);
   const validator = new Validator();
   const userController = new UserController(
     validator,
-    userServiceFindAll,
+    userServiceCreate,
     userServiceFindById
   );
 
