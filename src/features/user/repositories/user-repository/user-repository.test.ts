@@ -1,6 +1,8 @@
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { UserRepository } from './user-repository.js';
 import { prisma } from 'mocks/prisma.js';
 import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
+import { ConflictError } from '@/shared/errors/conflict-error.js';
 
 const makeSut = () => {
   const repository = new UserRepository();
@@ -26,16 +28,28 @@ describe('[Repositories] UserRepository', () => {
 
     it('should throw an error if an error occurs', async () => {
       const { repository } = makeSut();
-
+      const expectedFinalError = new ConflictError(
+        'There is already a user with this email or username'
+      );
+      const userAlreadyExistsError = new PrismaClientKnownRequestError(
+        'There is already a user with this email or username',
+        {
+          clientVersion: '5.13.0',
+          code: 'P2002',
+        }
+      );
       const user = UserMock.create();
 
       prisma.user.create.mockImplementationOnce(() => {
-        throw new Error('error');
+        throw userAlreadyExistsError;
       });
 
-      const response = repository.create(user);
-
-      await expect(response).rejects.toThrowError();
+      try {
+        await repository.create(user);
+        // fail('Expected error to be thrown');
+      } catch (error: any) {
+        expect(error.message).toBe(expectedFinalError.message);
+      }
     });
   });
 

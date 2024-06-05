@@ -7,7 +7,7 @@ type CreateUserParams = Prisma.Args<typeof database.user, 'create'>['data'];
 export class UserRepository {
   async create({ email, name, password, username }: CreateUserParams) {
     try {
-      return await database.user.create({
+      return database.user.create({
         data: {
           email,
           name,
