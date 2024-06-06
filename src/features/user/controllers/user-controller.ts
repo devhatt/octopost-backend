@@ -67,7 +67,6 @@ export class UserController implements Controller {
     }
   };
 
-
   constructor(
     private validator: Validator,
     private serviceCreate: Service<UserCreateModel>,
