@@ -1,7 +1,10 @@
 version: '3.9'
 
 services:
-  octopost-db:
+  db-dev: &db
+    container_name: octopost-db-dev
+    profiles:
+      - dev
     image: postgres:alpine3.19
     ports:
       - '5432:5432'
@@ -15,17 +18,26 @@ services:
     networks:
       - octopost
 
-  octopost-api:
+  api:
     build:
-      context: ../
-      dockerfile: build.Dockerfile
+      context: ./
+      dockerfile: Dockerfile
     container_name: octopost-api
+    profiles:
+      - prod
     ports:
       - 3000:3000
     depends_on:
-      - octopost-db
+      - db-prod
     networks:
       - octopost
+
+  db-prod:
+    <<: *db
+    container_name: octopost-db
+    profiles:
+      - prod
+
 
 networks:
   octopost:
