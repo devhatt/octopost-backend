@@ -35,4 +35,15 @@ export class UserRepository {
 
     return user;
   }
+
+  async updateIsActiveStatus(userId: string): Promise<void> {
+    await database.user.update({
+      data: {
+        isActive: true,
+      },
+      where: {
+        id: userId,
+      },
+    });
+  }
 }

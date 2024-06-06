@@ -92,4 +92,37 @@ describe('[Repositories] UserRepository', () => {
       expect(result).toBeNull();
     });
   });
+
+  describe('updateIsActiveStatus', () => {
+    it('should call service with correctly params', async () => {
+      const { repository } = makeSut();
+
+      const user = UserMock.create();
+
+      await repository.updateIsActiveStatus(user.id);
+
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        data: {
+          isActive: true,
+        },
+        where: {
+          id: user.id,
+        },
+      });
+    });
+
+    it('should throw an error if an error occurs', async () => {
+      const { repository } = makeSut();
+
+      const user = UserMock.create();
+
+      prisma.user.update.mockImplementationOnce(() => {
+        throw new Error('error');
+      });
+
+      const response = repository.updateIsActiveStatus(user.id);
+
+      await expect(response).rejects.toThrowError();
+    });
+  });
 });

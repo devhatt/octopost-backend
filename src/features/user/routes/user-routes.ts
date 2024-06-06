@@ -9,6 +9,8 @@ const { userController } = userControllerFactory();
 router.get('/:id', userController.userFindById);
 router.post('/', userController.create);
 
+router.get('/:id/accounts', userController.getAccounts);
+
 export default {
   prefix: 'users',
   router,
