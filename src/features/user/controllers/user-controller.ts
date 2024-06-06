@@ -24,7 +24,6 @@ export class UserController implements Controller {
 
       return res.status(HttpStatusCode.created).json(response);
     } catch (error) {
-      // prismaErrorHandler(error);
       next(error);
     }
   };
