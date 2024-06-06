@@ -14,7 +14,7 @@ describe('[Repositories] SocialMediaRepository', () => {
       const { repository, socialMedias } = makeSut();
 
       prisma.socialMedia.findMany.mockResolvedValue(socialMedias);
-      const result = await repository.List();
+      const result = await repository.list();
       expect(result).toBe(socialMedias);
     });
   });
@@ -25,7 +25,7 @@ describe('[Repositories] SocialMediaRepository', () => {
       throw new Error('error');
     });
 
-    const response = repository.List();
+    const response = repository.list();
     await expect(response).rejects.toThrowError();
   });
 });

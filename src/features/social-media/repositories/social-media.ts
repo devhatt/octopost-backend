@@ -1,7 +1,7 @@
 import { database } from '@/shared/infra/database/database.js';
 
 export class SocialMediaRepository {
-  async List() {
+  async list() {
     const socialMedias = await database.socialMedia.findMany({
       select: {
         description: true,
