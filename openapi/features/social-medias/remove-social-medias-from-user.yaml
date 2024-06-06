@@ -1,0 +1,17 @@
+delete:
+  summary: Remove social media from user
+  description: This endpoint allows to remove a social media from user
+  tags:
+    - social-medias
+
+  responses:
+    '204':
+      description: N/A
+    '401':
+      $ref: './errors/unauthorized-error.yaml'
+    '500':
+      $ref: '../../shared/errors/server-error.yaml'
+
+  security:
+    - bearerAuth: []
+    - OAuth2: [read:social_medias]
