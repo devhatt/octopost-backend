@@ -14,7 +14,7 @@ describe('UserCreateService', () => {
     const { socialMediaRepository, socialMediaService, socialMediasMock } =
       makeSut();
 
-    vi.spyOn(socialMediaRepository, 'List').mockResolvedValueOnce(
+    vi.spyOn(socialMediaRepository, 'list').mockResolvedValueOnce(
       socialMediasMock
     );
 
@@ -26,7 +26,7 @@ describe('UserCreateService', () => {
   it('should throw when Repository throws', async () => {
     const { socialMediaRepository, socialMediaService } = makeSut();
 
-    vi.spyOn(socialMediaRepository, 'List').mockImplementationOnce(async () => {
+    vi.spyOn(socialMediaRepository, 'list').mockImplementationOnce(async () => {
       throw new Error('error');
     });
 

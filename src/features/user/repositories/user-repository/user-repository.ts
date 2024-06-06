@@ -1,18 +1,23 @@
 import type { Prisma } from '@prisma/client';
 import { database } from '@/shared/infra/database/database.js';
+import { prismaErrorHandler } from '@/shared/errors/prisma-error.js';
 
 type CreateUserParams = Prisma.Args<typeof database.user, 'create'>['data'];
 
 export class UserRepository {
   async create({ email, name, password, username }: CreateUserParams) {
-    return database.user.create({
-      data: {
-        email,
-        name,
-        password,
-        username,
-      },
-    });
+    try {
+      return database.user.create({
+        data: {
+          email,
+          name,
+          password,
+          username,
+        },
+      });
+    } catch (error) {
+      prismaErrorHandler(error);
+    }
   }
 
   async findById(id: string) {

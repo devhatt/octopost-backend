@@ -1,11 +1,4 @@
-export type UserModel = {
-  email: string;
-  id: string;
-  name: string;
-  password: string;
-  repeatPassword: string;
-  username: string;
-};
+import type { UserModel } from '@/features/user/models/user-model.js';
 
 export type UserCreateModel = Omit<UserModel, 'id'> & {
   repeatPassword: string;
