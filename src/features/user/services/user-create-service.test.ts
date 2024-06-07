@@ -1,5 +1,6 @@
 import type { UserRepository } from '../repositories/user-repository/user-repository.js';
 import { UserCreateService } from './user-create-service.js';
+import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter.js';
 
 const makeSut = () => {
   class UserRepositoryStub implements UserRepository {
@@ -16,28 +17,37 @@ const makeSut = () => {
       });
     }
 
-    findById(): Promise<{
+    findById(id: string): Promise<{
       email: string;
       id: string;
       name: null | string;
       username: string;
     } | null> {
-      throw new Error('Method not implemented.');
+      throw new Error('Method not implemented. ' + id);
     }
   }
 
   const userRepository = new UserRepositoryStub();
 
-  const userCreateService = new UserCreateService(userRepository);
+  const bcryptAdapter = new BcryptAdapter();
 
-  return { userCreateService, userRepository };
+  const userCreateService = new UserCreateService(
+    userRepository,
+    bcryptAdapter
+  );
+
+  return { bcryptAdapter, userCreateService, userRepository };
 };
 
 describe('UserCreateService', () => {
   it('should call userRepository with correct params', async () => {
-    const { userCreateService, userRepository } = makeSut();
+    const { bcryptAdapter, userCreateService, userRepository } = makeSut();
 
     const repositorySpy = vi.spyOn(userRepository, 'create');
+
+    vi.spyOn(bcryptAdapter, 'encrypt').mockImplementationOnce(
+      async () => 'valid_password'
+    );
 
     await userCreateService.execute({
       email: 'valid_email@email.com',
@@ -67,6 +77,20 @@ describe('UserCreateService', () => {
       name: 'valid_name',
       password: 'valid_password',
       repeatPassword: 'valid_password',
+      username: 'valid_username',
+    });
+
+    await expect(response).rejects.toThrowError();
+  });
+
+  it('should conflict when password and repeatPassword dont match', async () => {
+    const { userCreateService } = makeSut();
+
+    const response = userCreateService.execute({
+      email: 'valid_email@email.com',
+      name: 'valid_name',
+      password: 'valid_password',
+      repeatPassword: 'invalid_password',
       username: 'valid_username',
     });
 
