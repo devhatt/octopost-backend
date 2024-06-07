@@ -28,8 +28,8 @@
     "docs:serve": "redocly preview-docs ./openapi/main.yaml",
     "docs:build": "redocly build-docs ./openapi/main.yaml --output build-docs/index.html",
     "docs:lint": "redocly lint --extends minimal ./openapi/main.yaml",
-    "docker-bd:up": "docker compose -f docker/bd-compose.yaml up",
-    "docker-api:up": "docker compose -f docker/api-compose.yaml up --build"
+    "docker-dev": "docker compose --profile dev up",
+    "docker-prod": "docker compose --profile prod up --build"
   },
   "devDependencies": {
     "@commitlint/cli": "19.3.0",
