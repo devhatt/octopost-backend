@@ -36,7 +36,7 @@ describe('UserFindByIdService', () => {
 
     const repositorySpy = vi.spyOn(userRepository, 'findById');
 
-    const result = await userFindByIdService.execute('valid_id');
+    const result = await userFindByIdService.execute({ id: 'valid_id' });
 
     expect(repositorySpy).toHaveBeenCalledWith('valid_id');
     expect(result).toEqual({
@@ -54,7 +54,7 @@ describe('UserFindByIdService', () => {
       throw new Error('error');
     });
 
-    const response = userFindByIdService.execute('valid_id');
+    const response = userFindByIdService.execute({ id: 'valid_id' });
 
     await expect(response).rejects.toThrowError();
   });
@@ -66,7 +66,7 @@ describe('UserFindByIdService', () => {
       async () => null
     );
 
-    const result = await userFindByIdService.execute('non_existent_id');
+    const result = await userFindByIdService.execute({ id: 'non_existent_id' });
 
     expect(result).toBeNull();
   });
