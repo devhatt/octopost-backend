@@ -23,6 +23,8 @@ paths:
     $ref: './features/auth/email-confirmation-path.yaml'
   /users/{id}:
     $ref: './features/user/find-user-by-id-path.yaml'
+  /users/{userId}/accounts/{accountId}:
+    $ref: './features/social-medias/remove-social-medias-from-user.yaml'
   /socialmedias:
     $ref: './features/social-medias/list-available-social-medias.yaml'
 
