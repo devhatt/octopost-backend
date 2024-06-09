@@ -35,7 +35,6 @@ model Account {
   socialMediaId Int?     @map("social_media_id")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
-  deletedAt     DateTime? @map("deleted_at")
 
   user        User?        @relation(fields: [userId], references: [id])
   socialMedia SocialMedia? @relation(fields: [socialMediaId], references: [id])

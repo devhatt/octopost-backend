@@ -1,6 +1,7 @@
 import { AccountRepository } from './account-repository.js';
 import { prisma } from 'mocks/prisma.js';
 import { AccountMock } from '@/shared/test-helpers/mocks/account.mock.js';
+import { database } from '@/shared/infra/database/database.js';
 
 const makeSut = () => {
   const repository = new AccountRepository();
@@ -19,7 +20,6 @@ describe('[Repositories] AccountRepository', () => {
         {
           avatarUrl: account.avatarUrl,
           createdAt: new Date(),
-          deletedAt: null,
           id: account.id,
           socialMediaId: account.socialMediaId,
           updatedAt: new Date(),
@@ -57,8 +57,8 @@ describe('[Repositories] AccountRepository', () => {
     });
   });
 
-  describe('softDeleteAccountsBySocialMediaId', () => {
-    it('soft deletes accounts associated with the given social media id', async () => {
+  describe('deleteAccountsBySocialMediaId', () => {
+    it('deletes accounts associated with the given social media id', async () => {
       const { repository } = makeSut();
 
       const socialMediaId = 123;
@@ -67,18 +67,17 @@ describe('[Repositories] AccountRepository', () => {
         count: 2,
       };
 
-      prisma.account.updateMany.mockResolvedValue(expectedResult);
+      database.account.deleteMany = vi.fn().mockResolvedValue(expectedResult);
 
-      await repository.softDeleteAccountsBySocialMediaId(socialMediaId);
+      await repository.deleteAccountsBySocialMediaId(socialMediaId);
 
-      expect(prisma.account.updateMany).toHaveBeenCalledWith({
-        data: {
-          deletedAt: expect.any(Date),
-        },
+      expect(database.account.deleteMany).toHaveBeenCalledWith({
         where: {
           socialMediaId: socialMediaId,
         },
       });
+
+      expect(database.account.deleteMany).toHaveBeenCalledTimes(1);
     });
   });
 });

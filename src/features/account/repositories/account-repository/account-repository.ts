@@ -1,6 +1,14 @@
 import { database } from '@/shared/infra/database/database.js';
 
 export class AccountRepository {
+  async deleteAccountsBySocialMediaId(socialMediaId: number): Promise<void> {
+    await database.account.deleteMany({
+      where: {
+        socialMediaId: socialMediaId,
+      },
+    });
+  }
+
   async getAccounts(userId: string) {
     const userAccounts = await database.account.findMany({
       where: {
@@ -9,18 +17,5 @@ export class AccountRepository {
     });
 
     return userAccounts;
-  }
-
-  async softDeleteAccountsBySocialMediaId(
-    socialMediaId: number
-  ): Promise<void> {
-    await database.account.updateMany({
-      data: {
-        deletedAt: new Date(),
-      },
-      where: {
-        socialMediaId: socialMediaId,
-      },
-    });
   }
 }
