@@ -1,0 +1,14 @@
+get:
+  summary: User email confirmation
+  description: This endpoint allows the user to perform email confirmation.
+  tags:
+    - user
+
+  parameters:
+    - $ref: './components/email-confirmation-parameters.yaml'
+
+  responses:
+    '204':
+      description: The user's email was confirmed successfully.
+    '500':
+      $ref: '../../shared/errors/server-error.yaml'

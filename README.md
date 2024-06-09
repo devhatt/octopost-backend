@@ -39,10 +39,10 @@ Para rodar o projeto, você precisará ter:
 Para fazer isso, siga
 as [instruções no site do GitHub](https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo).
 
-Após clonar o projeto, acesse a pasta raiz do projeto e execute o comando:
+Após clonar o projeto, acesse a pasta raiz do projeto e inicie o banco de dados com docker:
 
 ```bash
-docker compose up -d
+pnpm docker-dev
 ```
 
 Esse comando irá criar um banco de dados PostgresSQL na porta 5432 utilizando um container Docker.
@@ -61,10 +61,16 @@ Com o banco de dados configurado, instale as dependências do projeto:
 pnpm install
 ```
 
-E rode as migrations para criar as tabelas no banco de dados:
+Rode as migrations para criar as tabelas no banco de dados:
 
 ```bash
 pnpm run migrate
+```
+
+Não se esqueça de gerar as tipagens do banco com o prisma:
+
+```bash
+pnpm dlx prisma generate
 ```
 
 Inicialize o projeto em modo desenvolvimento com o comando:
