@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client';
-import { database } from '@/shared/infra/database/database.js';
 import { prismaErrorHandler } from '@/shared/errors/prisma-error.js';
+import { database } from '@/shared/infra/database/database.js';
 
 type CreateUserParams = Prisma.Args<typeof database.user, 'create'>['data'];
 
