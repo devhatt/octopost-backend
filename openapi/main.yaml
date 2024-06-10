@@ -13,7 +13,7 @@ tags:
   - name: social-medias
     description: Operations about social medias
 paths:
-  /api/users:
+  /users:
     $ref: './features/user/user-create-path.yaml'
   /users/:id/accounts:
     $ref: './features/user/user-network-find-all.yaml'
