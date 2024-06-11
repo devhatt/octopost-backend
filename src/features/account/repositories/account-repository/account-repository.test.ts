@@ -1,6 +1,7 @@
 import { AccountRepository } from './account-repository.js';
 import { prisma } from 'mocks/prisma.js';
 import { AccountMock } from '@/shared/test-helpers/mocks/account.mock.js';
+import { database } from '@/shared/infra/database/database.js';
 
 const makeSut = () => {
   const repository = new AccountRepository();
@@ -10,7 +11,7 @@ const makeSut = () => {
 
 describe('[Repositories] AccountRepository', () => {
   describe('getAccounts', () => {
-    it('should return user accounts if found', async () => {
+    it('returns user accounts if found', async () => {
       const { repository } = makeSut();
 
       const account = AccountMock.create();
@@ -38,7 +39,7 @@ describe('[Repositories] AccountRepository', () => {
       });
     });
 
-    it('should return an empty array if user accounts are not found', async () => {
+    it('returns an empty array if user accounts are not found', async () => {
       const { repository } = makeSut();
 
       const userId = 'non_existent_user_id';
@@ -53,6 +54,30 @@ describe('[Repositories] AccountRepository', () => {
           userId: userId,
         },
       });
+    });
+  });
+
+  describe('deleteAccountsBySocialMediaId', () => {
+    it('deletes accounts associated with the given social media id', async () => {
+      const { repository } = makeSut();
+
+      const socialMediaId = 123;
+
+      const expectedResult = {
+        count: 2,
+      };
+
+      database.account.deleteMany = vi.fn().mockResolvedValue(expectedResult);
+
+      await repository.deleteAccountsBySocialMediaId(socialMediaId);
+
+      expect(database.account.deleteMany).toHaveBeenCalledWith({
+        where: {
+          socialMediaId: socialMediaId,
+        },
+      });
+
+      expect(database.account.deleteMany).toHaveBeenCalledTimes(1);
     });
   });
 });
