@@ -1,12 +1,12 @@
 import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import { defineFlatConfig } from 'eslint-define-config';
-import tsEslint from 'typescript-eslint';
 import importPlugin from 'eslint-plugin-import';
 import perfectionist from 'eslint-plugin-perfectionist';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import vitestPlugin from 'eslint-plugin-vitest';
 import globals from 'globals';
+import tsEslint from 'typescript-eslint';
 
 import 'eslint-plugin-only-warn';
 
@@ -56,7 +56,7 @@ export default defineFlatConfig([
       'import/no-named-as-default': 'warn',
       'import/no-named-as-default-member': 'warn',
       'import/no-unused-modules': 'warn',
-      'import/order': 'warn',
+      'import/order': 'off',
 
       'perfectionist/sort-array-includes': 'warn',
       'perfectionist/sort-classes': 'warn',
