@@ -40,6 +40,7 @@
     "@redocly/cli": "1.12.0",
     "@types/bcrypt": "5.0.2",
     "@types/express": "4.17.21",
+    "@types/jsonwebtoken": "9.0.6",
     "@types/morgan": "1.9.9",
     "@types/supertest": "6.0.2",
     "@vitest/coverage-istanbul": "1.5.0",
@@ -78,7 +79,8 @@
     "dotenv": "16.4.5",
     "express": "4.19.2",
     "glob": "10.3.12",
-    "joi": "17.13.1",
+    "joi": "17.13.0",
+    "jsonwebtoken": "9.0.2",
     "morgan": "1.10.0"
   },
   "config": {
