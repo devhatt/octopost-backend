@@ -1,3 +1,4 @@
+import { BadRequestError } from './bad-request-error.js';
 import { HttpError } from './http-error.js';
 import { UserNotFound } from './user-not-found-error.js';
 import { ValidationError } from './validation-error.js';
@@ -45,6 +46,17 @@ describe('[Errors]', () => {
       expect(error.toJSON()).toStrictEqual({
         code: 404,
         errors: additionalErrors,
+      });
+    });
+  });
+
+  describe('bad-request-error', () => {
+    it('should parse to json correctly', () => {
+      const error = new BadRequestError('error message');
+
+      expect(error.toJSON()).toStrictEqual({
+        code: 400,
+        error: 'error message',
       });
     });
   });
