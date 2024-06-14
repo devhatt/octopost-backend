@@ -6,7 +6,12 @@ import { Validator } from '@/shared/infra/validator/validator.js';
 
 export function authControllerFactory() {
   const validator = new Validator();
-  const service = {} as Service;
-  const authController = new AuthController(validator, service);
+  const authService = {} as Service;
+  const confirmationService = {} as Service;
+  const authController = new AuthController(
+    validator,
+    authService,
+    confirmationService
+  );
   return { authController };
 }

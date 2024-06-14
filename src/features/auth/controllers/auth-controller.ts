@@ -6,6 +6,20 @@ import { HttpStatusCode } from '@/shared/protocols/http-client.js';
 import type { Service } from '@/shared/protocols/service.js';
 
 export class AuthController implements Controller {
+  confirmation: AsyncRequestHandler = async (req, res, next) => {
+    const { token } = req.query;
+
+    try {
+      await this.confirmationService.execute({
+        token,
+      });
+
+      return res.status(HttpStatusCode.noContent).send();
+    } catch (error) {
+      next(error);
+    }
+  };
+
   login: AsyncRequestHandler = async (req, res, next) => {
     try {
       this.validator.validate(authSchema, {
@@ -23,6 +37,7 @@ export class AuthController implements Controller {
   };
   constructor(
     private validator: Validator,
-    private authService: Service<unknown>
+    private authService: Service<unknown>,
+    private confirmationService: Service<unknown>
   ) {}
 }
