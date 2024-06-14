@@ -3,6 +3,7 @@ import type { CryptoAdapter } from '@/shared/infra/crypto/crypto-adapter.js';
 import type { AuthRepository } from '@/features/authentication/repositories/auth-repository/auth-repository.js';
 import type { AuthLoginModel } from '../models/auth-login-models.js';
 import type { JWTHelper } from '@/shared/infra/jwt/jwt.js';
+import { InvalidCredentialsError } from '@/shared/errors/invalid-credentials-error.js';
 
 export class AuthLoginService implements Service<AuthLoginModel> {
   constructor(
@@ -20,7 +21,7 @@ export class AuthLoginService implements Service<AuthLoginModel> {
     });
 
     if (!user) {
-      throw new Error('Invalid Credentials!');
+      throw new InvalidCredentialsError();
     }
 
     const token = this.jwt.createToken({ userId: user.id });

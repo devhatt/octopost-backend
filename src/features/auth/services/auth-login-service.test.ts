@@ -74,7 +74,7 @@ describe('Auth Login Service Sut', () => {
 
     vi.spyOn(authRepository, 'findUserByCredentials').mockImplementationOnce(
       async () => {
-        throw new Error('error');
+        throw new Error('Invalid Credentials');
       }
     );
 
