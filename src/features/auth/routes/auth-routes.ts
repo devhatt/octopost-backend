@@ -7,6 +7,7 @@ const router = Router();
 
 const { authController } = authControllerFactory();
 router.post('/login', authController.login);
+router.get('/confirmation', authController.confirmation);
 
 export default {
   prefix: 'auth',
