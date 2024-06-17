@@ -1,9 +1,9 @@
-import { UserController } from '../controllers/user-controller.js';
-import { UserRepository } from '../repositories/user-repository/user-repository.js';
-import { UserCreateService } from '../services/user-create-service.js';
-import { Validator } from '@/shared/infra/validator/validator.js';
-import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service.js';
-import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter.js';
+import { UserController } from '../controllers/user-controller';
+import { UserRepository } from '../repositories/user-repository/user-repository';
+import { UserCreateService } from '../services/user-create-service';
+import { Validator } from '@/shared/infra/validator/validator';
+import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
+import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
 
 export function userControllerFactory() {
   const userRepository = new UserRepository();

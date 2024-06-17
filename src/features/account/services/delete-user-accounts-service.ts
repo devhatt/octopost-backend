@@ -1,7 +1,8 @@
-import type { Service } from '@/shared/protocols/service.js';
-import type { AccountRepository } from '../repositories/account-repository/account-repository.js';
-import type { AccountModel } from '../models/account-model.js';
-import { BadRequestError } from '@/shared/errors/bad-request-error.js';
+import { BadRequestError } from '@/shared/errors/bad-request-error';
+import type { Service } from '@/shared/protocols/service';
+
+import type { AccountModel } from '../models/account-model';
+import type { AccountRepository } from '../repositories/account-repository/account-repository';
 
 export class DeleteUserAccountsService implements Service<AccountModel> {
   constructor(private readonly accountRepository: AccountRepository) {}

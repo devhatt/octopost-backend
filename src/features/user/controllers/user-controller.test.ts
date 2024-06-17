@@ -1,12 +1,12 @@
 import { mockDeep } from 'vitest-mock-extended';
 import type { Request, Response } from 'express';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/react-native.js';
-import { UserController } from './user-controller.js';
-import { HttpError } from '@/shared/errors/http-error.js';
-import type { Validator } from '@/shared/infra/validator/validator.js';
-import type { Service } from '@/shared/protocols/service.js';
-import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
-import { ConflictError } from '@/shared/errors/conflict-error.js';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/react-native';
+import { UserController } from './user-controller';
+import { HttpError } from '@/shared/errors/http-error';
+import type { Validator } from '@/shared/infra/validator/validator';
+import type { Service } from '@/shared/protocols/service';
+import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
+import { ConflictError } from '@/shared/errors/conflict-error';
 
 const makeSut = () => {
   class ValidatorStub implements Validator {

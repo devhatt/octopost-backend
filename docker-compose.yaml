@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   db-dev: &db
     container_name: octopost-db-dev

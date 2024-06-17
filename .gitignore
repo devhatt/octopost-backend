@@ -5,5 +5,5 @@ build
 dist
 coverage
 .idea/
-*.env*
+.env
 build-docs

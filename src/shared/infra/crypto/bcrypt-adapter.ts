@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import type { CryptoAdapter } from './crypto-adapter.js';
+import type { CryptoAdapter } from './crypto-adapter';
 
 export class BcryptAdapter implements CryptoAdapter {
   constructor() {}

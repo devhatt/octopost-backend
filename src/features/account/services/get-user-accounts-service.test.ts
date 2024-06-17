@@ -1,6 +1,6 @@
-import { describe, expect, it, vi } from 'vitest';
-import { GetUserAccountsService } from './get-user-accounts-service.js';
-import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
+import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
+
+import { GetUserAccountsService } from './get-user-accounts-service';
 
 const makeSut = () => {
   const userRepository = {

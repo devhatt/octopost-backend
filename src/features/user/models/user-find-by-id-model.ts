@@ -1,4 +1,4 @@
-import type { UserModel } from '@/features/user/models/user-model.js';
+import type { UserModel } from '@/features/user/models/user-model';
 
 export type UserFindByIdModel = {
   id: string;

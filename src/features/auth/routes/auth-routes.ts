@@ -1,5 +1,3 @@
-/* istanbul ignore file -- @preserve */
-
 import { Router } from 'express';
 import { authControllerFactory } from './auth-controller-factory.js';
 

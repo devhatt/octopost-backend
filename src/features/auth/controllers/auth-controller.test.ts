@@ -1,9 +1,9 @@
 import { mockDeep } from 'vitest-mock-extended';
 import type { Request, Response } from 'express';
-import { AuthController } from './auth-controller.js';
-import type { Validator } from '@/shared/infra/validator/validator.js';
-import type { Service } from '@/shared/protocols/service.js';
-import { HttpError } from '@/shared/errors/http-error.js';
+import { AuthController } from './auth-controller';
+import type { Validator } from '@/shared/infra/validator/validator';
+import type { Service } from '@/shared/protocols/service';
+import { HttpError } from '@/shared/errors/http-error';
 
 const makeSut = () => {
   class ValidatorStub implements Validator {

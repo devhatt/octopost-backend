@@ -1,7 +1,7 @@
-import type { Controller } from '@/shared/protocols/controller.js';
-import type { Service } from '@/shared/protocols/service.js';
-import { HttpStatusCode } from '@/shared/protocols/http-client.js';
-import type { AsyncRequestHandler } from '@/shared/protocols/handlers.js';
+import type { Controller } from '@/shared/protocols/controller';
+import type { Service } from '@/shared/protocols/service';
+import { HttpStatusCode } from '@/shared/protocols/http-client';
+import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
 
 export class SocialMediasController implements Controller {
   findAll: AsyncRequestHandler = async (_req, res, next) => {

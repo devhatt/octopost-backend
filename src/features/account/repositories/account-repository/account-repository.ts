@@ -1,4 +1,4 @@
-import { database } from '@/shared/infra/database/database.js';
+import { database } from '@/shared/infra/database/database';
 
 export class AccountRepository {
   async deleteAccountsBySocialMediaId(socialMediaId: number): Promise<void> {

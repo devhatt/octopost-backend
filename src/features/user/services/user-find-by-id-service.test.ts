@@ -1,5 +1,5 @@
-import type { UserRepository } from '../repositories/user-repository/user-repository.js';
-import { UserFindByIdService } from './user-find-by-id-service.js';
+import type { UserRepository } from '../repositories/user-repository/user-repository';
+import { UserFindByIdService } from './user-find-by-id-service';
 
 const makeSut = () => {
   class UserRepositoryStub implements UserRepository {
@@ -21,6 +21,9 @@ const makeSut = () => {
         name: 'valid_name',
         username: 'valid_username',
       });
+    }
+    updateIsActiveStatus(_: string): Promise<void> {
+      throw new Error('Method not implemented.');
     }
   }
 

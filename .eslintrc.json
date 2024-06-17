@@ -1,0 +1,177 @@
+{
+  "ignorePatterns": [
+    "node_modules",
+    "coverage",
+    "dist",
+    "build",
+    "pnpm-lock.yaml"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
+  "env": {
+    "node": true
+  },
+  "plugins": [
+    "perfectionist",
+    "@typescript-eslint",
+    "vitest",
+    "prettier",
+    "simple-import-sort",
+    "import"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "settings": {
+    "import/parsers": {
+      "espree": [".js", ".cjs", ".mjs", ".jsx"]
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".ts"]
+      },
+      "typescript": true
+    }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.js"],
+      "rules": {
+        "arrow-body-style": ["warn", "as-needed"],
+        "class-methods-use-this": "off",
+        "dot-notation": "off",
+        "max-params": "off",
+        "no-loop-func": "off",
+        "no-loss-of-precision": "off",
+        "no-magic-numbers": "off",
+        "no-unused-vars": "off",
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "import/default": "error",
+        "import/export": "warn",
+        "import/namespace": "warn",
+        "import/newline-after-import": "error",
+        "import/no-useless-path-segments": [
+          "error",
+          {
+            "noUselessIndex": true
+          }
+        ],
+        "import/no-absolute-path": "warn",
+        "import/no-default-export": "error",
+        "import/no-duplicates": "warn",
+        "import/no-named-as-default": "warn",
+        "import/no-named-as-default-member": "warn",
+        "import/no-unused-modules": "warn",
+        "import/first": "error",
+        "import/no-relative-packages": "error",
+        "import/no-self-import": "error",
+        "import/no-deprecated": "error",
+        "import/no-cycle": "off",
+        "import/no-namespace": "off",
+        "import/no-internal-modules": "off",
+        "import/order": "off",
+        "perfectionist/sort-array-includes": "warn",
+        "perfectionist/sort-classes": "warn",
+        "perfectionist/sort-enums": "warn",
+        "perfectionist/sort-exports": "warn",
+        "perfectionist/sort-interfaces": "warn",
+        "perfectionist/sort-jsx-props": "warn",
+        "perfectionist/sort-maps": "warn",
+        "perfectionist/sort-object-types": "warn",
+        "perfectionist/sort-objects": "warn",
+        "perfectionist/sort-union-types": "warn",
+        "unicorn/no-null": "off",
+        "unicorn/prevent-abbreviations": "off"
+      }
+    },
+    {
+      "files": ["**/*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "rules": {
+        "@typescript-eslint/await-thenable": "warn",
+        "@typescript-eslint/ban-ts-comment": "warn",
+        "@typescript-eslint/ban-types": "warn",
+        "@typescript-eslint/consistent-type-exports": "warn",
+        "@typescript-eslint/consistent-type-imports": [
+          "warn",
+          {
+            "prefer": "type-imports"
+          }
+        ],
+        "@typescript-eslint/no-array-constructor": "warn",
+        "@typescript-eslint/no-base-to-string": "warn",
+        "@typescript-eslint/no-duplicate-enum-values": "warn",
+        "@typescript-eslint/no-duplicate-type-constituents": "warn",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-extra-non-null-assertion": "warn",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-for-in-array": "warn",
+        "@typescript-eslint/no-implied-eval": "warn",
+        "@typescript-eslint/no-loss-of-precision": "warn",
+        "@typescript-eslint/no-misused-new": "warn",
+        "@typescript-eslint/no-misused-promises": "warn",
+        "@typescript-eslint/no-namespace": "warn",
+        "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
+        "@typescript-eslint/no-redundant-type-constituents": "warn",
+        "@typescript-eslint/no-this-alias": "warn",
+        "@typescript-eslint/no-unnecessary-type-assertion": "warn",
+        "@typescript-eslint/no-unnecessary-type-constraint": "warn",
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "args": "all",
+            "argsIgnorePattern": "^_",
+            "caughtErrors": "all",
+            "caughtErrorsIgnorePattern": "^_",
+            "destructuredArrayIgnorePattern": "^_",
+            "ignoreRestSiblings": true,
+            "varsIgnorePattern": "^_"
+          }
+        ],
+        "@typescript-eslint/no-var-requires": "warn",
+        "@typescript-eslint/prefer-as-const": "warn",
+        "@typescript-eslint/require-await": "warn",
+        "@typescript-eslint/restrict-plus-operands": "warn",
+        "@typescript-eslint/restrict-template-expressions": "warn",
+        "@typescript-eslint/triple-slash-reference": "warn",
+        "@typescript-eslint/unbound-method": "warn"
+      }
+    },
+    {
+      "files": ["**/routes/*-routes.ts"],
+      "rules": {
+        "@typescript-eslint/no-misused-promises": "off",
+        "import/no-default-export": "off"
+      }
+    },
+    {
+      "files": ["**/*.test.ts"],
+      "globals": {
+        "jest": true
+      },
+      "rules": {
+        "no-undef": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "vitest/expect-expect": "warn",
+        "vitest/no-commented-out-tests": "warn",
+        "vitest/no-identical-title": "warn",
+        "vitest/no-import-node-test": "warn",
+        "vitest/require-local-test-context-for-concurrent-snapshots": "warn",
+        "vitest/valid-describe-callback": "warn",
+        "vitest/valid-expect": "warn",
+        "vitest/valid-title": "warn"
+      }
+    }
+  ],
+  "rules": {
+    "prettier/prettier": "error"
+  }
+}

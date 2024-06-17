@@ -1,7 +1,5 @@
-/* istanbul ignore file -- @preserve */
-
 import { Router } from 'express';
-import { socialMediasControllerFactory } from './social-medias-controller-factory.js';
+import { socialMediasControllerFactory } from './social-medias-controller-factory';
 
 const router = Router();
 

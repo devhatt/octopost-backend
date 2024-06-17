@@ -1,5 +1,6 @@
 import type { ObjectSchema } from 'joi';
-import { ValidationError } from '@/shared/errors/validation-error.js';
+
+import { ValidationError } from '@/shared/errors/validation-error';
 
 export class Validator {
   public validate(schema: ObjectSchema, payload: unknown): boolean {

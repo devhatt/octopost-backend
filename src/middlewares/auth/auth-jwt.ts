@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
-import type { UserRepository } from '@/features/user/repositories/user-repository/user-repository.js';
-import type { JWTHelper } from '@/shared/infra/jwt/jwt.js';
+import type { UserRepository } from '@/features/user/repositories/user-repository/user-repository';
+import type { JWTHelper } from '@/shared/infra/jwt/jwt';
 
 export class AuthenticationJWT {
   constructor(

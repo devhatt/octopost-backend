@@ -1,4 +1,4 @@
-import { database } from '@/shared/infra/database/database.js';
+import { database } from '@/shared/infra/database/database';
 
 export class SocialMediaRepository {
   async list() {

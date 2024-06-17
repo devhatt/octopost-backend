@@ -1,8 +1,8 @@
 import { mockDeep } from 'vitest-mock-extended';
 import type { Request, Response } from 'express';
-import { SocialMediasController } from './social-medias-controller.js';
-import type { Service } from '@/shared/protocols/service.js';
-import { HttpError } from '@/shared/errors/http-error.js';
+import { SocialMediasController } from './social-medias-controller';
+import type { Service } from '@/shared/protocols/service';
+import { HttpError } from '@/shared/errors/http-error';
 
 const makeSut = () => {
   class ServiceFindAllStub implements Service {

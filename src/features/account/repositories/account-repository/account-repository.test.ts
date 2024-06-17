@@ -1,7 +1,9 @@
-import { AccountRepository } from './account-repository.js';
-import { prisma } from 'mocks/prisma.js';
-import { AccountMock } from '@/shared/test-helpers/mocks/account.mock.js';
-import { database } from '@/shared/infra/database/database.js';
+import { prisma } from 'mocks/prisma';
+
+import { database } from '@/shared/infra/database/database';
+import { AccountMock } from '@/shared/test-helpers/mocks/account.mock';
+
+import { AccountRepository } from './account-repository';
 
 const makeSut = () => {
   const repository = new AccountRepository();

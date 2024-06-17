@@ -1,5 +1,5 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { ConflictError } from '@/shared/errors/conflict-error.js';
+import { ConflictError } from '@/shared/errors/conflict-error';
 
 function prismaErrorHandler(error: unknown) {
   if (error instanceof PrismaClientKnownRequestError) {

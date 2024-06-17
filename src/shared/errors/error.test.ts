@@ -1,7 +1,7 @@
-import { BadRequestError } from './bad-request-error.js';
-import { HttpError } from './http-error.js';
-import { UserNotFound } from './user-not-found-error.js';
-import { ValidationError } from './validation-error.js';
+import { BadRequestError } from './bad-request-error';
+import { HttpError } from './http-error';
+import { UserNotFound } from './user-not-found-error';
+import { ValidationError } from './validation-error';
 
 describe('[Errors]', () => {
   describe('http-error', () => {

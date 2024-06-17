@@ -1,8 +1,8 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { UserRepository } from './user-repository.js';
-import { prisma } from 'mocks/prisma.js';
-import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
-import { ConflictError } from '@/shared/errors/conflict-error.js';
+import { UserRepository } from './user-repository';
+import { prisma } from 'mocks/prisma';
+import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
+import { ConflictError } from '@/shared/errors/conflict-error';
 
 const makeSut = () => {
   const repository = new UserRepository();

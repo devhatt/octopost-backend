@@ -1,6 +1,6 @@
-import { SocialMediaRepository } from '../repositories/social-media.js';
-import { ListSocialMediasService } from './list-social-medias.js';
-import { SocilMediaMock } from '@/shared/test-helpers/mocks/social-media.mock.js';
+import { SocialMediaRepository } from '../repositories/social-media';
+import { ListSocialMediasService } from './list-social-medias';
+import { SocilMediaMock } from '@/shared/test-helpers/mocks/social-media.mock';
 
 const makeSut = () => {
   const socialMediaRepository = new SocialMediaRepository();

@@ -1,9 +1,9 @@
-import { authSchema } from '../validators/auth-schema.js';
-import type { Validator } from '@/shared/infra/validator/validator.js';
-import type { Controller } from '@/shared/protocols/controller.js';
-import type { AsyncRequestHandler } from '@/shared/protocols/handlers.js';
-import { HttpStatusCode } from '@/shared/protocols/http-client.js';
-import type { Service } from '@/shared/protocols/service.js';
+import { authSchema } from '../validators/auth-schema';
+import type { Validator } from '@/shared/infra/validator/validator';
+import type { Controller } from '@/shared/protocols/controller';
+import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
+import { HttpStatusCode } from '@/shared/protocols/http-client';
+import type { Service } from '@/shared/protocols/service';
 
 export class AuthController implements Controller {
   login: AsyncRequestHandler = async (req, res, next) => {

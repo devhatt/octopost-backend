@@ -1,5 +1,5 @@
-import { HttpStatusCode } from '../protocols/http-client.js';
-import { HttpError } from './http-error.js';
+import { HttpStatusCode } from '../protocols/http-client';
+import { HttpError } from './http-error';
 
 export class UserNotFound extends HttpError {
   constructor(

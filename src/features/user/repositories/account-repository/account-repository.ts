@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client';
-import { database } from '@/shared/infra/database/database.js';
+import { database } from '@/shared/infra/database/database';
 
 type CreateAccountParams = Prisma.Args<
   typeof database.account,

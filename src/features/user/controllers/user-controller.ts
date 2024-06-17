@@ -1,14 +1,13 @@
 import type { RequestHandler } from 'express';
-import type { UserCreateModel } from '../models/user-create-model.js';
-import type { UserFindByIdModel } from '../models/user-find-by-id-model.js';
-import { userCreateSchema, userFindByIdSchema } from '../validators/index.js';
-import { userIdParamsSchema } from '../validators/user-id-schema.js';
-
-import type { Validator } from '@/shared/infra/validator/validator.js';
-import type { Controller } from '@/shared/protocols/controller.js';
-import type { AsyncRequestHandler } from '@/shared/protocols/handlers.js';
-import { HttpStatusCode } from '@/shared/protocols/http-client.js';
-import type { Service } from '@/shared/protocols/service.js';
+import type { UserCreateModel } from '../models/user-create-model';
+import type { UserFindByIdModel } from '../models/user-find-by-id-model';
+import { userCreateSchema, userFindByIdSchema } from '../validators/index';
+import { userIdParamsSchema } from '../validators/user-id-schema';
+import type { Validator } from '@/shared/infra/validator/validator';
+import type { Controller } from '@/shared/protocols/controller';
+import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
+import { HttpStatusCode } from '@/shared/protocols/http-client';
+import type { Service } from '@/shared/protocols/service';
 
 export class UserController implements Controller {
   create: AsyncRequestHandler = async (req, res, next) => {

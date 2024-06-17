@@ -1,5 +1,6 @@
-import { BcryptAdapter } from './bcrypt-adapter.js';
-import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
+import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
+
+import { BcryptAdapter } from './bcrypt-adapter';
 
 const makeSut = () => {
   const crypto = new BcryptAdapter();

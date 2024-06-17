@@ -1,8 +1,6 @@
-/* istanbul ignore file -- @preserve */
-
-import { AuthController } from '../controllers/auth-controller.js';
-import type { Service } from '@/shared/protocols/service.js';
-import { Validator } from '@/shared/infra/validator/validator.js';
+import { AuthController } from '../controllers/auth-controller';
+import type { Service } from '@/shared/protocols/service';
+import { Validator } from '@/shared/infra/validator/validator';
 
 export function authControllerFactory() {
   const validator = new Validator();

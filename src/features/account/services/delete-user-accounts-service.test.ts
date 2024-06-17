@@ -1,7 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
-import { AccountMock } from '@/shared/test-helpers/mocks/account.mock.js';
-import { DeleteUserAccountsService } from './delete-user-accounts-service.js';
-import { BadRequestError } from '@/shared/errors/bad-request-error.js';
+import { BadRequestError } from '@/shared/errors/bad-request-error';
+import { AccountMock } from '@/shared/test-helpers/mocks/account.mock';
+
+import { DeleteUserAccountsService } from './delete-user-accounts-service';
 
 const makeSut = () => {
   const accountRepository = {
