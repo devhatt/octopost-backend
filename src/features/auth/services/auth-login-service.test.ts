@@ -64,7 +64,7 @@ describe('Auth Login Service Sut', () => {
     expect(token).toBeTruthy();
   });
 
-  it('should return return error if wrong credentials', async () => {
+  it('should return return error if credentials are wrong', async () => {
     const { authLoginService, authRepository } = makeSut();
 
     const userCredentials = {
@@ -72,11 +72,7 @@ describe('Auth Login Service Sut', () => {
       username: 'usernmae',
     };
 
-    vi.spyOn(authRepository, 'findUserByCredentials').mockImplementationOnce(
-      async () => {
-        throw new Error('Invalid Credentials');
-      }
-    );
+    vi.spyOn(authRepository, 'findUserByCredentials').mockResolvedValue(null);
 
     const response = authLoginService.execute(userCredentials);
 
