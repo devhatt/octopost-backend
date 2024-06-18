@@ -1,7 +1,8 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+
 import { ConflictError } from '@/shared/errors/conflict-error';
 
-function prismaErrorHandler(error: unknown) {
+export function prismaErrorHandler(error: unknown) {
   if (error instanceof PrismaClientKnownRequestError) {
     switch (error.code) {
       case 'P2002': {
@@ -14,5 +15,3 @@ function prismaErrorHandler(error: unknown) {
 
   return;
 }
-
-export { prismaErrorHandler };

@@ -4,7 +4,9 @@
     "coverage",
     "dist",
     "build",
-    "pnpm-lock.yaml"
+    "pnpm-lock.yaml",
+    "vitest.config.ts",
+    "commitlint.config.ts"
   ],
   "extends": [
     "eslint:recommended",
@@ -40,7 +42,7 @@
   },
   "overrides": [
     {
-      "files": ["**/*.ts", "**/*.js"],
+      "files": ["**/*.ts"],
       "rules": {
         "arrow-body-style": ["warn", "as-needed"],
         "class-methods-use-this": "off",
@@ -81,7 +83,6 @@
         "perfectionist/sort-enums": "warn",
         "perfectionist/sort-exports": "warn",
         "perfectionist/sort-interfaces": "warn",
-        "perfectionist/sort-jsx-props": "warn",
         "perfectionist/sort-maps": "warn",
         "perfectionist/sort-object-types": "warn",
         "perfectionist/sort-objects": "warn",
@@ -105,8 +106,6 @@
           }
         ],
         "@typescript-eslint/no-array-constructor": "warn",
-        "@typescript-eslint/no-base-to-string": "warn",
-        "@typescript-eslint/no-duplicate-enum-values": "warn",
         "@typescript-eslint/no-duplicate-type-constituents": "warn",
         "@typescript-eslint/no-explicit-any": "warn",
         "@typescript-eslint/no-extra-non-null-assertion": "warn",

@@ -9,13 +9,11 @@ export class AccountRepository {
     });
   }
 
-  async getAccounts(userId: string) {
-    const userAccounts = await database.account.findMany({
+  getAccounts(userId: string) {
+    return database.account.findMany({
       where: {
         userId: userId,
       },
     });
-
-    return userAccounts;
   }
 }

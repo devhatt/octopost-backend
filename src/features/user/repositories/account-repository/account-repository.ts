@@ -1,4 +1,5 @@
 import type { Prisma } from '@prisma/client';
+
 import { database } from '@/shared/infra/database/database';
 
 type CreateAccountParams = Prisma.Args<

@@ -1,9 +1,10 @@
+import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
+import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
+import { Validator } from '@/shared/infra/validator/validator';
+
 import { UserController } from '../controllers/user-controller';
 import { UserRepository } from '../repositories/user-repository/user-repository';
 import { UserCreateService } from '../services/user-create-service';
-import { Validator } from '@/shared/infra/validator/validator';
-import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
-import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
 
 export function userControllerFactory() {
   const userRepository = new UserRepository();

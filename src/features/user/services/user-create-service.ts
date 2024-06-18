@@ -1,8 +1,9 @@
+import { ValidationError } from '@/shared/errors/validation-error';
+import type { CryptoAdapter } from '@/shared/infra/crypto/crypto-adapter';
+import type { Service } from '@/shared/protocols/service';
+
 import type { UserCreateModel } from '../models/user-create-model';
 import type { UserRepository } from '../repositories/user-repository/user-repository';
-import { ValidationError } from '@/shared/errors/validation-error';
-import type { Service } from '@/shared/protocols/service';
-import type { CryptoAdapter } from '@/shared/infra/crypto/crypto-adapter';
 
 export class UserCreateService implements Service<UserCreateModel> {
   constructor(

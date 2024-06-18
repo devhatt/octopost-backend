@@ -1,6 +1,8 @@
-import { SocialMediaRepository } from './social-media';
 import { prisma } from 'mocks/prisma';
+
 import { SocilMediaMock } from '@/shared/test-helpers/mocks/social-media.mock';
+
+import { SocialMediaRepository } from './social-media';
 
 const makeSut = () => {
   const repository = new SocialMediaRepository();

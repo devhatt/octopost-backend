@@ -1,7 +1,9 @@
 import type { Request, Response } from 'express';
-import { AuthenticationJWT } from './auth-jwt';
+
 import type { UserRepository } from '@/features/user/repositories/user-repository/user-repository';
 import { JWTHelper } from '@/shared/infra/jwt/jwt';
+
+import { AuthenticationJWT } from './auth-jwt';
 
 const secretKey = '321';
 

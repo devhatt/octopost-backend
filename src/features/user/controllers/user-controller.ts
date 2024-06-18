@@ -1,13 +1,15 @@
 import type { RequestHandler } from 'express';
-import type { UserCreateModel } from '../models/user-create-model';
-import type { UserFindByIdModel } from '../models/user-find-by-id-model';
-import { userCreateSchema, userFindByIdSchema } from '../validators/index';
-import { userIdParamsSchema } from '../validators/user-id-schema';
+
 import type { Validator } from '@/shared/infra/validator/validator';
 import type { Controller } from '@/shared/protocols/controller';
 import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
 import { HttpStatusCode } from '@/shared/protocols/http-client';
 import type { Service } from '@/shared/protocols/service';
+
+import type { UserCreateModel } from '../models/user-create-model';
+import type { UserFindByIdModel } from '../models/user-find-by-id-model';
+import { userCreateSchema, userFindByIdSchema } from '../validators';
+import { userIdParamsSchema } from '../validators/user-id-schema';
 
 export class UserController implements Controller {
   create: AsyncRequestHandler = async (req, res, next) => {

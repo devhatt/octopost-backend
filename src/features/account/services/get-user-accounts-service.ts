@@ -1,8 +1,8 @@
-import type { Service } from '@/shared/protocols/service';
+import type { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
 import type { UserModel } from '@/features/user/models/user-model';
 import type { UserRepository } from '@/features/user/repositories/user-repository/user-repository';
-import type { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
 import { UserNotFound } from '@/shared/errors/user-not-found-error';
+import type { Service } from '@/shared/protocols/service';
 
 export class GetUserAccountsService implements Service<UserModel> {
   constructor(

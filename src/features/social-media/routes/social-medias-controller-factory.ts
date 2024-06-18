@@ -1,6 +1,6 @@
 import { SocialMediasController } from '@/features/social-media/controllers/social-medias-controller';
-import { ListSocialMediasService } from '@/features/social-media/services/list-social-medias';
 import { SocialMediaRepository } from '@/features/social-media/repositories/social-media';
+import { ListSocialMediasService } from '@/features/social-media/services/list-social-medias';
 
 export function socialMediasControllerFactory() {
   const repository = new SocialMediaRepository();

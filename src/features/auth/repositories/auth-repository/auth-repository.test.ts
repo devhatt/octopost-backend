@@ -1,6 +1,8 @@
-import { AuthRepository } from './auth-repository';
 import { prisma } from 'mocks/prisma';
+
 import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
+
+import { AuthRepository } from './auth-repository';
 
 const makeSut = () => {
   const repository = new AuthRepository();
