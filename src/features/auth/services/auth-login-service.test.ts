@@ -27,6 +27,15 @@ const makeSut = () => {
       });
     }
 
+    findUserById(id: string): Promise<{
+      email: string;
+      id: string;
+      name: null | string;
+      username: string;
+    } | null> {
+      throw new Error('Method not implemented.' + id);
+    }
+
     findUserByUsername(username: string): Promise<{
       email: string;
       id: string;

@@ -35,5 +35,5 @@ export class AuthController implements Controller {
     }
   };
 
-  constructor(private authLoginService: AuthLoginService) {}
+  constructor(private authLoginService: AuthLoginService) { }
 }
