@@ -42,6 +42,7 @@
     "@types/express": "4.17.21",
     "@types/jsonwebtoken": "9.0.6",
     "@types/morgan": "1.9.9",
+    "@types/nodemailer": "6.4.15",
     "@types/supertest": "6.0.2",
     "@vitest/coverage-istanbul": "1.5.0",
     "@vitest/ui": "1.5.0",
@@ -79,9 +80,11 @@
     "dotenv": "16.4.5",
     "express": "4.19.2",
     "glob": "10.3.12",
+    "handlebars": "4.7.8",
     "joi": "17.13.0",
     "jsonwebtoken": "9.0.2",
-    "morgan": "1.10.0"
+    "morgan": "1.10.0",
+    "nodemailer": "6.9.13"
   },
   "config": {
     "commitizen": {
