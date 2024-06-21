@@ -1,6 +1,7 @@
 import { BadRequestError } from './bad-request-error';
 import { ConflictError } from './conflict-error';
 import { HttpError } from './http-error';
+import { InternalServerError } from './internal-server-error';
 import { InvalidCredentialsError } from './invalid-credentials-error';
 import { UserNotFound } from './user-not-found-error';
 import { ValidationError } from './validation-error';
@@ -66,6 +67,17 @@ describe('[Errors]', () => {
   describe('conflict-error', () => {
     it('should parse to json correctly', () => {
       const error = new ConflictError('error message');
+
+      expect(error.toJSON()).toStrictEqual({
+        code: 409,
+        error: 'error message',
+      });
+    });
+  });
+
+  describe('internal-server-error', () => {
+    it('correctly serializes the InternalServerError instance to a JSON object', () => {
+      const error = new InternalServerError('error message');
 
       expect(error.toJSON()).toStrictEqual({
         code: 409,
