@@ -1,5 +1,4 @@
-export type EmailModel = {
-  [key: string]: unknown;
+export type EmailModel = Record<string, unknown> & {
   recipient: string;
   subject: string;
   template: string;
