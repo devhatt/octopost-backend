@@ -1,6 +1,6 @@
 import env from '@/config/env.js';
 import { NodemailerService } from './nodemailer-service.js';
-import { transporter } from '@/shared/infra/email/nodemailer/config/transporter.js'; // Importe corretamente o transporter
+import { transporter } from '@/shared/infra/email/nodemailer/config/transporter.js';
 import type { SentMessageInfo } from 'nodemailer';
 
 describe('NodemailerService', () => {
