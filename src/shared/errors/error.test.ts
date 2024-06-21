@@ -63,7 +63,7 @@ describe('[Errors]', () => {
   });
 
   describe('internal-server-error', () => {
-    it('parses to json correctly', () => {
+    it('correctly serializes the InternalServerError instance to a JSON object', () => {
       const error = new InternalServerError('error message');
 
       expect(error.toJSON()).toStrictEqual({
