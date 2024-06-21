@@ -1,3 +1,3 @@
-export interface Service<P = unknown, R = unknown> {
+export interface Service<P, R> {
   execute(params: P): Promise<R>;
 }

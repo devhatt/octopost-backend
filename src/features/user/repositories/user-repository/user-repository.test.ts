@@ -17,14 +17,17 @@ describe('[Repositories] UserRepository', () => {
     it('should call service with correctly params', async () => {
       const { repository } = makeSut();
 
-      const user = UserMock.create();
+      const input = {
+        email: 'test@test.com',
+        name: 'test',
+        password: 'password',
+        username: 'test',
+      };
 
-      await repository.create(user);
-
-      const { id, ...userWithoutId } = user;
+      await repository.create(input);
 
       expect(prisma.user.create).toHaveBeenCalledWith({
-        data: userWithoutId,
+        data: input,
       });
     });
 
@@ -61,9 +64,7 @@ describe('[Repositories] UserRepository', () => {
 
       const user = UserMock.create();
 
-      const expectedResult = UserMock.findByID();
-
-      prisma.user.findUnique.mockResolvedValue(expectedResult);
+      prisma.user.findUnique.mockResolvedValue(user);
 
       const result = await repository.findById(user.id);
 
@@ -73,8 +74,7 @@ describe('[Repositories] UserRepository', () => {
           id: user.id,
         },
       });
-
-      expect(result).toEqual(expectedResult);
+      expect(result).toBe(user);
     });
 
     it('return null if user is not found', async () => {

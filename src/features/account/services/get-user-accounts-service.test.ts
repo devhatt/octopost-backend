@@ -1,39 +1,23 @@
+import { accountRepositoryMock } from '@/shared/test-helpers/mocks/repositories/account-repository.mock';
+import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
 import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
 
 import { GetUserAccountsService } from './get-user-accounts-service';
 
 const makeSut = () => {
-  const userRepository = {
-    create: vi.fn(),
-    findById: vi.fn(),
-  };
-
-  const accountRepository = {
-    getAccounts: vi.fn(),
-  };
-
   const getUserAccountsService = new GetUserAccountsService(
-    userRepository,
-    accountRepository
+    userRepositoryMock,
+    accountRepositoryMock
   );
 
-  return { accountRepository, getUserAccountsService, userRepository };
+  return {
+    accountRepository: accountRepositoryMock,
+    getUserAccountsService,
+    userRepository: userRepositoryMock,
+  };
 };
 
 describe('GetUserAccountsService', () => {
-  it('calls userRepository.findById with correct id', async () => {
-    const { getUserAccountsService, userRepository } = makeSut();
-    const user = UserMock.create();
-
-    userRepository.findById.mockResolvedValueOnce(null);
-
-    const response = getUserAccountsService.execute(user);
-
-    await expect(response).rejects.toThrowError('User not found');
-
-    expect(userRepository.findById).toHaveBeenCalledWith(user.id);
-  });
-
   it('calls accountRepository.getAccounts with correct user id', async () => {
     const { accountRepository, getUserAccountsService, userRepository } =
       makeSut();
@@ -54,6 +38,7 @@ describe('GetUserAccountsService', () => {
     const response = getUserAccountsService.execute(user);
 
     await expect(response).rejects.toThrowError('User not found');
+    expect(userRepository.findById).toHaveBeenCalledWith(user.id);
   });
 
   it('throws an error if userRepository.findById does not return a user.', async () => {

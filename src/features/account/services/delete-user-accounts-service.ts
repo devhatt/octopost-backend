@@ -1,14 +1,14 @@
-import { BadRequestError } from '@/shared/errors/bad-request-error';
+import type { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
 import type { Service } from '@/shared/protocols/service';
 
-import type { AccountModel } from '../models/account-model';
-import type { AccountRepository } from '../repositories/account-repository/account-repository';
+type Input = {
+  socialMediaId: number;
+};
 
-export class DeleteUserAccountsService implements Service<AccountModel> {
+export class DeleteUserAccountsService implements Service<Input, void> {
   constructor(private readonly accountRepository: AccountRepository) {}
 
-  async execute({ socialMediaId }: AccountModel) {
-    if (!socialMediaId) throw new BadRequestError('undefined social media id');
+  async execute({ socialMediaId }: Input) {
     await this.accountRepository.deleteAccountsBySocialMediaId(socialMediaId);
   }
 }

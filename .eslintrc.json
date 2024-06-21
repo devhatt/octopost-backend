@@ -97,7 +97,6 @@
       "rules": {
         "@typescript-eslint/await-thenable": "warn",
         "@typescript-eslint/ban-ts-comment": "warn",
-        "@typescript-eslint/ban-types": "warn",
         "@typescript-eslint/consistent-type-exports": "warn",
         "@typescript-eslint/consistent-type-imports": [
           "warn",

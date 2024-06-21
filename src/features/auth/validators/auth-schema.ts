@@ -1,10 +1,6 @@
-import Joi from 'joi';
+import { z } from 'zod';
 
-const authBodySchema = Joi.object({
-  password: Joi.string().required(),
-  username: Joi.string().required(),
-});
-
-export const authSchema = Joi.object({
-  body: authBodySchema,
+export const authBodySchema = z.object({
+  password: z.string(),
+  username: z.string(),
 });

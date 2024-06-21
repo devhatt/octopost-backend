@@ -15,9 +15,11 @@ describe('[Repositories] AuthRepository', () => {
     it('should call service with correctly params', async () => {
       const { repository, user } = makeSut();
 
+      const { password, username } = user;
+
       await repository.findUserByCredentials({
-        password: user.password,
-        username: user.username,
+        password,
+        username,
       });
 
       expect(prisma.user.findFirst).toHaveBeenCalledWith({
@@ -27,12 +29,18 @@ describe('[Repositories] AuthRepository', () => {
           name: true,
           username: true,
         },
-        where: { password: user.password, username: user.username },
+        where: {
+          password,
+          username,
+        },
       });
     });
     it('should return an object with user without password', async () => {
       const { repository, user } = makeSut();
-      const expectedUser = UserMock.findByID();
+      const expectedUser = UserMock.create({
+        password: 'password',
+        username: 'Test User',
+      });
 
       prisma.user.findFirst.mockResolvedValue(expectedUser);
 
@@ -47,9 +55,7 @@ describe('[Repositories] AuthRepository', () => {
     it('should throw an error if an error occurs', async () => {
       const { repository, user } = makeSut();
 
-      prisma.user.findFirst.mockImplementationOnce(() => {
-        throw new Error('error');
-      });
+      prisma.user.findFirst.mockRejectedValue(new Error('error'));
 
       const response = repository.findUserByCredentials({
         password: user.password,
@@ -79,7 +85,9 @@ describe('[Repositories] AuthRepository', () => {
 
     it('should return an object with user without password', async () => {
       const { repository, user } = makeSut();
-      const expectedUser = UserMock.findByID();
+      const expectedUser = UserMock.create({
+        username: 'Test User',
+      });
 
       prisma.user.findUnique.mockResolvedValueOnce(expectedUser);
 
@@ -91,9 +99,7 @@ describe('[Repositories] AuthRepository', () => {
     it('should throw an error if an error occurs', async () => {
       const { repository, user } = makeSut();
 
-      prisma.user.findUnique.mockImplementationOnce(() => {
-        throw new Error('error');
-      });
+      prisma.user.findUnique.mockRejectedValue(new Error('error'));
 
       const response = repository.findUserByUsername(user.username);
 

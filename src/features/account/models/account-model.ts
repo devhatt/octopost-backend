@@ -1,6 +1,8 @@
 export type AccountModel = {
   avatarUrl: string;
+  createdAt: Date;
   id: string;
-  socialMediaId?: number;
-  userId?: string;
+  socialMediaId: null | number;
+  updatedAt: Date;
+  userId: null | string;
 };
