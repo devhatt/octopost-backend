@@ -2,10 +2,10 @@ import type { Express } from 'express';
 
 import { bodyParser } from '@/middlewares/body-parser/body-parser';
 import { cors } from '@/middlewares/cors/cors';
-import { logger } from '@/middlewares/logger/logger';
+import { httpLogger } from '@/middlewares/logger/http-logger';
 
 export function setupMiddlewares(app: Express): void {
   app.use(bodyParser);
   app.use(cors);
-  app.use(logger);
+  app.use(httpLogger);
 }

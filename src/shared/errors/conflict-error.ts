@@ -9,7 +9,7 @@ export class ConflictError extends HttpError {
   public toJSON() {
     return {
       code: this.code,
-      message: this.message,
+      error: this.message,
     };
   }
 }

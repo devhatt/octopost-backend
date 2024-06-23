@@ -12,6 +12,4 @@ export function prismaErrorHandler(error: unknown) {
       }
     }
   }
-
-  return;
 }

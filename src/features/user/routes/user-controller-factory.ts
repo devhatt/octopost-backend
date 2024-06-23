@@ -1,3 +1,4 @@
+/* istanbul ignore file -- @preserve */
 import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
 import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
 

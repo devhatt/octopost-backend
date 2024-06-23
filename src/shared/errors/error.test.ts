@@ -1,5 +1,7 @@
 import { BadRequestError } from './bad-request-error';
+import { ConflictError } from './conflict-error';
 import { HttpError } from './http-error';
+import { InvalidCredentialsError } from './invalid-credentials-error';
 import { UserNotFound } from './user-not-found-error';
 import { ValidationError } from './validation-error';
 
@@ -57,6 +59,28 @@ describe('[Errors]', () => {
       expect(error.toJSON()).toStrictEqual({
         code: 400,
         error: 'error message',
+      });
+    });
+  });
+
+  describe('conflict-error', () => {
+    it('should parse to json correctly', () => {
+      const error = new ConflictError('error message');
+
+      expect(error.toJSON()).toStrictEqual({
+        code: 409,
+        error: 'error message',
+      });
+    });
+  });
+
+  describe('invalid-credentials-error', () => {
+    it('should parse to json correctly', () => {
+      const error = new InvalidCredentialsError();
+
+      expect(error.toJSON()).toStrictEqual({
+        code: 401,
+        error: 'Invalid Credentials',
       });
     });
   });

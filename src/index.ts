@@ -1,3 +1,4 @@
+/* istanbul ignore file -- @preserve */
 import { app } from './config/app';
 import { env } from './config/env';
 
