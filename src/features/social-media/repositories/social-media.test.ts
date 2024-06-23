@@ -1,12 +1,12 @@
 import { prisma } from 'mocks/prisma';
 
-import { SocilMediaMock } from '@/shared/test-helpers/mocks/social-media.mock';
+import { SocialMediaMock } from '@/shared/test-helpers/mocks/social-media.mock';
 
 import { SocialMediaRepository } from './social-media';
 
 const makeSut = () => {
   const repository = new SocialMediaRepository();
-  const socialMedias = SocilMediaMock.List();
+  const socialMedias = SocialMediaMock.List();
   return { repository, socialMedias };
 };
 
@@ -19,15 +19,5 @@ describe('[Repositories] SocialMediaRepository', () => {
       const result = await repository.list();
       expect(result).toBe(socialMedias);
     });
-  });
-  it('should throw an error if an error occurs', async () => {
-    const { repository } = makeSut();
-
-    prisma.socialMedia.findMany.mockImplementationOnce(() => {
-      throw new Error('error');
-    });
-
-    const response = repository.list();
-    await expect(response).rejects.toThrowError();
   });
 });

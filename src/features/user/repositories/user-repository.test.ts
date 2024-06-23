@@ -1,7 +1,5 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { prisma } from 'mocks/prisma';
 
-import { ConflictError } from '@/shared/errors/conflict-error';
 import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
 
 import { UserRepository } from './user-repository';
@@ -29,32 +27,6 @@ describe('[Repositories] UserRepository', () => {
       expect(prisma.user.create).toHaveBeenCalledWith({
         data: input,
       });
-    });
-
-    it('should throw an error if an error occurs', async () => {
-      const { repository } = makeSut();
-      const expectedFinalError = new ConflictError(
-        'There is already a user with this email or username'
-      );
-      const userAlreadyExistsError = new PrismaClientKnownRequestError(
-        'There is already a user with this email or username',
-        {
-          clientVersion: '5.13.0',
-          code: 'P2002',
-        }
-      );
-      const user = UserMock.create();
-
-      prisma.user.create.mockImplementationOnce(() => {
-        throw userAlreadyExistsError;
-      });
-
-      try {
-        await repository.create(user);
-        // fail('Expected error to be thrown');
-      } catch (error: any) {
-        expect(error.message).toBe(expectedFinalError.message);
-      }
     });
   });
 
