@@ -1,6 +1,15 @@
-import { AuthController } from '../controllers/auth-controller';
+import { AuthController } from '@/features/auth/controllers/auth-controller';
+import { AuthRepository } from '@/features/auth/repositories/auth-repository/auth-repository';
+import { AuthLoginService } from '@/features/auth/services/auth-login-service';
+import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
+import { JWTHelper } from '@/shared/infra/jwt/jwt';
 
 export function authControllerFactory() {
-  const authController = new AuthController(undefined);
+  const authRepository = new AuthRepository();
+  const jwt = new JWTHelper('secret');
+  const crypto = new BcryptAdapter();
+
+  const loginService = new AuthLoginService(authRepository, crypto, jwt);
+  const authController = new AuthController(loginService);
   return { authController };
 }

@@ -1,21 +1,41 @@
 import type { Request, Response } from 'express';
-import { mockDeep } from 'vitest-mock-extended';
+import { mock, mockDeep } from 'vitest-mock-extended';
 
-import { authBodySchema } from '../validators/auth-schema';
+import { HttpError } from '@/shared/errors/http-error';
+import { JWTHelper } from '@/shared/infra/jwt/jwt';
+import { authRepositoryMock } from '@/shared/test-helpers/mocks/repositories/auth-repository.mock';
+
+import { AuthLoginService } from '../services/auth-login-service';
 import { AuthController } from './auth-controller';
 
 const makeSut = () => {
-  const authController = new AuthController(undefined);
+  const jwtMock = mock<JWTHelper>(new JWTHelper('secret'));
+
+  const loginServiceMock = mock<AuthLoginService>(
+    new AuthLoginService(
+      authRepositoryMock,
+      {
+        compare: vi.fn(),
+        encrypt: vi.fn(),
+      },
+      jwtMock
+    )
+  );
+
+  const authController = new AuthController(loginServiceMock);
 
   const req = mockDeep<Request>();
   const res = {
     json: vi.fn(),
+    send: vi.fn(),
     status: vi.fn().mockReturnThis(),
   } as unknown as Response;
   const next = vi.fn();
 
   return {
     authController,
+    jwtMock,
+    loginService: loginServiceMock,
     next,
     req,
     res,
@@ -23,16 +43,46 @@ const makeSut = () => {
 };
 
 describe('[Controllers] AuthController', () => {
-  const body = {
-    password: 'valid_password',
-    username: 'valid_username',
-  };
+  describe('Login', () => {
+    it('return token with success', async () => {
+      const { authController, jwtMock, loginService, next, req, res } =
+        makeSut();
 
-  const { req } = makeSut();
+      const body = {
+        password: 'password',
+        username: 'username',
+      };
 
-  it('should validate body with correctly params', async () => {
-    req.body = body;
+      req.body = body;
 
-    expect(() => authBodySchema.parse(req.body)).not.toThrow();
+      const token = jwtMock.createToken({ userId: '1' });
+
+      const loginServiceSpy = vi
+        .spyOn(loginService, 'execute')
+        .mockResolvedValue({
+          token,
+        });
+
+      await authController.login(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ token });
+      expect(loginServiceSpy).toHaveBeenCalledWith(body);
+    });
+
+    it('should call next when an service error occurs', async () => {
+      const { authController, loginService, next, req, res } = makeSut();
+
+      const error = new HttpError(500, 'error');
+
+      vi.spyOn(loginService, 'execute').mockRejectedValueOnce(
+        new HttpError(500, 'error')
+      );
+
+      await authController.login(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+      expect(error.toJSON()).toStrictEqual({ code: 500, message: 'error' });
+    });
   });
 });

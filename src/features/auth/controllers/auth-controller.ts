@@ -3,22 +3,37 @@ import type { Controller } from '@/shared/protocols/controller';
 import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
 import { HttpStatusCode } from '@/shared/protocols/http-client';
 
+import type { AuthLoginService } from '../services/auth-login-service';
+
 export class AuthController implements Controller {
+  // confirmation: AsyncRequestHandler = async (req, res, next) => {
+  //   const { token } = req.query;
+
+  //   try {
+  //     await this.confirmationService.execute({
+  //       token,
+  //     });
+
+  //     return res.status(HttpStatusCode.noContent).send();
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
+
   login: AsyncRequestHandler = async (req, res, next) => {
     try {
-      const _ = authBodySchema.parse(req.body);
+      const { password, username } = authBodySchema.parse(req.body);
 
-      // const response = await this.authService.execute({
-      //   password: req.body.password,
-      //   username: req.body.username,
-      // });
+      const { token } = await this.authLoginService.execute({
+        password,
+        username,
+      });
 
-      await Promise.resolve();
-      return res.status(HttpStatusCode.ok).send();
+      return res.status(HttpStatusCode.ok).json({ token });
     } catch (error) {
       next(error);
     }
   };
 
-  constructor(private authService: unknown) {}
+  constructor(private authLoginService: AuthLoginService) {}
 }
