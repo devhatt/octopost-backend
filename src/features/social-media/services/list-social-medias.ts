@@ -3,10 +3,18 @@ import type { Service } from '@/shared/protocols/service';
 import type { SocialMediaModel } from '../models/social-media-model';
 import type { SocialMediaRepository } from '../repositories/social-media';
 
-export class ListSocialMediasService implements Service<SocialMediaModel> {
+type Output = {
+  socialMedias: SocialMediaModel[];
+};
+
+export class ListSocialMediasService implements Service<void, Output> {
   constructor(private readonly socialMediaRepository: SocialMediaRepository) {}
 
-  async execute() {
-    return await this.socialMediaRepository.list();
+  async execute(): Promise<Output> {
+    const socialMedias = await this.socialMediaRepository.list();
+
+    return {
+      socialMedias,
+    };
   }
 }

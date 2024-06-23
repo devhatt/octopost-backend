@@ -1,4 +1,3 @@
-import type { UserCreateModel } from '@/features/user/models/user-create-model';
 import type { UserModel } from '@/features/user/models/user-model';
 import type { UserRepository } from '@/features/user/repositories/user-repository';
 import { ValidationError } from '@/shared/errors/validation-error';
@@ -15,13 +14,7 @@ export class UserCreateService implements Service<Input, void> {
     private readonly crypto: CryptoAdapter
   ) {}
 
-  async execute({
-    email,
-    name,
-    password,
-    repeatPassword,
-    username,
-  }: UserCreateModel) {
+  async execute({ email, name, password, repeatPassword, username }: Input) {
     if (password != repeatPassword) {
       throw new ValidationError(
         '400',

@@ -1,6 +1,5 @@
 import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
 import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
-import { Validator } from '@/shared/infra/validator/validator';
 
 import { UserController } from '../controllers/user-controller';
 import { UserRepository } from '../repositories/user-repository';
@@ -14,9 +13,7 @@ export function userControllerFactory() {
     bcryptAdapter
   );
   const userServiceFindById = new UserFindByIdService(userRepository);
-  const validator = new Validator();
   const userController = new UserController(
-    validator,
     userServiceCreate,
     userServiceFindById
   );
