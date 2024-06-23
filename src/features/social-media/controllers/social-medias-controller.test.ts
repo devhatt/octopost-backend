@@ -1,34 +1,32 @@
 import type { Request, Response } from 'express';
-import { mockDeep } from 'vitest-mock-extended';
+import { mock, mockDeep } from 'vitest-mock-extended';
 
 import { HttpError } from '@/shared/errors/http-error';
-import type { Service } from '@/shared/protocols/service';
+import { socialMediasRepositoryMock } from '@/shared/test-helpers/mocks/repositories/social-medias-repository.mock';
 
+import { ListSocialMediasService } from '../services/list-social-medias';
 import { SocialMediasController } from './social-medias-controller';
 
 const makeSut = () => {
-  class ServiceFindAllStub implements Service {
-    public execute(params: any): any {
-      return params;
-    }
-  }
+  const findAllServiceMock = mock<ListSocialMediasService>(
+    new ListSocialMediasService(socialMediasRepositoryMock)
+  );
 
-  const serviceFindAll = new ServiceFindAllStub();
-
-  const socialMediasController = new SocialMediasController(serviceFindAll);
+  const socialMediasController = new SocialMediasController(findAllServiceMock);
 
   const req = mockDeep<Request>();
   const res = {
     json: vi.fn(),
     status: vi.fn().mockReturnThis(),
   } as unknown as Response;
+
   const next = vi.fn();
 
   return {
     next,
     req,
     res,
-    serviceFindAll,
+    serviceFindAll: findAllServiceMock,
     socialMediasController,
   };
 };
@@ -40,21 +38,25 @@ describe('[Controllers] SocialMediasController', () => {
 
     await socialMediasController.findAll(req, res, next);
 
-    expect(serviceFindAllSpy).toHaveBeenCalledWith({});
+    expect(serviceFindAllSpy).toHaveBeenCalled();
   });
 
   it('should response 200 with the list of availables social medias', async () => {
     const response = [
-      { id: 1, name: 'Facebook' },
-      { id: 2, name: 'Instagram' },
+      { description: 'Face', id: 1, name: 'Facebook' },
+      { description: 'Insta', id: 2, name: 'Instagram' },
     ];
 
-    vi.spyOn(serviceFindAll, 'execute').mockReturnValue(response);
+    vi.spyOn(serviceFindAll, 'execute').mockResolvedValue({
+      socialMedias: response,
+    });
 
     await socialMediasController.findAll(req, res, next);
 
+    expect(res.json).toHaveBeenCalledWith({
+      socialMedias: response,
+    });
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(response);
   });
 
   it('should call next when an service error occurs', async () => {
