@@ -1,8 +1,8 @@
-import type { AuthRepository } from '@/features/authentication/repositories/auth-repository/auth-repository.js';
-import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter.js';
-import { JWTHelper } from '@/shared/infra/jwt/jwt.js';
+import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
+import { JWTHelper } from '@/shared/infra/jwt/jwt';
 
-import { AuthLoginService } from './auth-login-service.js';
+import type { AuthRepository } from '../repositories/auth-repository/auth-repository.js';
+import { AuthLoginService } from './auth-login-service';
 
 const makeSut = () => {
   class AuthRepositoryStub implements AuthRepository {
