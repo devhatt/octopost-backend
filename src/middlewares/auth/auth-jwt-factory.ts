@@ -1,6 +1,6 @@
 import { env } from 'src/config/env';
 
-import { UserRepository } from '@/features/user/repositories/user-repository/user-repository';
+import { UserRepository } from '@/features/user/repositories/user-repository';
 import { JWTHelper } from '@/shared/infra/jwt/jwt';
 
 import { AuthenticationJWT } from './auth-jwt';

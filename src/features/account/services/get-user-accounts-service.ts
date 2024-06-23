@@ -1,6 +1,6 @@
 import type { AccountModel } from '@/features/account/models/account-model';
 import type { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
-import type { UserRepository } from '@/features/user/repositories/user-repository/user-repository';
+import type { UserRepository } from '@/features/user/repositories/user-repository';
 import { UserNotFound } from '@/shared/errors/user-not-found-error';
 import type { Service } from '@/shared/protocols/service';
 

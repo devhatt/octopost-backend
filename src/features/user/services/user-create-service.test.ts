@@ -1,8 +1,9 @@
-import type { UserRepository } from '@/features/user/repositories/user-repository/user-repository';
+import type { UserRepository } from '@/features/user/repositories/user-repository';
 import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
 
 import { UserCreateService } from './user-create-service';
 
+// TODO: Refactor
 const makeSut = () => {
   class UserRepositoryStub implements UserRepository {
     create({ email, name, password, username }: any) {

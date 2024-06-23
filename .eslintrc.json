@@ -154,6 +154,7 @@
         "jest": true
       },
       "rules": {
+        "prettier/prettier": "error",
         "no-undef": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/require-await": "off",

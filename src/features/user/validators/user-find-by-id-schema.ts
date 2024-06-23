@@ -1,10 +1,5 @@
-import Joi from 'joi';
+import { z } from 'zod';
 
-export const userFindByIdParamsSchema = Joi.object({
-  id: Joi.string().guid().required(),
-});
-
-export const userFindByIdSchema = Joi.object({
-  params: userFindByIdParamsSchema,
-  path: Joi.string().required(),
+export const userFindByIdParamsSchema = z.object({
+  id: z.string().uuid(),
 });

@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto';
+
 import { faker } from '@faker-js/faker';
 import type { User } from '@prisma/client';
 
@@ -7,7 +9,7 @@ export class UserMock {
       createdAt: new Date(),
       deletedAt: null,
       email: faker.internet.email(),
-      id: faker.string.numeric(),
+      id: randomUUID(),
       isActive: true,
       name: faker.person.firstName(),
       password: faker.internet.password(),

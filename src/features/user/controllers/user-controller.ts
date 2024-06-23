@@ -1,29 +1,27 @@
 import type { RequestHandler } from 'express';
 
-import type { Validator } from '@/shared/infra/validator/validator';
+import type { UserCreateService } from '@/features/user/services/user-create-service';
+import type { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
+import {
+  userCreateBodySchema,
+  userFindByIdParamsSchema,
+} from '@/features/user/validators';
 import type { Controller } from '@/shared/protocols/controller';
 import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
 import { HttpStatusCode } from '@/shared/protocols/http-client';
-import type { Service } from '@/shared/protocols/service';
-
-import type { UserCreateModel } from '../models/user-create-model';
-import type { UserFindByIdModel } from '../models/user-find-by-id-model';
-import { userCreateSchema, userFindByIdSchema } from '../validators';
-import { userIdParamsSchema } from '../validators/user-id-schema';
 
 export class UserController implements Controller {
   create: AsyncRequestHandler = async (req, res, next) => {
     try {
-      this.validator.validate(userCreateSchema, {
-        body: req.body,
-      });
+      const { email, name, password, repeatPassword, username } =
+        userCreateBodySchema.parse(req.body);
 
       const response = await this.serviceCreate.execute({
-        email: req.body.email,
-        name: req.body.name,
-        password: req.body.password,
-        repeatPassword: req.body.password,
-        username: req.body.username,
+        email,
+        name,
+        password,
+        repeatPassword,
+        username,
       });
 
       return res.status(HttpStatusCode.created).json(response);
@@ -34,11 +32,9 @@ export class UserController implements Controller {
 
   getAccounts: RequestHandler = (req, res, next) => {
     try {
-      this.validator.validate(userIdParamsSchema, {
-        params: req.params,
-      });
+      const { id } = userFindByIdParamsSchema.parse(req.params);
 
-      return res.status(HttpStatusCode.ok).json({});
+      return res.status(HttpStatusCode.ok).json({ id });
     } catch (error) {
       next(error);
     }
@@ -46,20 +42,11 @@ export class UserController implements Controller {
 
   userFindById: AsyncRequestHandler = async (req, res, next) => {
     try {
-      this.validator.validate(userFindByIdSchema, {
-        params: req.params,
-        path: req.path,
-      });
+      const { id } = userFindByIdParamsSchema.parse(req.params);
 
       const user = await this.serviceFindById.execute({
-        id: req.params.id,
+        id,
       });
-
-      if (!user) {
-        return res
-          .status(HttpStatusCode.notFound)
-          .json({ error: 'User not found' });
-      }
 
       return res.status(HttpStatusCode.ok).json(user);
     } catch (error) {
@@ -68,8 +55,7 @@ export class UserController implements Controller {
   };
 
   constructor(
-    private validator: Validator,
-    private serviceCreate: Service<UserCreateModel>,
-    private serviceFindById: Service<UserFindByIdModel>
+    private serviceCreate: UserCreateService,
+    private serviceFindById: UserFindByIdService
   ) {}
 }
