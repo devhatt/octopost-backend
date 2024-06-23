@@ -1,48 +1,29 @@
-import { BcryptAdapter } from './bcrypt-adapter.js';
-import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
+import { BcryptAdapter } from './bcrypt-adapter';
 
-const makeSut = () => {
-  const crypto = new BcryptAdapter();
-  const { password } = UserMock.create();
+describe('Cryto Adapter - Bcrypt', () => {
+  let crypto: BcryptAdapter;
 
-  return { crypto, password };
-};
-
-describe('Crypto test', () => {
-  describe('encrypt passwords', () => {
-    it('should hash a password correctly', async () => {
-      const { crypto, password } = makeSut();
-      const hashedPassword = 'hashed_password';
-      const hashStub = vi
-        .spyOn(crypto, 'encrypt')
-        .mockResolvedValue(hashedPassword);
-
-      const result = await crypto.encrypt(password);
-      expect(result).toBe(hashedPassword);
-      hashStub.mockRestore();
-    });
+  beforeEach(() => {
+    crypto = new BcryptAdapter();
   });
-  describe('compare passwords', () => {
-    it('should return true if passwords match', async () => {
-      const { crypto, password } = makeSut();
-      const compareStub = vi.spyOn(crypto, 'compare').mockResolvedValue(true);
 
-      const hashedPassword = await crypto.encrypt(password);
-      const result = await crypto.compare(password, hashedPassword);
+  it('return a hash on success', async () => {
+    const input = 'password';
 
-      expect(result).toBe(true);
-      compareStub.mockRestore();
-    });
+    const hash = await crypto.encrypt(input);
 
-    it('should return false if passwords do not match', async () => {
-      const { crypto } = makeSut();
-      const compareStub = vi.spyOn(crypto, 'compare').mockResolvedValue(false);
-      const result = await crypto.compare(
-        'wrong_password',
-        'randomHashedPassword'
-      );
-      expect(result).toBe(false);
-      compareStub.mockRestore();
-    });
+    expect(hash).toBeTruthy();
+    expect(hash).not.toBe(input);
+  });
+
+  it('return true if compare is successful', async () => {
+    const input = 'password';
+
+    const hash = await crypto.encrypt(input);
+
+    const isValid = await crypto.compare(input, hash);
+
+    expect(hash).toBeTruthy();
+    expect(isValid).toBe(true);
   });
 });

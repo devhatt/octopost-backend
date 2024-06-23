@@ -1,15 +1,25 @@
-import type { Service } from '@/shared/protocols/service.js';
-import type { CryptoAdapter } from '@/shared/infra/crypto/crypto-adapter.js';
-import type { AuthRepository } from '@/features/authentication/repositories/auth-repository/auth-repository.js';
-import type { AuthLoginModel } from '../models/auth-login-models.js';
-import type { JWTHelper } from '@/shared/infra/jwt/jwt.js';
-import { InvalidCredentialsError } from '@/shared/errors/invalid-credentials-error.js';
+import { InvalidCredentialsError } from '@/shared/errors/invalid-credentials-error';
+import type { CryptoAdapter } from '@/shared/infra/crypto/crypto-adapter';
+import type { JWTHelper } from '@/shared/infra/jwt/jwt';
+import type { Service } from '@/shared/protocols/service';
 
-export class AuthLoginService implements Service<AuthLoginModel> {
+import type { AuthLoginModel } from '../models/auth-login-models';
+import type { AuthRepository } from '../repositories/auth-repository/auth-repository';
+
+type Input = {
+  password: string;
+  username: string;
+};
+
+type Output = {
+  token: string;
+};
+
+export class AuthLoginService implements Service<Input, Output> {
   constructor(
     private readonly authRepository: AuthRepository,
     private readonly crypto: CryptoAdapter,
-    private jwt: JWTHelper
+    private readonly jwt: JWTHelper
   ) {}
 
   async execute({ password, username }: AuthLoginModel) {
@@ -26,6 +36,8 @@ export class AuthLoginService implements Service<AuthLoginModel> {
 
     const token = this.jwt.createToken({ userId: user.id });
 
-    return token;
+    return {
+      token,
+    };
   }
 }

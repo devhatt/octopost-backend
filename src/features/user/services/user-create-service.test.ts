@@ -1,7 +1,9 @@
-import type { UserRepository } from '../repositories/user-repository/user-repository.js';
-import { UserCreateService } from './user-create-service.js';
-import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter.js';
+import type { UserRepository } from '@/features/user/repositories/user-repository';
+import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
 
+import { UserCreateService } from './user-create-service';
+
+// TODO: Refactor
 const makeSut = () => {
   class UserRepositoryStub implements UserRepository {
     create({ email, name, password, username }: any) {
@@ -10,6 +12,7 @@ const makeSut = () => {
         deletedAt: null,
         email,
         id: 'valid_id',
+        isActive: true,
         name,
         password,
         updatedAt: new Date(2024, 5, 1),
@@ -24,6 +27,9 @@ const makeSut = () => {
       username: string;
     } | null> {
       throw new Error('Method not implemented. ' + id);
+    }
+    updateIsActiveStatus(_: string): Promise<void> {
+      throw new Error('Method not implemented.');
     }
   }
 

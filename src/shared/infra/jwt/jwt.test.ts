@@ -1,5 +1,5 @@
-import { JWTHelper } from './jwt.js';
-import type { TokenPayload } from './jwt.js';
+import type { TokenPayload } from './jwt';
+import { JWTHelper } from './jwt';
 
 describe('JWTHelper', () => {
   const secretKey = '123';

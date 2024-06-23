@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-export class SocilMediaMock {
+export class SocialMediaMock {
   private static socialMediaMock = {
     description: faker.lorem.text(),
     id: faker.number.int(),

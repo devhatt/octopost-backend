@@ -1,7 +1,8 @@
 import Express from 'express';
-import setupRoutes from './routes.js';
-import setupMiddlewares from './middlewares.js';
-import { setupHealthCheck } from './healthcheck.js';
+
+import { setupHealthCheck } from './healthcheck';
+import { setupMiddlewares } from './middlewares';
+import { setupRoutes } from './routes';
 
 const app = Express();
 
@@ -9,4 +10,4 @@ setupRoutes(app);
 setupMiddlewares(app);
 setupHealthCheck(app);
 
-export default app;
+export { app };

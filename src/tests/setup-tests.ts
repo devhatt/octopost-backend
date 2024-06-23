@@ -1,4 +1,5 @@
-import mockedPrisma from 'mocks/prisma.js';
+/* eslint-disable no-undef */
+import mockedPrisma from 'mocks/prisma';
 
 vi.mock('@prisma/client', () => mockedPrisma);
 

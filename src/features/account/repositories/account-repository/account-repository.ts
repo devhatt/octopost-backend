@@ -1,6 +1,24 @@
-import { database } from '@/shared/infra/database/database.js';
+import { database } from '@/shared/infra/database/database';
 
 export class AccountRepository {
+  create({
+    avatarUrl,
+    socialMediaId,
+    userId,
+  }: {
+    avatarUrl: string;
+    socialMediaId: number;
+    userId: string;
+  }) {
+    return database.account.create({
+      data: {
+        avatarUrl,
+        socialMediaId,
+        userId,
+      },
+    });
+  }
+
   async deleteAccountsBySocialMediaId(socialMediaId: number): Promise<void> {
     await database.account.deleteMany({
       where: {
@@ -9,13 +27,19 @@ export class AccountRepository {
     });
   }
 
-  async getAccounts(userId: string) {
-    const userAccounts = await database.account.findMany({
+  findAccountsByUserId(id: string) {
+    return database.account.findMany({
+      where: {
+        userId: id,
+      },
+    });
+  }
+
+  getAccounts(userId: string) {
+    return database.account.findMany({
       where: {
         userId: userId,
       },
     });
-
-    return userAccounts;
   }
 }

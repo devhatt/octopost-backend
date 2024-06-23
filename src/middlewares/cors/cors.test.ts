@@ -1,7 +1,8 @@
-import request from 'supertest';
-import express from 'express';
 import type { NextFunction, Request, Response } from 'express';
-import { cors } from './cors.js';
+import express from 'express';
+import request from 'supertest';
+
+import { cors } from './cors';
 
 const makeSut = () => {
   const app = express();

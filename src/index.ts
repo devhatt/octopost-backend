@@ -1,7 +1,6 @@
 /* istanbul ignore file -- @preserve */
-
-import env from './config/env.js';
-import app from './config/app.js';
+import { app } from './config/app';
+import { env } from './config/env';
 
 function startServer() {
   const listener = app.listen(Number(env.PORT), env.HOSTNAME, () => {
