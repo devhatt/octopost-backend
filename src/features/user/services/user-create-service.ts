@@ -1,22 +1,20 @@
-import type { UserCreateModel } from '../models/user-create-model.js';
-import type { UserRepository } from '../repositories/user-repository/user-repository.js';
-import { ValidationError } from '@/shared/errors/validation-error.js';
-import type { Service } from '@/shared/protocols/service.js';
-import type { CryptoAdapter } from '@/shared/infra/crypto/crypto-adapter.js';
+import type { UserModel } from '@/features/user/models/user-model';
+import type { UserRepository } from '@/features/user/repositories/user-repository';
+import { ValidationError } from '@/shared/errors/validation-error';
+import type { CryptoAdapter } from '@/shared/infra/crypto/crypto-adapter';
+import type { Service } from '@/shared/protocols/service';
 
-export class UserCreateService implements Service<UserCreateModel> {
+type Input = Omit<UserModel, 'id'> & {
+  repeatPassword: string;
+};
+
+export class UserCreateService implements Service<Input, void> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly crypto: CryptoAdapter
   ) {}
 
-  async execute({
-    email,
-    name,
-    password,
-    repeatPassword,
-    username,
-  }: UserCreateModel) {
+  async execute({ email, name, password, repeatPassword, username }: Input) {
     if (password != repeatPassword) {
       throw new ValidationError(
         '400',

@@ -1,4 +1,5 @@
 import type { ErrorRequestHandler } from 'express';
+
 import { HttpError } from '@/shared/errors/http-error.js';
 import { HttpStatusCode } from '@/shared/protocols/http-client.js';
 

@@ -1,7 +1,8 @@
-import request from 'supertest';
-import express from 'express';
 import type { NextFunction, Request, Response } from 'express';
-import { bodyParser } from './body-parser.js';
+import express from 'express';
+import request from 'supertest';
+
+import { bodyParser } from './body-parser';
 
 const makeSut = () => {
   const app = express();

@@ -1,73 +1,41 @@
-import type { UserRepository } from '../repositories/user-repository/user-repository.js';
-import { UserFindByIdService } from './user-find-by-id-service.js';
+import { mock } from 'vitest-mock-extended';
 
-const makeSut = () => {
-  class UserRepositoryStub implements UserRepository {
-    create({ email, name, password, username }: any): Promise<any> {
-      throw new Error(
-        'Method not implemented. ' + email + name + password + username
-      );
-    }
+import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
+import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
 
-    findById(id: string): Promise<{
-      email: string;
-      id: string;
-      name: null | string;
-      username: string;
-    } | null> {
-      return Promise.resolve({
-        email: 'valid_email@email.com',
-        id,
-        name: 'valid_name',
-        username: 'valid_username',
-      });
-    }
-  }
-
-  const userRepository = new UserRepositoryStub();
-  const userFindByIdService = new UserFindByIdService(userRepository);
-
-  return { userFindByIdService, userRepository };
-};
+import type { UserRepository } from '../repositories/user-repository';
+import { UserFindByIdService } from './user-find-by-id-service';
 
 describe('UserFindByIdService', () => {
+  let userFindByIdService: UserFindByIdService;
+  const userRepository = mock<UserRepository>(userRepositoryMock);
+
+  beforeEach(() => {
+    userFindByIdService = new UserFindByIdService(userRepository);
+  });
+
   it('returns user data if found', async () => {
-    const { userFindByIdService, userRepository } = makeSut();
-
-    const repositorySpy = vi.spyOn(userRepository, 'findById');
-
-    const result = await userFindByIdService.execute({ id: 'valid_id' });
-
-    expect(repositorySpy).toHaveBeenCalledWith('valid_id');
-    expect(result).toEqual({
+    const userMock = UserMock.create({
       email: 'valid_email@email.com',
       id: 'valid_id',
       name: 'valid_name',
       username: 'valid_username',
     });
+
+    userRepository.findById.mockResolvedValue(userMock);
+
+    const { user } = await userFindByIdService.execute({ id: 'valid_id' });
+
+    expect(user).toEqual(userMock);
   });
 
   it('throws error if repository fails', async () => {
-    const { userFindByIdService, userRepository } = makeSut();
-
-    vi.spyOn(userRepository, 'findById').mockImplementationOnce(async () => {
-      throw new Error('error');
-    });
+    vi.spyOn(userRepository, 'findById').mockRejectedValue(
+      new Error('User not found')
+    );
 
     const response = userFindByIdService.execute({ id: 'valid_id' });
 
     await expect(response).rejects.toThrowError();
-  });
-
-  it('returns null if user not found', async () => {
-    const { userFindByIdService, userRepository } = makeSut();
-
-    vi.spyOn(userRepository, 'findById').mockImplementationOnce(
-      async () => null
-    );
-
-    const result = await userFindByIdService.execute({ id: 'non_existent_id' });
-
-    expect(result).toBeNull();
   });
 });

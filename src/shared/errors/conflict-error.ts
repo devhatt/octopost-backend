@@ -1,5 +1,5 @@
-import { HttpStatusCode } from '../protocols/http-client.js';
-import { HttpError } from './http-error.js';
+import { HttpStatusCode } from '../protocols/http-client';
+import { HttpError } from './http-error';
 
 export class ConflictError extends HttpError {
   constructor(public readonly message: string) {
@@ -9,7 +9,7 @@ export class ConflictError extends HttpError {
   public toJSON() {
     return {
       code: this.code,
-      message: this.message,
+      error: this.message,
     };
   }
 }

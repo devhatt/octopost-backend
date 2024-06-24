@@ -1,4 +1,4 @@
-import type { EmailAdapter } from '@/shared/infra/email/adapters/email-adapter.js';
+import type { EmailAdapter } from '@/shared/infra/email/adapters/email-adapter';
 
 export class EmailService {
   constructor(private readonly emailAdapter: EmailAdapter) {}

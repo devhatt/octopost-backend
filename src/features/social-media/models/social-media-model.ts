@@ -1,5 +1,5 @@
 export type SocialMediaModel = {
   description: string;
-  id: string;
+  id: number;
   name: string;
 };

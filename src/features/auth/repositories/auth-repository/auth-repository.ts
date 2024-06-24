@@ -1,15 +1,14 @@
-import { database } from '@/shared/infra/database/database.js';
+import { database } from '@/shared/infra/database/database';
 
+// TODO: Move this type to a folder
 type FindUserByCredentialsParams = {
   password: string;
   username: string;
 };
+
 export class AuthRepository {
-  async findUserByCredentials({
-    password,
-    username,
-  }: FindUserByCredentialsParams) {
-    const user = await database.user.findFirst({
+  findUserByCredentials({ password, username }: FindUserByCredentialsParams) {
+    return database.user.findFirst({
       select: {
         email: true,
         id: true,
@@ -21,12 +20,10 @@ export class AuthRepository {
         username,
       },
     });
-
-    return user;
   }
 
-  async findUserByUsername(username: string) {
-    const user = await database.user.findUnique({
+  findUserByUsername(username: string) {
+    return database.user.findUnique({
       select: {
         email: true,
         id: true,
@@ -37,7 +34,5 @@ export class AuthRepository {
         username,
       },
     });
-
-    return user;
   }
 }

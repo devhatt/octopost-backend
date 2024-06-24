@@ -1,9 +1,10 @@
-import { UserController } from '../controllers/user-controller.js';
-import { UserRepository } from '../repositories/user-repository/user-repository.js';
-import { UserCreateService } from '../services/user-create-service.js';
-import { Validator } from '@/shared/infra/validator/validator.js';
-import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service.js';
-import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter.js';
+/* istanbul ignore file -- @preserve */
+import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
+import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
+
+import { UserController } from '../controllers/user-controller';
+import { UserRepository } from '../repositories/user-repository';
+import { UserCreateService } from '../services/user-create-service';
 
 export function userControllerFactory() {
   const userRepository = new UserRepository();
@@ -13,9 +14,7 @@ export function userControllerFactory() {
     bcryptAdapter
   );
   const userServiceFindById = new UserFindByIdService(userRepository);
-  const validator = new Validator();
   const userController = new UserController(
-    validator,
     userServiceCreate,
     userServiceFindById
   );

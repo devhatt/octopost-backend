@@ -1,5 +1,6 @@
 import path from 'node:path';
 import url from 'node:url';
+
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 

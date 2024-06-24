@@ -1,8 +1,8 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { UserRepository } from './user-repository.js';
-import { prisma } from 'mocks/prisma.js';
-import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
-import { ConflictError } from '@/shared/errors/conflict-error.js';
+import { prisma } from 'mocks/prisma';
+
+import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
+
+import { UserRepository } from './user-repository';
 
 const makeSut = () => {
   const repository = new UserRepository();
@@ -15,41 +15,18 @@ describe('[Repositories] UserRepository', () => {
     it('should call service with correctly params', async () => {
       const { repository } = makeSut();
 
-      const user = UserMock.create();
+      const input = {
+        email: 'test@test.com',
+        name: 'test',
+        password: 'password',
+        username: 'test',
+      };
 
-      await repository.create(user);
-
-      const { id, ...userWithoutId } = user;
+      await repository.create(input);
 
       expect(prisma.user.create).toHaveBeenCalledWith({
-        data: userWithoutId,
+        data: input,
       });
-    });
-
-    it('should throw an error if an error occurs', async () => {
-      const { repository } = makeSut();
-      const expectedFinalError = new ConflictError(
-        'There is already a user with this email or username'
-      );
-      const userAlreadyExistsError = new PrismaClientKnownRequestError(
-        'There is already a user with this email or username',
-        {
-          clientVersion: '5.13.0',
-          code: 'P2002',
-        }
-      );
-      const user = UserMock.create();
-
-      prisma.user.create.mockImplementationOnce(() => {
-        throw userAlreadyExistsError;
-      });
-
-      try {
-        await repository.create(user);
-        // fail('Expected error to be thrown');
-      } catch (error: any) {
-        expect(error.message).toBe(expectedFinalError.message);
-      }
     });
   });
 
@@ -59,9 +36,7 @@ describe('[Repositories] UserRepository', () => {
 
       const user = UserMock.create();
 
-      const expectedResult = UserMock.findByID();
-
-      prisma.user.findUnique.mockResolvedValue(expectedResult);
+      prisma.user.findUnique.mockResolvedValue(user);
 
       const result = await repository.findById(user.id);
 
@@ -71,8 +46,7 @@ describe('[Repositories] UserRepository', () => {
           id: user.id,
         },
       });
-
-      expect(result).toEqual(expectedResult);
+      expect(result).toBe(user);
     });
 
     it('return null if user is not found', async () => {

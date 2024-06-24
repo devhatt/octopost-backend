@@ -1,43 +1,39 @@
-import { authSchema } from '../validators/auth-schema.js';
-import type { Validator } from '@/shared/infra/validator/validator.js';
-import type { Controller } from '@/shared/protocols/controller.js';
-import type { AsyncRequestHandler } from '@/shared/protocols/handlers.js';
-import { HttpStatusCode } from '@/shared/protocols/http-client.js';
-import type { Service } from '@/shared/protocols/service.js';
+import { authBodySchema } from '@/features/auth/validators/auth-schema';
+import type { Controller } from '@/shared/protocols/controller';
+import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
+import { HttpStatusCode } from '@/shared/protocols/http-client';
+
+import type { AuthLoginService } from '../services/auth-login-service';
 
 export class AuthController implements Controller {
-  confirmation: AsyncRequestHandler = async (req, res, next) => {
-    const { token } = req.query;
+  // confirmation: AsyncRequestHandler = async (req, res, next) => {
+  //   const { token } = req.query;
 
-    try {
-      await this.confirmationService.execute({
-        token,
-      });
+  //   try {
+  //     await this.confirmationService.execute({
+  //       token,
+  //     });
 
-      return res.status(HttpStatusCode.noContent).send();
-    } catch (error) {
-      next(error);
-    }
-  };
+  //     return res.status(HttpStatusCode.noContent).send();
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
 
   login: AsyncRequestHandler = async (req, res, next) => {
     try {
-      this.validator.validate(authSchema, {
-        body: req.body,
-      });
-      const response = await this.authService.execute({
-        password: req.body.password,
-        username: req.body.username,
+      const { password, username } = authBodySchema.parse(req.body);
+
+      const { token } = await this.authLoginService.execute({
+        password,
+        username,
       });
 
-      return res.status(HttpStatusCode.ok).json(response);
+      return res.status(HttpStatusCode.ok).json({ token });
     } catch (error) {
       next(error);
     }
   };
-  constructor(
-    private validator: Validator,
-    private authService: Service<unknown>,
-    private confirmationService: Service<unknown>
-  ) {}
+
+  constructor(private authLoginService: AuthLoginService) {}
 }

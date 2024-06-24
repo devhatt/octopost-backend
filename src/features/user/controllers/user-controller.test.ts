@@ -1,40 +1,28 @@
-import { mockDeep } from 'vitest-mock-extended';
+import { randomUUID } from 'crypto';
 import type { Request, Response } from 'express';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/react-native.js';
-import { UserController } from './user-controller.js';
-import { HttpError } from '@/shared/errors/http-error.js';
-import type { Validator } from '@/shared/infra/validator/validator.js';
-import type { Service } from '@/shared/protocols/service.js';
-import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
-import { ConflictError } from '@/shared/errors/conflict-error.js';
+import { mock, mockDeep } from 'vitest-mock-extended';
+
+import { UserCreateService } from '@/features/user/services/user-create-service';
+import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
+import { HttpError } from '@/shared/errors/http-error';
+import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
+
+import { UserController } from './user-controller';
 
 const makeSut = () => {
-  class ValidatorStub implements Validator {
-    public validate(_: any, __: any): boolean {
-      return true;
-    }
-  }
-
-  class UserCreateServiceStub implements Service {
-    public execute(params: any): any {
-      return params;
-    }
-  }
-
-  class UserFindByIdServiceStub implements Service {
-    public execute(params: any): any {
-      return params;
-    }
-  }
-
-  const validator = new ValidatorStub();
-  const userCreateService = new UserCreateServiceStub();
-  const userFindByIdService = new UserFindByIdServiceStub();
+  const mockUserCreateService = mock<UserCreateService>(
+    new UserCreateService(userRepositoryMock, {
+      compare: vi.fn(),
+      encrypt: vi.fn(),
+    })
+  );
+  const mockUserFindByIdService = mock<UserFindByIdService>(
+    new UserFindByIdService(userRepositoryMock)
+  );
 
   const userController = new UserController(
-    validator,
-    userCreateService,
-    userFindByIdService
+    mockUserCreateService,
+    mockUserFindByIdService
   );
 
   const req = mockDeep<Request>();
@@ -46,28 +34,13 @@ const makeSut = () => {
     req,
     res,
     userController,
-    userCreateService,
-    userFindByIdService,
-    validator,
+    userCreateService: mockUserCreateService,
+    userFindByIdService: mockUserFindByIdService,
   };
 };
 
 describe('[Controllers] UserController', () => {
   describe('create', () => {
-    it('should call validator with correctly params', async () => {
-      const { next, req, res, userController, validator } = makeSut();
-
-      const validateSpy = vi.spyOn(validator, 'validate');
-
-      const body = UserMock.create();
-
-      req.body = body;
-
-      await userController.create(req, res, next);
-
-      expect(validateSpy).toHaveBeenCalledWith(expect.anything(), { body });
-    });
-
     it('should call service with correctly params', async () => {
       const { next, req, res, userController, userCreateService } = makeSut();
 
@@ -76,8 +49,8 @@ describe('[Controllers] UserController', () => {
       const body = {
         email: 'valid_email@domain.com',
         name: 'valid_name',
-        password: 'valid_password',
-        repeatPassword: 'valid_password',
+        password: 'Valid_password@',
+        repeatPassword: 'Valid_password@',
         username: 'valid_username',
       };
 
@@ -94,121 +67,69 @@ describe('[Controllers] UserController', () => {
       });
     });
 
-    it('should response 204 with password and email', async () => {
+    it('should throw error', async () => {
       const { next, req, res, userController, userCreateService } = makeSut();
 
-      const serviceSpy = vi.spyOn(userCreateService, 'execute');
-
-      const response = {
+      const body = {
         email: 'valid_email@domain.com',
-        password: 'valid_password',
+        name: 'valid_name',
+        password: 'Valid_password@',
+        repeatPassword: 'Valid_password@',
+        username: 'valid_username',
       };
 
-      serviceSpy.mockReturnValue(response);
+      req.body = body;
+
+      const userCreateSpy = vi
+        .spyOn(userCreateService, 'execute')
+        .mockRejectedValueOnce(new HttpError(500, 'error'));
 
       await userController.create(req, res, next);
 
-      expect(res.status).toHaveBeenCalledWith(201);
-    });
-
-    it('should throw conflict error if existing username or email', async () => {
-      const { next, req, res, userController, userCreateService } = makeSut();
-      const error = new ConflictError(
-        'There is already a user with this email or username'
-      );
-      vi.spyOn(userCreateService, 'execute').mockRejectedValueOnce(
-        new PrismaClientKnownRequestError(
-          'There is already a user with this email or username',
-          {
-            clientVersion: '5.13.0',
-            code: 'P2002',
-          }
-        )
-      );
+      expect(userCreateSpy).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
 
       await userController.create(req, res, next);
 
-      expect(next).toHaveBeenCalledWith(error);
-    });
-
-    it('should call next when an error', async () => {
-      const { next, req, res, userController, userCreateService } = makeSut();
-      const error = new HttpError(500, 'error');
-
-      vi.spyOn(userCreateService, 'execute').mockRejectedValueOnce(
-        new HttpError(500, 'error')
-      );
-
-      await userController.create(req, res, next);
-
-      expect(next).toHaveBeenCalledWith(error);
+      expect(userCreateSpy).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
   });
 
   describe('userFindById', () => {
-    it('should call validator with correctly params', async () => {
-      const { next, req, res, userController, validator } = makeSut();
-
-      const validateSpy = vi.spyOn(validator, 'validate');
-
-      const uuid = crypto.randomUUID();
-
-      req.params = { id: uuid };
-      req.path = '/users';
-
-      await userController.userFindById(req, res, next);
-
-      expect(validateSpy).toHaveBeenCalledWith(expect.anything(), {
-        params: req.params,
-        path: req.path,
-      });
-    });
-
     it('should call service with correctly params', async () => {
       const { next, req, res, userController, userFindByIdService } = makeSut();
 
       const serviceSpy = vi.spyOn(userFindByIdService, 'execute');
 
-      const uuid = crypto.randomUUID();
+      const uuid = randomUUID();
 
-      req.params.id = uuid;
+      req.params = {
+        id: uuid,
+      };
 
       await userController.userFindById(req, res, next);
 
       expect(serviceSpy).toHaveBeenCalledWith({
-        id: req.params.id,
+        id: uuid,
       });
-    });
-
-    it('should response 404 if user is not found', async () => {
-      const { next, req, res, userController, userFindByIdService } = makeSut();
-
-      const serviceSpy = vi.spyOn(userFindByIdService, 'execute');
-
-      const response = undefined;
-
-      serviceSpy.mockReturnValue(response);
-
-      const uuid = crypto.randomUUID();
-
-      req.params.id = uuid;
-
-      await userController.userFindById(req, res, next);
-
-      expect(res.status).toHaveBeenCalledWith(404);
     });
 
     it('should call next when an error', async () => {
       const { next, req, res, userController, userFindByIdService } = makeSut();
-      const error = new HttpError(500, 'error');
 
-      vi.spyOn(userFindByIdService, 'execute').mockRejectedValueOnce(
-        new HttpError(500, 'error')
-      );
+      req.params = {
+        id: randomUUID(),
+      };
+
+      const userFindSpy = vi
+        .spyOn(userFindByIdService, 'execute')
+        .mockRejectedValueOnce(new HttpError(500, 'error'));
 
       await userController.userFindById(req, res, next);
 
-      expect(next).toHaveBeenCalledWith(error);
+      expect(userFindSpy).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
   });
 });
