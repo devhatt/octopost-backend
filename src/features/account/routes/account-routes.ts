@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { accountControllerFactory } from '../controllers/account-controller-factory.js';
+
+import { accountControllerFactory } from './account-controller-factory';
 
 const router = Router();
 

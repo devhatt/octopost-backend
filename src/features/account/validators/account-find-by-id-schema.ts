@@ -1,9 +1,9 @@
-import Joi from 'joi';
+import { z } from 'zod';
 
-export const accountDeleteByParamsSchema = Joi.object({
-  id: Joi.string().guid().required(),
+export const accountDeleteByParamsSchema = z.object({
+  id: z.string().uuid(),
 });
 
-export const accountDeleteBySchema = Joi.object({
+export const accountDeleteBySchema = z.object({
   params: accountDeleteByParamsSchema,
 });
