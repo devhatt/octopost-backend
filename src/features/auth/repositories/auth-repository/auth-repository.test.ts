@@ -77,6 +77,7 @@ describe('[Repositories] AuthRepository', () => {
           email: true,
           id: true,
           name: true,
+          password: true,
           username: true,
         },
         where: { username: user.username },
