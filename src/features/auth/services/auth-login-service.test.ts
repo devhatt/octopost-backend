@@ -15,31 +15,23 @@ const makeSut = () => {
     jwt
   );
 
-  const userMock = UserMock.create();
-
-  const userCredentials = {
-    password: userMock.password,
-    username: userMock.username,
-  };
-
   return {
     authLoginService,
     authRepository,
     bcryptAdapter,
-    userCredentials,
-    userMock,
   };
 };
 
 describe('Auth Login Service Sut', () => {
   it('should return token if login is correctly', async () => {
-    const {
-      authLoginService,
-      authRepository,
-      bcryptAdapter,
-      userCredentials,
-      userMock,
-    } = makeSut();
+    const { authLoginService, authRepository, bcryptAdapter } = makeSut();
+
+    const userMock = UserMock.create();
+
+    const userCredentials = {
+      password: userMock.password,
+      username: userMock.username,
+    };
 
     vi.spyOn(bcryptAdapter, 'compare').mockResolvedValueOnce(true);
 
@@ -57,7 +49,14 @@ describe('Auth Login Service Sut', () => {
   });
 
   it('should return return error if username dont exists', async () => {
-    const { authLoginService, authRepository, userCredentials } = makeSut();
+    const { authLoginService, authRepository } = makeSut();
+
+    const userMock = UserMock.create();
+
+    const userCredentials = {
+      password: userMock.password,
+      username: 'inexistent username',
+    };
 
     vi.spyOn(authRepository, 'findUserByUsername').mockResolvedValue(null);
 
@@ -67,13 +66,14 @@ describe('Auth Login Service Sut', () => {
   });
 
   it('should return return error if password are wrong', async () => {
-    const {
-      authLoginService,
-      authRepository,
-      bcryptAdapter,
-      userCredentials,
-      userMock,
-    } = makeSut();
+    const { authLoginService, authRepository, bcryptAdapter } = makeSut();
+
+    const userMock = UserMock.create();
+
+    const userCredentials = {
+      password: 'wrong password',
+      username: userMock.username,
+    };
 
     const response = authLoginService.execute(userCredentials);
 
