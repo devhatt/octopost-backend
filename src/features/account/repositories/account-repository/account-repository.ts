@@ -27,10 +27,20 @@ export class AccountRepository {
     });
   }
 
-  findAccountsByUserId(id: string) {
+  async findAccountsByUserId(id: string) {
     return database.account.findMany({
       where: {
         userId: id,
+      },
+      select: {
+        avatarUrl: true,
+        id: true,
+        socialMedia: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
   }

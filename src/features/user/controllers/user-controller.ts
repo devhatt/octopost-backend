@@ -1,7 +1,6 @@
-import type { RequestHandler } from 'express';
-
 import type { UserCreateService } from '@/features/user/services/user-create-service';
 import type { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
+import type { GetUserAccountsService } from '@/features/account/services/get-user-accounts-service';
 import {
   userCreateBodySchema,
   userFindByIdParamsSchema,
@@ -30,11 +29,13 @@ export class UserController implements Controller {
     }
   };
 
-  getAccounts: RequestHandler = (req, res, next) => {
+  getAccounts: AsyncRequestHandler = async (req, res, next) => {
     try {
       const { id } = userFindByIdParamsSchema.parse(req.params);
 
-      return res.status(HttpStatusCode.ok).json({ id });
+      const { accounts } = await this.getUserAccountsService.execute({ id });   
+
+      return res.status(HttpStatusCode.ok).json(accounts);
     } catch (error) {
       next(error);
     }
@@ -56,6 +57,7 @@ export class UserController implements Controller {
 
   constructor(
     private serviceCreate: UserCreateService,
-    private serviceFindById: UserFindByIdService
+    private serviceFindById: UserFindByIdService,
+    private getUserAccountsService: GetUserAccountsService
   ) {}
 }
