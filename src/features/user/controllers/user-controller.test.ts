@@ -204,7 +204,6 @@ describe('[Controllers] UserController', () => {
         id: uuid,
       };
       await userController.getAccounts(req, res, next);
-      console.log(accounts);
       
       expect(res.status).toHaveBeenCalledWith(HttpStatusCode.ok)
       expect(res.json).toHaveBeenCalledWith(accounts)

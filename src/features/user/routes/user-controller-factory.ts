@@ -17,11 +17,11 @@ export function userControllerFactory() {
     bcryptAdapter
   );
   const userServiceFindById = new UserFindByIdService(userRepository);
-  const getUserAccountService = new GetUserAccountsService(userRepository, accountRepository)
+  const getUserAccountsService = new GetUserAccountsService(userRepository, accountRepository)
   const userController = new UserController(
     userServiceCreate,
     userServiceFindById,
-    getUserAccountService
+    getUserAccountsService
   );
 
   return { userController };
