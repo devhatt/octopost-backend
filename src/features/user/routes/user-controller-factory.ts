@@ -10,14 +10,17 @@ import { AccountRepository } from '@/features/account/repositories/account-repos
 
 export function userControllerFactory() {
   const userRepository = new UserRepository();
-  const accountRepository = new AccountRepository()
+  const accountRepository = new AccountRepository();
   const bcryptAdapter = new BcryptAdapter();
   const userServiceCreate = new UserCreateService(
     userRepository,
     bcryptAdapter
   );
   const userServiceFindById = new UserFindByIdService(userRepository);
-  const getUserAccountsService = new GetUserAccountsService(userRepository, accountRepository)
+  const getUserAccountsService = new GetUserAccountsService(
+    userRepository,
+    accountRepository
+  );
   const userController = new UserController(
     userServiceCreate,
     userServiceFindById,

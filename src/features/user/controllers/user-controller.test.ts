@@ -204,10 +204,10 @@ describe('[Controllers] UserController', () => {
         id: uuid,
       };
       await userController.getAccounts(req, res, next);
-      
-      expect(res.status).toHaveBeenCalledWith(HttpStatusCode.ok)
-      expect(res.json).toHaveBeenCalledWith(accounts)
-      expect(next).not.toHaveBeenCalled()
+
+      expect(res.status).toHaveBeenCalledWith(HttpStatusCode.ok);
+      expect(res.json).toHaveBeenCalledWith(accounts);
+      expect(next).not.toHaveBeenCalled();
     });
   });
 });

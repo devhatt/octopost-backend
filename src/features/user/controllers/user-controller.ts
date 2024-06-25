@@ -33,7 +33,7 @@ export class UserController implements Controller {
     try {
       const { id } = userFindByIdParamsSchema.parse(req.params);
 
-      const { accounts } = await this.getUserAccountsService.execute({ id });   
+      const { accounts } = await this.getUserAccountsService.execute({ id });
 
       return res.status(HttpStatusCode.ok).json(accounts);
     } catch (error) {
