@@ -1,7 +1,9 @@
-import { InternalServerError } from '@/shared/errors/internal-server-error.js';
-import path from 'node:path';
-import Handlebars from 'handlebars';
 import fs from 'node:fs';
+import path from 'node:path';
+
+import Handlebars from 'handlebars';
+
+import { InternalServerError } from '@/shared/errors/internal-server-error.js';
 
 export class NodemailerRepository {
   compileTemplate(source: string, data: unknown): string {

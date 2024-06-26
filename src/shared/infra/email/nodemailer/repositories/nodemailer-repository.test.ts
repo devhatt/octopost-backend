@@ -1,7 +1,9 @@
-import { InternalServerError } from '@/shared/errors/internal-server-error.js';
-import { NodemailerRepository } from './nodemailer-repository.js';
-import path from 'node:path';
 import fs from 'node:fs';
+import path from 'node:path';
+
+import { InternalServerError } from '@/shared/errors/internal-server-error.js';
+
+import { NodemailerRepository } from './nodemailer-repository.js';
 
 const makeSut = () => {
   const repository = new NodemailerRepository();

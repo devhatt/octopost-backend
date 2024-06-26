@@ -1,7 +1,9 @@
-import env from '@/config/env.js';
-import { NodemailerService } from './nodemailer-service.js';
-import { transporter } from '@/shared/infra/email/nodemailer/config/transporter.js';
 import type { SentMessageInfo } from 'nodemailer';
+
+import { env } from '@/config/env';
+import { transporter } from '@/shared/infra/email/nodemailer/config/transporter';
+
+import { NodemailerService } from './nodemailer-service';
 
 describe('NodemailerService', () => {
   it('sends email correctly', async () => {
@@ -21,6 +23,7 @@ describe('NodemailerService', () => {
       } as SentMessageInfo);
 
     const emailData = {
+      parameters: { test_key: 'test_value' },
       recipient: 'recipient@example.com',
       subject: 'Test Subject',
       template: 'test-template',

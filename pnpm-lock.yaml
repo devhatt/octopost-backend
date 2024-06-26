@@ -26,21 +26,18 @@ dependencies:
   handlebars:
     specifier: 4.7.8
     version: 4.7.8
-  joi:
-    specifier: 17.13.0
-    version: 17.13.0
   jsonwebtoken:
     specifier: 9.0.2
     version: 9.0.2
   morgan:
     specifier: 1.10.0
     version: 1.10.0
-  zod:
-    specifier: 3.23.8
-    version: 3.23.8
   nodemailer:
     specifier: 6.9.13
     version: 6.9.13
+  zod:
+    specifier: 3.23.8
+    version: 3.23.8
 
 devDependencies:
   '@commitlint/cli':
@@ -1544,7 +1541,7 @@ packages:
   /@types/nodemailer@6.4.15:
     resolution: {integrity: sha512-0EBJxawVNjPkng1zm2vopRctuWVCxk34JcIlRuXSf54habUWdz1FB7wHDqOqvDa8Mtpt0Q3LTXQkAs2LNyK5jQ==}
     dependencies:
-      '@types/node': 20.12.12
+      '@types/node': 20.14.8
     dev: true
 
   /@types/normalize-package-data@2.4.4:
@@ -4152,7 +4149,6 @@ packages:
       wordwrap: 1.0.0
     optionalDependencies:
       uglify-js: 3.18.0
-    dev: true
 
   /has-bigints@1.0.2:
     resolution: {integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==}
