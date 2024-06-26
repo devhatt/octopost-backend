@@ -80,7 +80,7 @@ describe('[Errors]', () => {
       const error = new InternalServerError('error message');
 
       expect(error.toJSON()).toStrictEqual({
-        code: 409,
+        code: 500,
         error: 'error message',
       });
     });
