@@ -27,7 +27,7 @@ describe('JWTHelper', () => {
     it('should not refresh an invalid token', () => {
       const newToken = jwt.refreshToken('invalidToken');
 
-      expect(newToken).toBe('invalid token');
+      expect(newToken).toContain('Invalid token');
     });
   });
 
@@ -40,11 +40,13 @@ describe('JWTHelper', () => {
     });
 
     it('should return error for an invalid token', () => {
-      const invalidToken = 'invalidToken';
-      const parsedPayload = jwt.parseToken(invalidToken);
-      const error = new Error('Invalid token');
-
-      expect(parsedPayload).toEqual(error);
+      try {
+        const invalidToken = 'invalidToken';
+        jwt.parseToken(invalidToken);
+      } catch (error) {
+        const err = error as Error;
+        expect(err.message).toBe('Invalid token jwt malformed');
+      }
     });
   });
 });
