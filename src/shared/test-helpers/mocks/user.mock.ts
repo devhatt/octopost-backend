@@ -4,7 +4,6 @@ import { faker } from '@faker-js/faker';
 import type { User } from '@prisma/client';
 
 export class UserMock {
-  static id: string;
   public static create(override?: Partial<User>): User {
     return {
       createdAt: new Date(),
