@@ -16,6 +16,7 @@ export class JWTHelper {
   parseToken(token: string): Error | TokenPayload {
     try {
       const payload = jwt.verify(token, this.secretKey) as TokenPayload;
+
       return payload;
     } catch (error) {
       const err = error as InvalidTokenException;

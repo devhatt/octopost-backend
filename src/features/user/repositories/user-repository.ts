@@ -26,6 +26,7 @@ export class UserRepository {
       select: {
         email: true,
         id: true,
+        isActive: true,
         name: true,
         username: true,
       },
