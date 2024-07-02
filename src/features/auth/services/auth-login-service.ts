@@ -23,14 +23,15 @@ export class AuthLoginService implements Service<Input, Output> {
   ) {}
 
   async execute({ password, username }: AuthLoginModel) {
-    const hashedPassword = await this.crypto.encrypt(password);
-
-    const user = await this.authRepository.findUserByCredentials({
-      password: hashedPassword,
-      username,
-    });
+    const user = await this.authRepository.findUserByUsername(username);
 
     if (!user) {
+      throw new InvalidCredentialsError();
+    }
+
+    const isValidPassword = await this.crypto.compare(password, user.password);
+
+    if (!isValidPassword) {
       throw new InvalidCredentialsError();
     }
 

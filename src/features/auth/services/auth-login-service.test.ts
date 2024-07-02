@@ -1,52 +1,12 @@
-import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
-import { JWTHelper } from '@/shared/infra/jwt/jwt';
+import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter.js';
+import { JWTHelper } from '@/shared/infra/jwt/jwt.js';
+import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
 
-import type { AuthRepository } from '../repositories/auth-repository/auth-repository.js';
-import { AuthLoginService } from './auth-login-service';
+import { AuthRepository } from '../repositories/auth-repository/auth-repository.js';
+import { AuthLoginService } from './auth-login-service.js';
 
 const makeSut = () => {
-  class AuthRepositoryStub implements AuthRepository {
-    findUserByCredentials({
-      password,
-      username,
-    }: {
-      password: string;
-      username: string;
-    }): Promise<{
-      email: string;
-      id: string;
-      name: null | string;
-      username: string;
-    } | null> {
-      password;
-      return Promise.resolve({
-        email: 'email@email.com',
-        id: 'valid_id',
-        name: 'john',
-        username,
-      });
-    }
-
-    findUserById(id: string): Promise<{
-      email: string;
-      id: string;
-      name: null | string;
-      username: string;
-    } | null> {
-      throw new Error('Method not implemented.' + id);
-    }
-
-    findUserByUsername(username: string): Promise<{
-      email: string;
-      id: string;
-      name: null | string;
-      username: string;
-    } | null> {
-      throw new Error('Method not implemented. ' + username);
-    }
-  }
-
-  const authRepository = new AuthRepositoryStub();
+  const authRepository = new AuthRepository();
   const bcryptAdapter = new BcryptAdapter();
   const jwt = new JWTHelper('secret-test-key');
   const authLoginService = new AuthLoginService(
@@ -55,36 +15,77 @@ const makeSut = () => {
     jwt
   );
 
-  return { authLoginService, authRepository };
+  const userMock = UserMock.create();
+
+  const userCredentials = {
+    password: userMock.password,
+    username: userMock.username,
+  };
+
+  return {
+    authLoginService,
+    authRepository,
+    bcryptAdapter,
+    userCredentials,
+    userMock,
+  };
 };
 
 describe('Auth Login Service Sut', () => {
   it('should return token if login is correctly', async () => {
-    const { authLoginService, authRepository } = makeSut();
+    const {
+      authLoginService,
+      authRepository,
+      bcryptAdapter,
+      userCredentials,
+      userMock,
+    } = makeSut();
 
-    const userCredentials = {
-      password: 'password',
-      username: 'usernmae',
-    };
+    vi.spyOn(bcryptAdapter, 'compare').mockResolvedValueOnce(true);
 
-    vi.spyOn(authRepository, 'findUserByCredentials');
+    vi.spyOn(authRepository, 'findUserByUsername').mockResolvedValueOnce({
+      email: userMock.email,
+      id: userMock.id,
+      name: userMock.name,
+      password: userMock.password,
+      username: userMock.username,
+    });
 
     const token = authLoginService.execute(userCredentials);
 
     expect(token).toBeTruthy();
   });
 
-  it('should return return error if credentials are wrong', async () => {
-    const { authLoginService, authRepository } = makeSut();
+  it('should return return error if username dont exists', async () => {
+    const { authLoginService, authRepository, userCredentials } = makeSut();
 
-    const userCredentials = {
-      password: 'wrong-password',
-      username: 'usernmae',
-    };
-
-    vi.spyOn(authRepository, 'findUserByCredentials').mockResolvedValue(null);
+    vi.spyOn(authRepository, 'findUserByUsername').mockResolvedValue(null);
 
     const response = authLoginService.execute(userCredentials);
+
+    await expect(response).rejects.toThrowError();
+  });
+
+  it('should return return error if password are wrong', async () => {
+    const {
+      authLoginService,
+      authRepository,
+      bcryptAdapter,
+      userCredentials,
+      userMock,
+    } = makeSut();
+
+    const response = authLoginService.execute(userCredentials);
+
+    vi.spyOn(authRepository, 'findUserByUsername').mockResolvedValueOnce({
+      email: userMock.email,
+      id: userMock.id,
+      name: userMock.name,
+      password: userMock.password,
+      username: userMock.username,
+    });
+
+    vi.spyOn(bcryptAdapter, 'compare').mockResolvedValueOnce(false);
 
     await expect(response).rejects.toThrowError();
   });
