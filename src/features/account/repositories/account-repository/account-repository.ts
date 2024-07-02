@@ -27,7 +27,7 @@ export class AccountRepository {
     });
   }
 
-  async findAccountsByUserId(id: string) {
+  findAccountsByUserId(id: string) {
     return database.account.findMany({
       where: {
         userId: id,
