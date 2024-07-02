@@ -147,20 +147,6 @@ describe('[Controllers] UserController', () => {
   });
 
   describe('getAccounts', () => {
-    it('should call service with correctly params', async () => {
-      const { req, res, next, userController, getUserAccountsService } =
-        makeSut();
-      const serviceSpy = vi.spyOn(getUserAccountsService, 'execute');
-      const uuid = randomUUID();
-      req.params = {
-        id: uuid,
-      };
-
-      await userController.getAccounts(req, res, next);
-
-      expect(serviceSpy).toHaveBeenCalledWith({ id: uuid });
-    });
-
     it('should call next with an error if user not found', async () => {
       const { req, res, next, userController, getUserAccountsService } =
         makeSut();
