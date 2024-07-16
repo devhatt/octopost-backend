@@ -29,9 +29,6 @@ export class AccountRepository {
 
   findAccountsByUserId(id: string) {
     return database.account.findMany({
-      where: {
-        userId: id,
-      },
       select: {
         avatarUrl: true,
         id: true,
@@ -41,6 +38,9 @@ export class AccountRepository {
             name: true,
           },
         },
+      },
+      where: {
+        userId: id,
       },
     });
   }

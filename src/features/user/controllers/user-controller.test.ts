@@ -2,16 +2,16 @@ import { randomUUID } from 'crypto';
 import type { Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
+import { GetUserAccountsService } from '@/features/account/services/get-user-accounts-service';
 import { UserCreateService } from '@/features/user/services/user-create-service';
 import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
-import { GetUserAccountsService } from '@/features/account/services/get-user-accounts-service';
 import { HttpError } from '@/shared/errors/http-error';
-import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
-import { accountRepositoryMock } from '@/shared/test-helpers/mocks/repositories/account-repository.mock';
-
-import { UserController } from './user-controller';
 import { UserNotFound } from '@/shared/errors/user-not-found-error';
 import { HttpStatusCode } from '@/shared/protocols/http-client';
+import { accountRepositoryMock } from '@/shared/test-helpers/mocks/repositories/account-repository.mock';
+import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
+
+import { UserController } from './user-controller';
 
 const makeSut = () => {
   const mockUserCreateService = mock<UserCreateService>(
@@ -36,19 +36,19 @@ const makeSut = () => {
 
   const req = mockDeep<Request>();
   const res = {
-    status: vi.fn().mockReturnThis(),
     json: vi.fn(),
+    status: vi.fn().mockReturnThis(),
   } as unknown as Response;
   const next = vi.fn();
 
   return {
+    getUserAccountsService: mockGetUserAccountsService,
     next,
     req,
     res,
     userController,
     userCreateService: mockUserCreateService,
     userFindByIdService: mockUserFindByIdService,
-    getUserAccountsService: mockGetUserAccountsService,
   };
 };
 
@@ -148,7 +148,7 @@ describe('[Controllers] UserController', () => {
 
   describe('getAccounts', () => {
     it('should call next with an error if user not found', async () => {
-      const { req, res, next, userController, getUserAccountsService } =
+      const { getUserAccountsService, next, req, res, userController } =
         makeSut();
 
       vi.spyOn(getUserAccountsService, 'execute').mockRejectedValueOnce(
@@ -166,18 +166,18 @@ describe('[Controllers] UserController', () => {
     });
 
     it('should return accounts from user', async () => {
-      const { req, res, next, userController, getUserAccountsService } =
+      const { getUserAccountsService, next, req, res, userController } =
         makeSut();
 
       const accounts = [
         {
-          id: 'id1',
           avatarUrl: 'avatar-url',
+          id: 'id1',
           socialMedia: { id: 1, name: 'social-name' },
         },
         {
-          id: 'id2',
           avatarUrl: 'avatar-url',
+          id: 'id2',
           socialMedia: { id: 2, name: 'social-name' },
         },
       ];

@@ -1,6 +1,6 @@
+import type { GetUserAccountsService } from '@/features/account/services/get-user-accounts-service';
 import type { UserCreateService } from '@/features/user/services/user-create-service';
 import type { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
-import type { GetUserAccountsService } from '@/features/account/services/get-user-accounts-service';
 import {
   userCreateBodySchema,
   userFindByIdParamsSchema,

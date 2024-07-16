@@ -9,8 +9,8 @@ type Input = {
 
 type Output = {
   accounts: {
-    id: string;
     avatarUrl: string;
+    id: string;
     socialMedia: {
       id: number;
       name: string;
