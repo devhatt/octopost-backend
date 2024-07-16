@@ -1,7 +1,8 @@
 import type { NextFunction, Request, Response } from 'express';
 
 import type { UserRepository } from '@/features/user/repositories/user-repository';
-import type { JWTHelper } from '@/shared/infra/jwt/jwt';
+import { InvalidTokenException } from '@/shared/errors/invalid-token-exception';
+import { type JWTHelper, type TokenPayload } from '@/shared/infra/jwt/jwt';
 
 export class AuthenticationJWT {
   constructor(
@@ -16,10 +17,7 @@ export class AuthenticationJWT {
         return res.status(401).json({ error: 'Token missing' });
       }
 
-      const payload = this.jwtHelper.parseToken(token);
-      if (payload instanceof Error) {
-        return res.status(401).json({ error: 'Invalid token' });
-      }
+      const payload = this.jwtHelper.parseToken(token) as TokenPayload;
 
       const userId = payload.userId;
       const user = await this.userRepository.findById(userId);
@@ -29,6 +27,9 @@ export class AuthenticationJWT {
 
       next();
     } catch (error) {
+      if (error instanceof InvalidTokenException) {
+        return res.status(401).json({ error: 'Invalid token' });
+      }
       console.error('Erro durante a autenticação:', error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
