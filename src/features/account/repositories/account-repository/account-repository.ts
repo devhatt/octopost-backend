@@ -29,6 +29,16 @@ export class AccountRepository {
 
   findAccountsByUserId(id: string) {
     return database.account.findMany({
+      select: {
+        avatarUrl: true,
+        id: true,
+        socialMedia: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
       where: {
         userId: id,
       },
