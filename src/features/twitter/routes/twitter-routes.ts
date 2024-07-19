@@ -6,7 +6,7 @@ import { twitterControllerFactory } from './twitter-controller.factory';
 const router = Router();
 
 const { twitterController } = twitterControllerFactory();
-router.get('/authorize', twitterController.authorize);
+router.get('/login', twitterController.login);
 router.get('/callback', twitterController.callback);
 
 export default {
