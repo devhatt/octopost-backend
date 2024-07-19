@@ -31,7 +31,10 @@ model User {
 
 model Account {
   id            String   @id @default(uuid())
-  avatarUrl     String
+  name          String?
+  username      String?
+  socialUserId  String?  @map("social_user_id") //Referes to the social media user id -> Twitter ID
+  avatarUrl     String?  @map("avatar_url")
   userId        String?  @map("user_id")
   socialMediaId Int?     @map("social_media_id")
   createdAt     DateTime @default(now()) @map("created_at")

@@ -8,6 +8,7 @@ const router = Router();
 const { twitterController } = twitterControllerFactory();
 router.get('/login', twitterController.login);
 router.get('/callback', twitterController.callback);
+router.get('/create', twitterController.create);
 
 export default {
   prefix: 'twitter',

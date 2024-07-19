@@ -8,16 +8,18 @@ export class TwitterController implements Controller {
   callback: AsyncRequestHandler = async (req, res) => {
     const query = req.query;
 
-    console.log({ query });
-    await Promise.resolve();
+    const code = await this.authorizeTwitter.execute({
+      code: String(query.code),
+    });
 
-    return res.send();
+    return res.json(code);
   };
 
+  create: AsyncRequestHandler = (_, res) => res.send();
+
   login: AsyncRequestHandler = (_, res) => {
-    const urlBuilded = generateAuthURL();
-    const urlClient = this.authorizeTwitter.execute({});
-    return res.redirect(urlBuilded);
+    const url = generateAuthURL();
+    return res.redirect(url);
   };
 
   constructor(private readonly authorizeTwitter: AuthorizeTwitterService) {}
