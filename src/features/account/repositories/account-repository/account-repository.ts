@@ -4,16 +4,19 @@ export class AccountRepository {
   create({
     avatarUrl,
     socialMediaId,
+    socialUserId,
     userId,
   }: {
     avatarUrl: string;
     socialMediaId: number;
+    socialUserId: string;
     userId: string;
   }) {
     return database.account.create({
       data: {
         avatarUrl,
         socialMediaId,
+        socialUserId,
         userId,
       },
     });

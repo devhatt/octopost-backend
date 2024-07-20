@@ -1,3 +1,5 @@
+/* istanbul ignore file -- @preserve */
+import { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
 import { AxiosHandler } from '@/shared/infra/http/axios-http';
 import { Logger } from '@/shared/infra/logger/logger';
 
@@ -15,9 +17,12 @@ export function twitterControllerFactory() {
     axiosAdapter
   );
 
+  const accountRepository = new AccountRepository();
+
   const authorizeTwitterService = new AuthorizeTwitterService(
     new Logger({ service: 'authorizeTwitterService' }),
-    twitterService
+    twitterService,
+    accountRepository
   );
 
   const twitterController = new TwitterController(authorizeTwitterService);

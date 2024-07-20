@@ -15,7 +15,7 @@ export class AuthTokenValidationService implements Service<Input, void> {
   ) {}
 
   async execute({ token }: Input) {
-    const payload = this.jwt.parseToken(token) as TokenPayload;
+    const payload = this.jwt.parseToken(token);
 
     const user = await this.userReposiotry.findById(payload.userId);
 

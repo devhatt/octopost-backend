@@ -30,15 +30,16 @@ model User {
 }
 
 model Account {
-  id            String   @id @default(uuid())
-  name          String?
-  username      String?
-  socialUserId  String?  @map("social_user_id") //Referes to the social media user id -> Twitter ID
-  avatarUrl     String   @map("avatar_url")
-  userId        String?  @map("user_id")
-  socialMediaId Int?     @map("social_media_id")
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
+  id                String   @id @default(uuid())
+  name              String?
+  username          String?
+  socialMediaUserId String?  @map("social_media_user_id") //Referes to the social media user id -> Twitter ID
+  avatarUrl         String?  @map("avatar_url")
+  userId            String?  @map("user_id")
+  favorite          Boolean
+  socialMediaId     Int      @map("social_media_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
 
   user        User?        @relation(fields: [userId], references: [id])
   socialMedia SocialMedia? @relation(fields: [socialMediaId], references: [id])

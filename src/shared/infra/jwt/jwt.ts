@@ -3,17 +3,19 @@ import jwt from 'jsonwebtoken';
 import { InvalidTokenException } from '@/shared/errors/invalid-token-exception';
 
 export interface TokenPayload {
+  name: string;
   userId: string;
+  username: string;
 }
 
 export class JWTHelper {
   constructor(private readonly secretKey: string) {}
 
-  createToken(token: TokenPayload, expiresIn: string = '1h'): string {
-    return jwt.sign(token, this.secretKey, { expiresIn });
+  createToken(payload: TokenPayload, expiresIn: string = '1h'): string {
+    return jwt.sign(payload, 'secret_key', { expiresIn });
   }
 
-  parseToken(token: string): Error | TokenPayload {
+  parseToken(token: string): TokenPayload {
     try {
       const payload = jwt.verify(token, this.secretKey) as TokenPayload;
 
@@ -24,7 +26,7 @@ export class JWTHelper {
     }
   }
 
-  refreshToken(token: string): Error | string {
+  refreshToken(token: string): string {
     try {
       const payload = this.parseToken(token);
       return jwt.sign(payload, this.secretKey);

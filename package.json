@@ -108,5 +108,8 @@
       "eslint --fix --report-unused-disable-directives --max-warnings=0 --ignore",
       "prettier --write --ignore-unknown"
     ]
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }
