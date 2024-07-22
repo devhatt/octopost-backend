@@ -1,5 +1,5 @@
 /* istanbul ignore file -- @preserve */
-import { env } from 'src/config/env';
+import { env } from '@/config/env';
 
 import { AuthController } from '@/features/auth/controllers/auth-controller';
 import { AuthRepository } from '@/features/auth/repositories/auth-repository/auth-repository';
