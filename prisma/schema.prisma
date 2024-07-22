@@ -53,7 +53,7 @@ model Token {
   authToken String?   @map("auth_token")
   token     String?
   issuedAt  DateTime? @map("issued_at")
-  expireIn  Int?      @map("expire_in")
+  expiresIn Int?      @map("expire_in")
   accountId String    @unique @map("account_id")
 
   account Account? @relation(fields: [accountId], references: [id])
@@ -62,9 +62,9 @@ model Token {
 }
 
 model SocialMedia {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
-  description String
+  description String?
 
   account Account[]
 

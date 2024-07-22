@@ -1,8 +1,8 @@
 import type { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
+import type { TokenRepository } from '@/features/account/repositories/token-repository/token-repository';
 import type { Logger } from '@/shared/infra/logger/logger';
 import type { Service } from '@/shared/protocols/service';
 
-import type { TwitterUser } from '../models/twitter-models';
 import type { TwitterService } from './twitter-service';
 
 type Input = {
@@ -10,11 +10,12 @@ type Input = {
   state: string;
 };
 
-export class AuthorizeTwitterService implements Service<Input, TwitterUser> {
+export class AuthorizeTwitterService implements Service<Input, void> {
   constructor(
     private readonly logger: Logger,
     private readonly twitterService: TwitterService,
-    private readonly accountRepository: AccountRepository
+    private readonly accountRepository: AccountRepository,
+    private readonly tokenRepository: TokenRepository
   ) {}
 
   async execute({ code, state }: Input) {
@@ -32,22 +33,25 @@ export class AuthorizeTwitterService implements Service<Input, TwitterUser> {
       twitterOAuthToken.access_token
     );
 
-    //TODO: improve
-    const accounts = await this.accountRepository.getAccounts(userId);
+    let accountExist = await this.accountRepository.getAccountBySocialMedia({
+      socialMediaUserId: twitterUser.id,
+      userId,
+    });
 
-    const accountExists = accounts.filter(
-      (account) => account.socialMediaId === 1
-    );
-
-    if (!accountExists.length) {
-      await this.accountRepository.create({
+    if (!accountExist) {
+      accountExist = await this.accountRepository.create({
         avatarUrl: '',
         socialMediaId: 1,
-        socialUserId: twitterUser.id,
+        socialMediaUserId: twitterUser.id,
         userId: userId,
       });
     }
 
-    return twitterUser;
+    await this.tokenRepository.upsert({
+      accessToken: twitterOAuthToken.access_token,
+      accountId: accountExist.id,
+      authToken: twitterOAuthToken.token_type,
+      expiresIn: twitterOAuthToken.expires_in,
+    });
   }
 }

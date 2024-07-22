@@ -11,8 +11,6 @@ export class TwitterController implements Controller {
   callback: AsyncRequestHandler = async (req, res) => {
     const query = req.query;
 
-    console.log({ query });
-
     const code = await this.authorizeTwitter.execute({
       code: String(query.code),
       state: String(query.state),
@@ -23,6 +21,7 @@ export class TwitterController implements Controller {
 
   login: AsyncRequestHandler = (req, res) => {
     const authorization = req.headers.authorization;
+
     if (!authorization) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
