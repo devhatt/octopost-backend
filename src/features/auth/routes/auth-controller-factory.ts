@@ -1,4 +1,6 @@
 /* istanbul ignore file -- @preserve */
+import { env } from 'src/config/env';
+
 import { AuthController } from '@/features/auth/controllers/auth-controller';
 import { AuthRepository } from '@/features/auth/repositories/auth-repository/auth-repository';
 import { AuthLoginService } from '@/features/auth/services/auth-login-service';
@@ -7,7 +9,7 @@ import { JWTHelper } from '@/shared/infra/jwt/jwt';
 
 export function authControllerFactory() {
   const authRepository = new AuthRepository();
-  const jwt = new JWTHelper('secret');
+  const jwt = new JWTHelper(env.SECRET_KEY);
   const crypto = new BcryptAdapter();
 
   const loginService = new AuthLoginService(authRepository, crypto, jwt);
