@@ -1,4 +1,3 @@
-import type { AccountModel } from '@/features/account/models/account-model';
 import type { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
 import type { UserRepository } from '@/features/user/repositories/user-repository';
 import { UserNotFound } from '@/shared/errors/user-not-found-error';
@@ -9,7 +8,14 @@ type Input = {
 };
 
 type Output = {
-  accounts: AccountModel[];
+  accounts: {
+    avatarUrl: string;
+    id: string;
+    socialMedia: {
+      id: number;
+      name: string;
+    } | null;
+  }[];
 };
 
 export class GetUserAccountsService implements Service<Input, Output> {
@@ -28,7 +34,7 @@ export class GetUserAccountsService implements Service<Input, Output> {
     const accounts = await this.accountRepository.findAccountsByUserId(user.id);
 
     return {
-      accounts: accounts,
+      accounts,
     };
   }
 }

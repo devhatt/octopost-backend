@@ -2,9 +2,13 @@ import { randomUUID } from 'crypto';
 import type { Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
+import { GetUserAccountsService } from '@/features/account/services/get-user-accounts-service';
 import { UserCreateService } from '@/features/user/services/user-create-service';
 import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
 import { HttpError } from '@/shared/errors/http-error';
+import { UserNotFound } from '@/shared/errors/user-not-found-error';
+import { HttpStatusCode } from '@/shared/protocols/http-client';
+import { accountRepositoryMock } from '@/shared/test-helpers/mocks/repositories/account-repository.mock';
 import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
 
 import { UserController } from './user-controller';
@@ -20,16 +24,25 @@ const makeSut = () => {
     new UserFindByIdService(userRepositoryMock)
   );
 
+  const mockGetUserAccountsService = mock<GetUserAccountsService>(
+    new GetUserAccountsService(userRepositoryMock, accountRepositoryMock)
+  );
+
   const userController = new UserController(
     mockUserCreateService,
-    mockUserFindByIdService
+    mockUserFindByIdService,
+    mockGetUserAccountsService
   );
 
   const req = mockDeep<Request>();
-  const res = mockDeep<Response>();
+  const res = {
+    json: vi.fn(),
+    status: vi.fn().mockReturnThis(),
+  } as unknown as Response;
   const next = vi.fn();
 
   return {
+    getUserAccountsService: mockGetUserAccountsService,
     next,
     req,
     res,
@@ -130,6 +143,57 @@ describe('[Controllers] UserController', () => {
 
       expect(userFindSpy).toHaveBeenCalled();
       expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
+  });
+
+  describe('getAccounts', () => {
+    it('should call next with an error if user not found', async () => {
+      const { getUserAccountsService, next, req, res, userController } =
+        makeSut();
+
+      vi.spyOn(getUserAccountsService, 'execute').mockRejectedValueOnce(
+        new UserNotFound()
+      );
+
+      const uuid = randomUUID();
+      req.params = {
+        id: uuid,
+      };
+
+      await userController.getAccounts(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(new Error('User not found'));
+    });
+
+    it('should return accounts from user', async () => {
+      const { getUserAccountsService, next, req, res, userController } =
+        makeSut();
+
+      const accounts = [
+        {
+          avatarUrl: 'avatar-url',
+          id: 'id1',
+          socialMedia: { id: 1, name: 'social-name' },
+        },
+        {
+          avatarUrl: 'avatar-url',
+          id: 'id2',
+          socialMedia: { id: 2, name: 'social-name' },
+        },
+      ];
+      vi.spyOn(getUserAccountsService, 'execute').mockResolvedValueOnce({
+        accounts,
+      });
+
+      const uuid = randomUUID();
+      req.params = {
+        id: uuid,
+      };
+      await userController.getAccounts(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(HttpStatusCode.ok);
+      expect(res.json).toHaveBeenCalledWith(accounts);
+      expect(next).not.toHaveBeenCalled();
     });
   });
 });
