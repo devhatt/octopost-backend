@@ -7,10 +7,13 @@ services:
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'password'
-      POSTGRES_DB: 'octopost'
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
       PGDATA: '/var/lib/postgresql/mydata'
+    env_file:
+      - .env.example
+      - .env
     volumes:
       - db:/var/lib/postgresql/mydata
     networks:
@@ -24,9 +27,12 @@ services:
     profiles:
       - prod
     ports:
-      - 3000:3000
+      - ${PORT}:${PORT}
     depends_on:
       - db-prod
+    env_file:
+      - .env.example
+      - .env
     networks:
       - octopost
 
