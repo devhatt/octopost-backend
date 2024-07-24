@@ -34,7 +34,12 @@ jobs:
     needs: test
     steps:
       - name: Create .env
-        run: cp .env.example .env
+        run: |
+          if [ -f .env.example ]; then
+            cp .env.example .env
+          else
+            echo ".env.example file not found."
+          fi
 
       - name: Run docker-compose in prod profile
         run: docker compose --profile prod up --build -d
