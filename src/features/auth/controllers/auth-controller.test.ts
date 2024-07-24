@@ -73,11 +73,15 @@ describe('[Controllers] AuthController', () => {
     it('should call next when an service error occurs', async () => {
       const { authController, loginService, next, req, res } = makeSut();
 
+      const body = {
+        password: 'password',
+        username: 'username',
+      };
+      req.body = body;
+
       const error = new HttpError(500, 'error');
 
-      vi.spyOn(loginService, 'execute').mockRejectedValueOnce(
-        new HttpError(500, 'error')
-      );
+      vi.spyOn(loginService, 'execute').mockRejectedValueOnce(error);
 
       await authController.login(req, res, next);
 

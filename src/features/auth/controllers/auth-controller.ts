@@ -34,7 +34,7 @@ export class AuthController implements Controller {
       return res.status(HttpStatusCode.ok).json({ token });
     } catch (error) {
       if (error instanceof ZodError) {
-        return res.status(400).send({
+        return res.status(409).send({
           issues: error.format(),
           message: 'Validation error',
         });
