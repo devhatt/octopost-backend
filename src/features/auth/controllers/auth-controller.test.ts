@@ -88,5 +88,21 @@ describe('[Controllers] AuthController', () => {
       expect(next).toHaveBeenCalledWith(expect.any(Error));
       expect(error.toJSON()).toStrictEqual({ code: 500, message: 'error' });
     });
+    it('should return 409 with validation issues when Zod validation fails', async () => {
+      const { authController, next, req, res } = makeSut();
+      req.body = {
+        password: 'password',
+        username: 1,
+      };
+
+      await authController.login(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(409);
+      expect(res.send).toHaveBeenCalledWith({
+        issues: expect.any(Object),
+        message: 'Validation error',
+      });
+      expect(next).not.toHaveBeenCalled();
+    });
   });
 });

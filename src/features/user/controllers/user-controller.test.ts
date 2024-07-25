@@ -37,6 +37,7 @@ const makeSut = () => {
   const req = mockDeep<Request>();
   const res = {
     json: vi.fn(),
+    send: vi.fn(),
     status: vi.fn().mockReturnThis(),
   } as unknown as Response;
   const next = vi.fn();
@@ -107,6 +108,26 @@ describe('[Controllers] UserController', () => {
       expect(userCreateSpy).toHaveBeenCalled();
       expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
+    it('should return 409 with validation issues when Zod validation fails during user creation', async () => {
+      const { next, req, res, userController } = makeSut();
+      const invalidBody = {
+        email: 'invalid_email@domain.com',
+        name: 'Invalid_name',
+        password: 'Invalid_password@',
+        repeatPassword: 'Mismatch_password@',
+      };
+
+      req.body = invalidBody;
+
+      await userController.create(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(409);
+      expect(res.send).toHaveBeenCalledWith({
+        issues: expect.any(Object),
+        message: 'Validation error',
+      });
+      expect(next).not.toHaveBeenCalled();
+    });
   });
 
   describe('userFindById', () => {
@@ -144,6 +165,20 @@ describe('[Controllers] UserController', () => {
       expect(userFindSpy).toHaveBeenCalled();
       expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
+    it('should return 409 with validation issues when Zod validation fails', async () => {
+      const { next, req, res, userController } = makeSut();
+
+      req.params = { id: 'invalid-uuid' }; // Provocando falha de validação
+
+      await userController.userFindById(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(409);
+      expect(res.send).toHaveBeenCalledWith({
+        issues: expect.any(Object),
+        message: 'Validation error',
+      });
+      expect(next).not.toHaveBeenCalled();
+    });
   });
 
   describe('getAccounts', () => {
@@ -163,6 +198,20 @@ describe('[Controllers] UserController', () => {
       await userController.getAccounts(req, res, next);
 
       expect(next).toHaveBeenCalledWith(new Error('User not found'));
+    });
+    it('should return 409 with validation issues when Zod validation fails', async () => {
+      const { next, req, res, userController } = makeSut();
+
+      req.params = { id: 'invalid-uuid' };
+
+      await userController.getAccounts(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(409);
+      expect(res.send).toHaveBeenCalledWith({
+        issues: expect.any(Object),
+        message: 'Validation error',
+      });
+      expect(next).not.toHaveBeenCalled();
     });
 
     it('should return accounts from user', async () => {
