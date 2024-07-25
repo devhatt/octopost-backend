@@ -37,7 +37,6 @@ const makeSut = () => {
   const req = mockDeep<Request>();
   const res = {
     json: vi.fn(),
-    send: vi.fn(),
     status: vi.fn().mockReturnThis(),
   } as unknown as Response;
   const next = vi.fn();
