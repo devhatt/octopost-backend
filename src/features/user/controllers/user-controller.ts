@@ -1,5 +1,3 @@
-import { ZodError } from 'zod';
-
 import type { GetUserAccountsService } from '@/features/account/services/get-user-accounts-service';
 import type { UserCreateService } from '@/features/user/services/user-create-service';
 import type { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
@@ -27,12 +25,6 @@ export class UserController implements Controller {
 
       return res.status(HttpStatusCode.created).json(response);
     } catch (error) {
-      if (error instanceof ZodError) {
-        return res.status(409).send({
-          issues: error.format(),
-          message: 'Validation error',
-        });
-      }
       next(error);
     }
   };
@@ -45,12 +37,6 @@ export class UserController implements Controller {
 
       return res.status(HttpStatusCode.ok).json(accounts);
     } catch (error) {
-      if (error instanceof ZodError) {
-        return res.status(409).send({
-          issues: error.format(),
-          message: 'Validation error',
-        });
-      }
       next(error);
     }
   };
@@ -65,12 +51,6 @@ export class UserController implements Controller {
 
       return res.status(HttpStatusCode.ok).json(user);
     } catch (error) {
-      if (error instanceof ZodError) {
-        return res.status(409).send({
-          issues: error.format(),
-          message: 'Validation error',
-        });
-      }
       next(error);
     }
   };
