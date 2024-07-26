@@ -33,13 +33,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+
       - name: Create .env
-        run: |
-          if [ -f .env.example ]; then
-            cp .env.example .env
-          else
-            echo ".env.example file not found."
-          fi
+        run: cp .env.example .env
 
       - name: Run docker-compose in prod profile
         run: docker compose --profile prod up --build -d
