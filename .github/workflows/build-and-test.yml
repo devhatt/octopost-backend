@@ -43,4 +43,4 @@ jobs:
         run: docker compose --profile prod up --build -d
 
       - name: Check Docker Containers
-        run: docker-compose ps --services | xargs -I {} sh -c 'docker-compose ps {} | grep "Up" || exit 1'
+        run: docker compose ps --services | xargs -I {} sh -c 'docker compose ps {} | grep "Up" || exit 1'
