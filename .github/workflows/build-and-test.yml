@@ -43,8 +43,4 @@ jobs:
         run: docker compose --profile prod up --build -d
 
       - name: Check Docker Containers
-        run: |
-          if ! docker-compose ps --services | xargs -I {} docker-compose ps -q {} | xargs docker inspect -f '{{ .State.Status }}' | grep -v "running"; then
-          echo "Some containers are not running. Stopping the action."
-          exit 1
-          fi
+        run: docker-compose ps --services | xargs -I {} sh -c 'docker-compose ps {} | grep "Up" || exit 1'
