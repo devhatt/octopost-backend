@@ -107,6 +107,21 @@ describe('[Controllers] UserController', () => {
       expect(userCreateSpy).toHaveBeenCalled();
       expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
+    it('calls next when validation fails', async () => {
+      const { next, req, res, userController } = makeSut();
+      const invalidBody = {
+        email: 'invalid_email@domain.com',
+        name: 1,
+        password: 'Invalid_password@',
+        repeatPassword: 'Mismatch_password@',
+      };
+
+      req.body = invalidBody;
+
+      await userController.create(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
   });
 
   describe('userFindById', () => {
@@ -144,6 +159,15 @@ describe('[Controllers] UserController', () => {
       expect(userFindSpy).toHaveBeenCalled();
       expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
+    it('calls next when validation fails', async () => {
+      const { next, req, res, userController } = makeSut();
+
+      req.params = { id: 'invalid-uuid' };
+
+      await userController.userFindById(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
   });
 
   describe('getAccounts', () => {
@@ -163,6 +187,15 @@ describe('[Controllers] UserController', () => {
       await userController.getAccounts(req, res, next);
 
       expect(next).toHaveBeenCalledWith(new Error('User not found'));
+    });
+    it('calls next when validation fails', async () => {
+      const { next, req, res, userController } = makeSut();
+
+      req.params = { id: 'invalid-uuid' };
+
+      await userController.getAccounts(req, res, next);
+
+      expect(next).toHaveBeenCalled();
     });
 
     it('should return accounts from user', async () => {
