@@ -1,3 +1,4 @@
+import { logger } from '@/config/logger';
 import { authBodySchema } from '@/features/auth/validators/auth-schema';
 import type { Controller } from '@/shared/protocols/controller';
 import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
@@ -29,6 +30,7 @@ export class AuthController implements Controller {
         username,
       });
 
+      logger.debug('Login user with credentials');
       return res.status(HttpStatusCode.ok).json({ token });
     } catch (error) {
       next(error);
