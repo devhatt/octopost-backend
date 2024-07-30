@@ -1,17 +1,8 @@
+import type { UpsertParams } from '@/features/account/models/account-model';
 import { database } from '@/shared/infra/database/database';
 
 export class TokenRepository {
-  upsert({
-    accessToken,
-    accountId,
-    authToken,
-    expiresIn,
-  }: {
-    accessToken: string;
-    accountId: string;
-    authToken: string;
-    expiresIn: number;
-  }) {
+  upsert({ accessToken, accountId, authToken, expiresIn }: UpsertParams) {
     return database.token.upsert({
       create: {
         authToken,
