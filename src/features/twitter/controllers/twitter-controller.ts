@@ -11,12 +11,12 @@ export class TwitterController implements Controller {
   callback: AsyncRequestHandler = async (req, res) => {
     const query = req.query;
 
-    const code = await this.authorizeTwitter.execute({
+    await this.authorizeTwitter.execute({
       code: String(query.code),
       state: String(query.state),
     });
 
-    return res.json(code);
+    return res.send();
   };
 
   login: AsyncRequestHandler = (req, res) => {

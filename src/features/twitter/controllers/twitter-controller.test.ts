@@ -1,3 +1,4 @@
+import type { Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
 import type { Logger } from '@/shared/infra/logger/logger';
@@ -37,6 +38,7 @@ const makeSut = () => {
 
   return {
     authController,
+    authorizeTwitterService,
     mockLogger,
     next,
     req,
@@ -46,7 +48,36 @@ const makeSut = () => {
 };
 
 describe('[Controller] Twitter', () => {
-  describe('callback', async () => {});
+  describe('callback', () => {
+    it('should be return code', async () => {
+      const { authController, authorizeTwitterService, next, req, res } =
+        makeSut();
 
-  describe('login', async () => {});
+      const spyAuthorizeTwitter = vi
+        .spyOn(authorizeTwitterService, 'execute')
+        .mockReturnThis();
+      req.query = { code: '123', state: '123' };
+
+      await authController.callback(req, res, next);
+
+      expect(spyAuthorizeTwitter).toHaveBeenCalledWith({
+        code: '123',
+        state: '123',
+      });
+      expect(res.send).toHaveBeenCalled();
+    });
+  });
+
+  describe('login', () => {
+    it('should be return 401', () => {
+      const { authController, next, req, res } = makeSut();
+
+      req.headers.authorization = undefined;
+
+      authController.login(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(401);
+      expect(res.json).toHaveBeenCalledWith({ message: 'Unauthorized' });
+    });
+  });
 });
