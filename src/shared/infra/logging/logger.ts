@@ -97,8 +97,7 @@ function getCurrentFileInfo() {
     const stack = get();
     const caller = stack[3];
     return [caller.getFileName(), caller.getFunctionName()];
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
+  } catch () {
     return ['unknown', 'unknown'];
   }
 }
