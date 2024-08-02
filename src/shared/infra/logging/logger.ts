@@ -97,7 +97,7 @@ function getCurrentFileInfo() {
     const stack = get();
     const caller = stack[3];
     return [caller.getFileName(), caller.getFunctionName()];
-  } catch () {
+  } catch (_) {
     return ['unknown', 'unknown'];
   }
 }
