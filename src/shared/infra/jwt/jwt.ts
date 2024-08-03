@@ -12,7 +12,7 @@ export class JWTHelper {
   constructor(private readonly secretKey: string) {}
 
   createToken(payload: TokenPayload, expiresIn: string = '1h'): string {
-    return jwt.sign(payload, 'secret_key', { expiresIn });
+    return jwt.sign(payload, this.secretKey, { expiresIn });
   }
 
   parseToken(token: string): TokenPayload {
