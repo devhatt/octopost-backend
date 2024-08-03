@@ -1,10 +1,5 @@
+import type { FindUserByCredentialsParams } from '@/features/auth/models/auth-login-models';
 import { database } from '@/shared/infra/database/database';
-
-// TODO: Move this type to a folder
-type FindUserByCredentialsParams = {
-  password: string;
-  username: string;
-};
 
 export class AuthRepository {
   findUserByCredentials({ password, username }: FindUserByCredentialsParams) {

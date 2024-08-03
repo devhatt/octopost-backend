@@ -4,16 +4,20 @@ export class AccountRepository {
   create({
     avatarUrl,
     socialMediaId,
+    socialMediaUserId,
     userId,
   }: {
     avatarUrl: string;
     socialMediaId: number;
+    socialMediaUserId: string;
     userId: string;
   }) {
     return database.account.create({
       data: {
         avatarUrl,
+        favorite: false,
         socialMediaId,
+        socialMediaUserId,
         userId,
       },
     });
@@ -41,6 +45,21 @@ export class AccountRepository {
       },
       where: {
         userId: id,
+      },
+    });
+  }
+
+  getAccountBySocialMedia({
+    socialMediaUserId,
+    userId,
+  }: {
+    socialMediaUserId: string;
+    userId: string;
+  }) {
+    return database.account.findFirst({
+      where: {
+        socialMediaUserId,
+        userId,
       },
     });
   }

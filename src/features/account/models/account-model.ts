@@ -6,3 +6,10 @@ export type AccountModel = {
   updatedAt: Date;
   userId: null | string;
 };
+
+export type UpsertParams = {
+  accessToken: string;
+  accountId: string;
+  authToken: string;
+  expiresIn: number;
+};

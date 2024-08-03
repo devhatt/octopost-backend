@@ -1,71 +1,52 @@
+import { faker } from '@faker-js/faker';
 import type { Request, Response } from 'express';
+import { mock } from 'vitest-mock-extended';
 
 import type { UserRepository } from '@/features/user/repositories/user-repository';
 import { JWTHelper } from '@/shared/infra/jwt/jwt';
+import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
 
 import { AuthenticationJWT } from './auth-jwt';
 
 const secretKey = '321';
 
-const makeSut = () => {
-  class UserRepositoryStub implements UserRepository {
-    create({ email, name, password, username }: any) {
-      return Promise.resolve({
-        createdAt: new Date(2024, 5, 1),
-        deletedAt: null,
-        email,
-        id: 'valid_id',
-        name,
-        password,
-        updatedAt: new Date(2024, 5, 1),
-        username,
-      });
-    }
-
-    findById(id: string): Promise<{
-      email: string;
-      id: string;
-      name: null | string;
-      username: string;
-    } | null> {
-      const user = {
-        email: 'fake@example.com',
-        id: 'fakeUserId',
-        name: 'FakeName',
-        username: 'FakeUserName',
-      };
-      if (id === 'fakeUserId') {
-        return Promise.resolve(user);
-      }
-      return Promise.resolve(null);
-    }
-  }
-
-  const userRepository = new UserRepositoryStub();
-  const jwtHelper = new JWTHelper(secretKey as string);
-  const auth = new AuthenticationJWT(jwtHelper, userRepository);
-
-  return { auth, jwtHelper, userRepository };
-};
-
-describe('jwtAuth middleware', () => {
+describe('[MIDDLEWARE] JWT', () => {
+  let sut: AuthenticationJWT;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: ReturnType<typeof vi.fn>;
-  const { auth, jwtHelper } = makeSut();
+
+  const jwtHelper = new JWTHelper(secretKey as string);
+  const userRepoMock = mock<UserRepository>(userRepositoryMock);
 
   beforeEach(() => {
     req = { headers: { authorization: 'Bearer' } };
     res = { json: vi.fn(), status: vi.fn().mockReturnThis() };
     next = vi.fn();
+
+    new JWTHelper(secretKey as string);
+
+    sut = new AuthenticationJWT(jwtHelper, userRepoMock);
   });
 
   it('should call next if token is valid and user is found', async () => {
-    const token = jwtHelper.createToken({ userId: 'fakeUserId' });
+    const token = jwtHelper.createToken({
+      name: faker.person.fullName(),
+      userId: faker.string.uuid(),
+      username: faker.person.fullName(),
+    });
 
     req = { headers: { authorization: `Bearer ${token}` } };
 
-    await auth.jwtAuth(req as Request, res as Response, next);
+    userRepoMock.findById.mockResolvedValueOnce({
+      email: faker.internet.email(),
+      id: faker.string.uuid(),
+      isActive: true,
+      name: faker.person.fullName(),
+      username: faker.internet.userName(),
+    });
+
+    await sut.jwtAuth(req as Request, res as Response, next);
 
     expect(res.json).not.toHaveBeenCalled();
     expect(res.status).not.toHaveBeenCalled();
@@ -75,7 +56,7 @@ describe('jwtAuth middleware', () => {
   it('should return status code 401 with error message token missing', async () => {
     req.headers!.authorization = undefined;
 
-    await auth.jwtAuth(req as Request, res as Response, next);
+    await sut.jwtAuth(req as Request, res as Response, next);
 
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.json).toHaveBeenCalledWith({ error: 'Token missing' });
@@ -87,7 +68,7 @@ describe('jwtAuth middleware', () => {
 
     req = { headers: { authorization: `Bearer ${token}` } };
 
-    await auth.jwtAuth(req as Request, res as Response, next);
+    await sut.jwtAuth(req as Request, res as Response, next);
 
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.json).toHaveBeenCalledWith({ error: 'Invalid token' });
@@ -95,11 +76,18 @@ describe('jwtAuth middleware', () => {
   });
 
   it('should return status code 401 with error message invalid user', async () => {
-    const token = jwtHelper.createToken({ userId: '2' });
+    const token = jwtHelper.createToken({
+      name: 'fakeName',
+      userId: 'fakeUserId',
+      username: 'fakeUsername',
+    });
 
     req = { headers: { authorization: `Bearer ${token}` } };
 
-    await auth.jwtAuth(req as Request, res as Response, next);
+    await sut.jwtAuth(req as Request, res as Response, next);
+
+    userRepoMock.findById.mockResolvedValueOnce(null);
+
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.json).toHaveBeenCalledWith({ error: 'Invalid user' });
     expect(next).not.toHaveBeenCalled();
@@ -113,7 +101,8 @@ describe('jwtAuth middleware', () => {
 
     req = { headers: { authorization: 'Bearer 23123' } };
 
-    await auth.jwtAuth(req as Request, res as Response, next);
+    await sut.jwtAuth(req as Request, res as Response, next);
+
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ error: 'Internal Server Error' });
     expect(next).not.toHaveBeenCalled();

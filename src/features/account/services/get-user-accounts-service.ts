@@ -9,7 +9,7 @@ type Input = {
 
 type Output = {
   accounts: {
-    avatarUrl: string;
+    avatarUrl: null | string;
     id: string;
     socialMedia: {
       id: number;

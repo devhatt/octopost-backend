@@ -32,5 +32,5 @@ switch (process.env['MODE']) {
 export const env = {
   HOSTNAME: process.env['HOSTNAME'] || 'localhost',
   PORT: process.env['PORT'] || 3000,
-  SECRET_KEY: process.env['SECRET_KEY'] || '321',
+  SECRET_KEY: process.env['SECRET_KEY'] || 'secret_key',
 } as Record<string, string>;

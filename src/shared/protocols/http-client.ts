@@ -1,17 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export type HttpClientRequest = {
-  body?: any;
-  headers?: any;
-  method: HttpMethod;
-  url: string;
-};
-
-export interface HttpClient {
-  request: <T>(data: HttpClientRequest) => Promise<HttpClientResponse<T>>;
-}
-
-export type HttpMethod = 'delete' | 'get' | 'post' | 'put';
-
 export enum HttpStatusCode {
   badRequest = 400,
   conflict = 409,
@@ -23,8 +9,3 @@ export enum HttpStatusCode {
   serverError = 500,
   unauthorized = 401,
 }
-
-export type HttpClientResponse<T = any> = {
-  body?: T;
-  statusCode: HttpStatusCode;
-};
