@@ -1,11 +1,10 @@
-import type { NextFunction, Request, Response } from 'express';
-
 import type { UserRepository } from '@/features/user/repositories/user-repository';
 import { InvalidTokenException } from '@/shared/errors/invalid-token-exception';
 import { type JWTHelper } from '@/shared/infra/jwt/jwt';
+import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
 
 export class AuthenticationJWT {
-  jwtAuth = async (req: Request, res: Response, next: NextFunction) => {
+  jwtAuth: AsyncRequestHandler = async (req, res, next) => {
     try {
       const token = req.headers.authorization?.split(' ')[1];
       if (!token) {
