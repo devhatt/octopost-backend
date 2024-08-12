@@ -2,13 +2,17 @@ import type { NextFunction, Request, Response } from 'express';
 
 import { authJwtFactory } from '@/middlewares/auth/auth-jwt-factory';
 
-const { authJwt } = authJwtFactory();
+export const authFilter =
+  (authJwtFactoryFn = authJwtFactory) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    const { authJwt } = authJwtFactoryFn();
 
-const publicRoutes = ['/api/users', '/api/auth/login'];
+    const publicRoutes = ['/api/users', '/api/auth/login'];
 
-export const authFilter = (req: Request, res: Response, next: NextFunction) => {
-  if (publicRoutes.includes(req.path)) {
-    return next();
-  }
-  authJwt.jwtAuth(req, res, next);
-};
+    if (publicRoutes.includes(req.path)) {
+      return next();
+    }
+    authJwt.jwtAuth(req, res, next);
+  };
+
+export const authFilterMiddleware = authFilter(authJwtFactory);

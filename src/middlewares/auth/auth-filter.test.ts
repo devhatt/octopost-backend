@@ -1,30 +1,47 @@
-/* eslint-disable simple-import-sort/imports */
-import { describe, expect, it } from 'vitest';
+import type { Request, Response } from 'express';
 
-import {
-  mockJwtAuth,
-  mockNext,
-  mockRequest,
-  mockResponse,
-} from '@/shared/test-helpers/mocks/auth.mock';
 import { authFilter } from '@/middlewares/auth/auth-filter';
 
+import type { AuthenticationJWT } from './auth-jwt';
+
+const mockJwtAuth: Partial<AuthenticationJWT> = {
+  jwtAuth: vi.fn(),
+};
+
+const mockAuthJwtFactory = () => ({
+  authJwt: mockJwtAuth as AuthenticationJWT,
+});
+
 describe('authFilter middleware', () => {
-  it('calls next for public routes', () => {
-    const req = mockRequest('/api/users');
-    const res = mockResponse();
+  let req: Partial<Request>;
+  let res: Partial<Response>;
+  let next: ReturnType<typeof vi.fn>;
 
-    authFilter(req, res, mockNext);
-
-    expect(mockNext).toHaveBeenCalled();
-    expect(mockJwtAuth).not.toHaveBeenCalled();
+  beforeEach(() => {
+    req = { headers: { authorization: 'Bearer' } };
+    res = { json: vi.fn(), status: vi.fn().mockReturnThis() };
+    next = vi.fn();
   });
 
-  it('calls authJwt.jwtAuth for protected routes', () => {
-    const req = mockRequest('/api/protected');
-    const res = mockResponse();
+  it('executes next for public routes', () => {
+    req = { path: '/api/users' };
 
-    authFilter(req, res, mockNext);
-    expect(mockJwtAuth).toHaveBeenCalled();
+    const middleware = authFilter(mockAuthJwtFactory);
+
+    middleware(req as Request, res as Response, next);
+
+    expect(next).toHaveBeenCalled();
+    expect(mockAuthJwtFactory().authJwt.jwtAuth).not.toHaveBeenCalled();
+  });
+
+  it('calls authentication middleware for protected routes', () => {
+    req = { path: '/api/protected' };
+
+    const middleware = authFilter(mockAuthJwtFactory);
+
+    middleware(req as Request, res as Response, next);
+
+    expect(next).not.toHaveBeenCalled();
+    expect(mockAuthJwtFactory().authJwt.jwtAuth).toHaveBeenCalled();
   });
 });
