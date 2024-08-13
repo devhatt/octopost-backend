@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": " cross-env MODE=DEV tsx --watch src/index.ts",
-    "start": "cross-env MODE=PROD node dist/index.js",
+    "start": "cross-env MODE=PROD node build/index.js",
     "prestart": "pnpm run build",
     "build": "tsup src/index.ts --format esm --out-dir build",
     "prebuild": "ts-patch install -s",
@@ -19,7 +19,6 @@
     "format:fix": "prettier . --write --ignore-unknown",
     "prepare": "husky",
     "commit": "git-cz",
-    "typecheck": "tsc -p tsconfig.build.json --noEmit",
     "test": "vitest",
     "test:coverage": "vitest --coverage --watch",
     "test:ui": "vitest --coverage --ui --watch",
