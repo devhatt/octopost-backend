@@ -1,18 +1,20 @@
 import type { NextFunction, Request, Response } from 'express';
 
-import { authJwtFactory } from '@/middlewares/auth/auth-jwt-factory';
+import type { AuthenticationJWT } from '@/middlewares/auth/auth-jwt';
+import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
+import { publicRoutes } from '@/shared/routes/public-routes';
 
-export const authFilter =
-  (authJwtFactoryFn = authJwtFactory) =>
-  (req: Request, res: Response, next: NextFunction) => {
-    const { authJwt } = authJwtFactoryFn();
-
-    const publicRoutes = ['/api/users', '/api/auth/login'];
-
+export class AuthFilter {
+  filter: AsyncRequestHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     if (publicRoutes.includes(req.path)) {
       return next();
     }
-    authJwt.jwtAuth(req, res, next);
+    await this.authJwt.jwtAuth(req, res, next);
   };
 
-export const authFilterMiddleware = authFilter(authJwtFactory);
+  constructor(private readonly authJwt: AuthenticationJWT) {}
+}
