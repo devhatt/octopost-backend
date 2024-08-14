@@ -1,7 +1,7 @@
 import type { Express } from 'express';
 import httpContext from 'express-http-context';
 
-import { authFilterMiddleware } from '@/middlewares/auth/auth-filter';
+import { authFilterMiddleware } from '@/middlewares/auth/auth-filter-middleware';
 import { bodyParser } from '@/middlewares/body-parser/body-parser';
 import { cors } from '@/middlewares/cors/cors';
 import { httpLogger } from '@/middlewares/logger/http-logger';
