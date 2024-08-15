@@ -11,5 +11,5 @@ export const authFilterMiddleware = (
   const { authJwt } = authJwtFactory();
   const { filter } = new AuthFilter(authJwt);
 
-  Promise.resolve(filter(req, res, next));
+  return filter(req, res, next);
 };
