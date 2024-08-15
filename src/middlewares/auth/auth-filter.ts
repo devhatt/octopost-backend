@@ -5,7 +5,7 @@ import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
 import { publicRoutes } from '@/shared/routes/public-routes';
 
 export class AuthFilter {
-  filter: AsyncRequestHandler = async (
+  filter: AsyncRequestHandler = (
     req: Request,
     res: Response,
     next: NextFunction
@@ -13,7 +13,7 @@ export class AuthFilter {
     if (publicRoutes.includes(req.path)) {
       return next();
     }
-    await this.authJwt.jwtAuth(req, res, next);
+    this.authJwt.jwtAuth(req, res, next);
   };
 
   constructor(private readonly authJwt: AuthenticationJWT) {}
