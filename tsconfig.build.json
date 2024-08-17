@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "rootDir": "src",
-    "plugins": [{ "transform": "typescript-transform-paths" }]
-  },
-  "include": ["src"],
-  "exclude": ["src/**/*.test.*", "src/shared/test-helpers", "src/tests"]
-}
