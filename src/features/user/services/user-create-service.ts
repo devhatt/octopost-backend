@@ -2,6 +2,7 @@ import type { UserModel } from '@/features/user/models/user-model';
 import type { UserRepository } from '@/features/user/repositories/user-repository';
 import { ValidationError } from '@/shared/errors/validation-error';
 import type { CryptoAdapter } from '@/shared/infra/crypto/crypto-adapter';
+import { HttpStatusCode } from '@/shared/protocols/http-client';
 import type { Service } from '@/shared/protocols/service';
 
 type Input = Omit<UserModel, 'id'> & {
@@ -17,8 +18,8 @@ export class UserCreateService implements Service<Input, void> {
   async execute({ email, name, password, repeatPassword, username }: Input) {
     if (password != repeatPassword) {
       throw new ValidationError(
-        '400',
-        'Cannot process the request because of validation errors'
+        'Cannot process the request because of validation errors',
+        HttpStatusCode.conflict
       );
     }
 
