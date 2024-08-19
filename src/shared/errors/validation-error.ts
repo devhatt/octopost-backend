@@ -4,15 +4,15 @@ import { HttpStatusCode } from '@/shared/protocols/http-client';
 export class ValidationError extends HttpError {
   constructor(
     public readonly message: string,
-    statusCode: HttpStatusCode = HttpStatusCode.badRequest
+    private errors: unknown
   ) {
-    super(statusCode, message);
+    super(HttpStatusCode.badRequest, message);
   }
 
   public toJSON() {
     return {
       code: this.code,
-      errors: this.message,
+      errors: this.errors,
     };
   }
 }
