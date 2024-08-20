@@ -1,7 +1,7 @@
 import type { UserRepository } from '@/features/user/repositories/user-repository';
 import { EmailAlreadyActiveError } from '@/shared/errors/email-already-active-error';
 import { UserNotFound } from '@/shared/errors/user-not-found-error';
-import type { JWTHelper, TokenPayload } from '@/shared/infra/jwt/jwt';
+import type { JWTHelper } from '@/shared/infra/jwt/jwt';
 import type { Service } from '@/shared/protocols/service';
 
 type Input = {

@@ -4,7 +4,11 @@ import { JWTHelper } from './jwt';
 describe('JWTHelper', () => {
   const secretKey = '123';
   const jwt = new JWTHelper(secretKey);
-  const payload = { userId: '0321' };
+  const payload: TokenPayload = {
+    name: 'John Doe',
+    userId: '0321',
+    username: 'johndoe',
+  };
 
   describe('createToken', () => {
     it('should create a valid token', () => {
@@ -34,7 +38,7 @@ describe('JWTHelper', () => {
   describe('parseToken', () => {
     it('should parse a valid token', () => {
       const token = jwt.createToken(payload);
-      const parsedPayload = jwt.parseToken(token) as TokenPayload;
+      const parsedPayload = jwt.parseToken(token);
 
       expect(parsedPayload?.userId).toBe(payload.userId);
     });
