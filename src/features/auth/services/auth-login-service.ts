@@ -34,7 +34,11 @@ export class AuthLoginService implements Service<Input, Output> {
       throw new InvalidCredentialsError();
     }
 
-    const token = this.jwt.createToken({ userId: user.id });
+    const token = this.jwt.createToken({
+      name: user.name || '',
+      userId: user.id,
+      username: user.username,
+    });
 
     return {
       token,
