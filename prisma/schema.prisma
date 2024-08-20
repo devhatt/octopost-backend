@@ -30,12 +30,16 @@ model User {
 }
 
 model Account {
-  id            String   @id @default(uuid())
-  avatarUrl     String
-  userId        String?  @map("user_id")
-  socialMediaId Int?     @map("social_media_id")
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
+  id                String   @id @default(uuid())
+  name              String?
+  username          String?
+  socialMediaUserId String?  @map("social_media_user_id") //Referes to the social media user id -> Twitter ID
+  avatarUrl         String?  @map("avatar_url")
+  userId            String?  @map("user_id")
+  favorite          Boolean
+  socialMediaId     Int      @map("social_media_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
 
   user        User?        @relation(fields: [userId], references: [id])
   socialMedia SocialMedia? @relation(fields: [socialMediaId], references: [id])
@@ -49,7 +53,7 @@ model Token {
   authToken String?   @map("auth_token")
   token     String?
   issuedAt  DateTime? @map("issued_at")
-  expireIn  Int?      @map("expire_in")
+  expiresIn Int?      @map("expire_in")
   accountId String    @unique @map("account_id")
 
   account Account? @relation(fields: [accountId], references: [id])
@@ -58,9 +62,9 @@ model Token {
 }
 
 model SocialMedia {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
-  description String
+  description String?
 
   account Account[]
 
