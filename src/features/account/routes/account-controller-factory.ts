@@ -1,6 +1,6 @@
-import { AccountController } from '../controllers/account-controller';
-import { AccountRepository } from '../repositories/account-repository/account-repository';
-import { DeleteUserAccountsService } from '../services/delete-user-accounts-service';
+import { AccountController } from '@/features/account/controllers/account-controller';
+import { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
+import { DeleteUserAccountsService } from '@/features/account/services/delete-user-accounts-service';
 
 export function accountControllerFactory() {
   const accountRepository = new AccountRepository();

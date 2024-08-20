@@ -1,12 +1,11 @@
 import { mock } from 'vitest-mock-extended';
 
+import type { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
+import { GetUserAccountsService } from '@/features/account/services/get-user-accounts-service';
 import type { UserRepository } from '@/features/user/repositories/user-repository';
 import { accountRepositoryMock } from '@/shared/test-helpers/mocks/repositories/account-repository.mock';
 import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
 import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
-
-import type { AccountRepository } from '../repositories/account-repository/account-repository';
-import { GetUserAccountsService } from './get-user-accounts-service';
 
 describe('GetUserAccountsService', () => {
   let getUserAccountsService: GetUserAccountsService;

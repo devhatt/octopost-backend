@@ -2,9 +2,9 @@ import type { NextFunction, Request, Response } from 'express';
 import type { MockProxy } from 'vitest-mock-extended';
 import { mock } from 'vitest-mock-extended';
 
-import type { AccountRepository } from '../repositories/account-repository/account-repository';
-import { DeleteUserAccountsService } from '../services/delete-user-accounts-service';
-import { AccountController } from './account-controller';
+import { AccountController } from '@/features/account/controllers/account-controller';
+import type { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
+import { DeleteUserAccountsService } from '@/features/account/services/delete-user-accounts-service';
 
 describe('Account Controller', () => {
   let accountRepository: MockProxy<AccountRepository>;
