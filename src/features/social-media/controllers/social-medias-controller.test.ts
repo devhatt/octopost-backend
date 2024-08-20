@@ -1,11 +1,10 @@
 import type { Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
+import { SocialMediasController } from '@/features/social-media/controllers/social-medias-controller';
+import { ListSocialMediasService } from '@/features/social-media/services/list-social-medias';
 import { HttpError } from '@/shared/errors/http-error';
 import { socialMediasRepositoryMock } from '@/shared/test-helpers/mocks/repositories/social-medias-repository.mock';
-
-import { ListSocialMediasService } from '../services/list-social-medias';
-import { SocialMediasController } from './social-medias-controller';
 
 const makeSut = () => {
   const findAllServiceMock = mock<ListSocialMediasService>(
