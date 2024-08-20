@@ -22,6 +22,19 @@ const makeSut = () => {
       });
     }
 
+    findByEmail(email: string) {
+      const user = {
+        email: 'fake@example.com',
+        id: 'fakeUserId',
+        name: 'FakeName',
+        username: 'FakeUserName',
+      };
+      if (email === 'fake@example.com') {
+        return Promise.resolve(user);
+      }
+      return Promise.resolve(null);
+    }
+
     findById(id: string): Promise<{
       email: string;
       id: string;

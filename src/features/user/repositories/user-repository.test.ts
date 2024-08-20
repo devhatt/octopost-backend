@@ -67,6 +67,44 @@ describe('[Repositories] UserRepository', () => {
     });
   });
 
+  describe('findByEmail', () => {
+    it('return user if found', async () => {
+      const { repository } = makeSut();
+
+      const user = UserMock.create();
+
+      prisma.user.findUnique.mockResolvedValue(user);
+
+      const result = await repository.findByEmail(user.email);
+
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        select: expect.anything(),
+        where: {
+          email: user.email,
+        },
+      });
+
+      expect(result).toBe(user);
+    });
+
+    it('return null if user is not found', async () => {
+      const { repository } = makeSut();
+
+      prisma.user.findUnique.mockResolvedValue(null);
+
+      const result = await repository.findByEmail('non_existent_email');
+
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        select: expect.anything(),
+        where: {
+          email: 'non_existent_email',
+        },
+      });
+
+      expect(result).toBeNull();
+    });
+  });
+
   describe('updateIsActiveStatus', () => {
     it('should call service with correctly params', async () => {
       const { repository } = makeSut();
