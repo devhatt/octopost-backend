@@ -1,4 +1,4 @@
-import { BcryptAdapter } from './bcrypt-adapter';
+import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
 
 describe('Cryto Adapter - Bcrypt', () => {
   let crypto: BcryptAdapter;

@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
-import { prismaErrorHandler } from './prisma-error';
+import { prismaErrorHandler } from '@/shared/errors/prisma-error';
 
 describe('[ERROR] Prisma Error Handler', () => {
   it('P2002', () => {

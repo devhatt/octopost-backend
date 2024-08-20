@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcrypt';
 
-import type { CryptoAdapter } from './crypto-adapter';
+import type { CryptoAdapter } from '@/shared/infra/crypto/crypto-adapter';
 
 export class BcryptAdapter implements CryptoAdapter {
   private SALT = 8;

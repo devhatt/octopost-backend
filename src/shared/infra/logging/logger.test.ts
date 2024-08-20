@@ -3,7 +3,7 @@ import { get } from 'stack-trace';
 import type { Mock } from 'vitest';
 import { transports } from 'winston';
 
-import { Logger } from './logger';
+import { Logger } from '@/shared/infra/logging/logger';
 
 const logginMatch = (
   level: string,
