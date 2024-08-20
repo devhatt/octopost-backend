@@ -1,10 +1,9 @@
 import { mock } from 'vitest-mock-extended';
 
+import type { UserRepository } from '@/features/user/repositories/user-repository';
+import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
 import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
 import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
-
-import type { UserRepository } from '../repositories/user-repository';
-import { UserFindByIdService } from './user-find-by-id-service';
 
 describe('UserFindByIdService', () => {
   let userFindByIdService: UserFindByIdService;
