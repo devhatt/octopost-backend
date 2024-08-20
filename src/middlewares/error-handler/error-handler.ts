@@ -15,7 +15,6 @@ export const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
     return res.status(409).send({
       error: err.formErrors.fieldErrors,
       issues: err.name,
-
       message: 'Validation error',
     });
   }
