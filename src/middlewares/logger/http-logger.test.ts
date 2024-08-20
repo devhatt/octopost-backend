@@ -1,4 +1,4 @@
-import { httpLogger } from './http-logger';
+import { httpLogger } from '@/middlewares/logger/http-logger';
 
 describe('HTTP logger', () => {
   it('should be defined', () => {
