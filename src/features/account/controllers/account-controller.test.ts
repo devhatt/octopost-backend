@@ -1,35 +1,54 @@
-import type { NextFunction, Request, Response } from 'express';
-import type { MockProxy } from 'vitest-mock-extended';
-import { mock } from 'vitest-mock-extended';
+import type { Request, Response } from 'express';
+import { describe, expect, it, vi } from 'vitest';
+import { mock, mockDeep } from 'vitest-mock-extended';
 
-import type { AccountRepository } from '../repositories/account-repository/account-repository';
-import { DeleteUserAccountsService } from '../services/delete-user-accounts-service';
+import { HttpStatusCode } from '@/shared/protocols/http-client';
+
+import type { DeleteUserAccountsService } from '../services/delete-user-accounts-service';
 import { AccountController } from './account-controller';
 
-describe('Account Controller', () => {
-  let accountRepository: MockProxy<AccountRepository>;
-  let deleteAccountByIdService: DeleteUserAccountsService;
-  let accountController: AccountController;
-
-  beforeEach(() => {
-    accountRepository = mock<AccountRepository>();
-    deleteAccountByIdService = new DeleteUserAccountsService(accountRepository);
-    accountController = new AccountController(deleteAccountByIdService);
+const makeSut = () => {
+  const deleteUserAccountServiceMock = mock<DeleteUserAccountsService>({
+    execute: vi.fn(),
   });
+  const accountController = new AccountController(deleteUserAccountServiceMock);
 
-  it('should be able to delete an account by id', async () => {
-    const req = mock<Request>();
-    req.params.id = 'f19c169c-5fa2-406d-8de9-4d2c36dc6529';
+  const req = mockDeep<Request>();
+  const res = {
+    send: vi.fn(),
+    status: vi.fn().mockReturnThis(),
+  } as unknown as Response;
+  const next = vi.fn();
 
-    const res = mock<Response>();
-    res.status.mockReturnThis();
-    res.send.mockReturnThis();
+  return {
+    accountController,
+    deleteUserAccountService: deleteUserAccountServiceMock,
+    next,
+    req,
+    res,
+  };
+};
 
-    const next = mock<NextFunction>();
+describe('deleteAccountById', () => {
+  it('should delete an account and return no content status', async () => {
+    const { accountController, deleteUserAccountService, next, req, res } =
+      makeSut();
+
+    const socialMediaId = 123;
+    req.params = { id: socialMediaId };
+
+    const executeSpy = vi
+      .spyOn(deleteUserAccountService, 'execute')
+      .mockResolvedValue();
 
     await accountController.deleteAccountById(req, res, next);
 
-    expect(res.status).toHaveBeenCalledWith(204);
+    expect(executeSpy).toHaveBeenCalledWith({
+      socialMediaId,
+    });
+
+    expect(res.status).toHaveBeenCalledWith(HttpStatusCode.noContent);
     expect(res.send).toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
   });
 });
