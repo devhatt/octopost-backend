@@ -3,14 +3,15 @@ import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
 import { HttpStatusCode } from '@/shared/protocols/http-client';
 
 import type { DeleteUserAccountsService } from '../services/delete-user-accounts-service';
+import { accountDeleteBySchema } from '../validators/account-find-by-id-schema';
 
 export class AccountController implements Controller {
   deleteAccountById: AsyncRequestHandler = async (req, res, next) => {
     try {
-      const accountId = Number(req.params.id);
+      const { id } = accountDeleteBySchema.parse(req.params);
 
       await this.deleteUserAccountService.execute({
-        socialMediaId: accountId,
+        socialMediaId: id,
       });
 
       return res.status(HttpStatusCode.noContent).send();
