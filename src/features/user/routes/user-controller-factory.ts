@@ -1,12 +1,11 @@
 /* istanbul ignore file -- @preserve */
 import { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
 import { GetUserAccountsService } from '@/features/account/services/get-user-accounts-service';
+import { UserController } from '@/features/user/controllers/user-controller';
+import { UserRepository } from '@/features/user/repositories/user-repository';
+import { UserCreateService } from '@/features/user/services/user-create-service';
 import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
 import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
-
-import { UserController } from '../controllers/user-controller';
-import { UserRepository } from '../repositories/user-repository';
-import { UserCreateService } from '../services/user-create-service';
 
 export function userControllerFactory() {
   const userRepository = new UserRepository();

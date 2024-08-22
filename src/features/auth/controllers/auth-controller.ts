@@ -1,10 +1,9 @@
 import { logger } from '@/config/logger';
+import type { AuthLoginService } from '@/features/auth/services/auth-login-service';
 import { authBodySchema } from '@/features/auth/validators/auth-schema';
 import type { Controller } from '@/shared/protocols/controller';
 import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
 import { HttpStatusCode } from '@/shared/protocols/http-client';
-
-import type { AuthLoginService } from '../services/auth-login-service';
 
 export class AuthController implements Controller {
   // confirmation: AsyncRequestHandler = async (req, res, next) => {

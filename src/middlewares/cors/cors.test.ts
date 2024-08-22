@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import request from 'supertest';
 
-import { cors } from './cors';
+import { cors } from '@/middlewares/cors/cors';
 
 const makeSut = () => {
   const app = express();

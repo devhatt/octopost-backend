@@ -1,9 +1,8 @@
+import { AuthRepository } from '@/features/auth/repositories/auth-repository/auth-repository';
+import { AuthLoginService } from '@/features/auth/services/auth-login-service';
 import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter.js';
 import { JWTHelper } from '@/shared/infra/jwt/jwt.js';
 import { UserMock } from '@/shared/test-helpers/mocks/user.mock.js';
-
-import { AuthRepository } from '../repositories/auth-repository/auth-repository.js';
-import { AuthLoginService } from './auth-login-service.js';
 
 const makeSut = () => {
   const authRepository = new AuthRepository();

@@ -1,7 +1,6 @@
 import type { UserRepository } from '@/features/user/repositories/user-repository';
+import { UserCreateService } from '@/features/user/services/user-create-service';
 import { BcryptAdapter } from '@/shared/infra/crypto/bcrypt-adapter';
-
-import { UserCreateService } from './user-create-service';
 
 // TODO: Refactor
 const makeSut = () => {

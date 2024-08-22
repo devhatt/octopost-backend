@@ -3,7 +3,7 @@ import express from 'express';
 import httpContext from 'express-http-context';
 import request from 'supertest';
 
-import { requestId } from './request-id';
+import { requestId } from '@/middlewares/requestId/request-id';
 
 const makeSut = () => {
   const app = express();

@@ -1,9 +1,8 @@
 import { prisma } from 'mocks/prisma';
 
+import { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
 import { database } from '@/shared/infra/database/database';
 import { AccountMock } from '@/shared/test-helpers/mocks/account.mock';
-
-import { AccountRepository } from './account-repository';
 
 const makeSut = () => {
   const repository = new AccountRepository();

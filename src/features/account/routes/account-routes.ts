@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { accountControllerFactory } from './account-controller-factory';
+import { accountControllerFactory } from '@/features/account/routes/account-controller-factory';
 
 const router = Router();
 

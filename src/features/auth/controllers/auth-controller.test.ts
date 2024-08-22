@@ -1,12 +1,11 @@
 import type { Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
+import { AuthController } from '@/features/auth/controllers/auth-controller';
+import { AuthLoginService } from '@/features/auth/services/auth-login-service';
 import { HttpError } from '@/shared/errors/http-error';
 import { JWTHelper } from '@/shared/infra/jwt/jwt';
 import { authRepositoryMock } from '@/shared/test-helpers/mocks/repositories/auth-repository.mock';
-
-import { AuthLoginService } from '../services/auth-login-service';
-import { AuthController } from './auth-controller';
 
 const makeSut = () => {
   const jwtMock = mock<JWTHelper>(new JWTHelper('secret'));
