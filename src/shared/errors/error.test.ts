@@ -1,10 +1,10 @@
-import { BadRequestError } from './bad-request-error';
-import { ConflictError } from './conflict-error';
-import { HttpError } from './http-error';
-import { InternalServerError } from './internal-server-error';
-import { InvalidCredentialsError } from './invalid-credentials-error';
-import { UserNotFound } from './user-not-found-error';
-import { ValidationError } from './validation-error';
+import { BadRequestError } from '@/shared/errors/bad-request-error';
+import { ConflictError } from '@/shared/errors/conflict-error';
+import { HttpError } from '@/shared/errors/http-error';
+import { InternalServerError } from '@/shared/errors/internal-server-error';
+import { InvalidCredentialsError } from '@/shared/errors/invalid-credentials-error';
+import { UserNotFound } from '@/shared/errors/user-not-found-error';
+import { ValidationError } from '@/shared/errors/validation-error';
 
 describe('[Errors]', () => {
   describe('http-error', () => {

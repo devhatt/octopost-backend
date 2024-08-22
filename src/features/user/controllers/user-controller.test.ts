@@ -3,6 +3,7 @@ import type { Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
 import { GetUserAccountsService } from '@/features/account/services/get-user-accounts-service';
+import { UserController } from '@/features/user/controllers/user-controller';
 import { UserCreateService } from '@/features/user/services/user-create-service';
 import { UserFindByIdService } from '@/features/user/services/user-find-by-id-service';
 import { HttpError } from '@/shared/errors/http-error';
@@ -10,8 +11,6 @@ import { UserNotFound } from '@/shared/errors/user-not-found-error';
 import { HttpStatusCode } from '@/shared/protocols/http-client';
 import { accountRepositoryMock } from '@/shared/test-helpers/mocks/repositories/account-repository.mock';
 import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
-
-import { UserController } from './user-controller';
 
 const makeSut = () => {
   const mockUserCreateService = mock<UserCreateService>(

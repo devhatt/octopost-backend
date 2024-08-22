@@ -1,5 +1,5 @@
-import { HttpStatusCode } from '../protocols/http-client';
-import { HttpError } from './http-error';
+import { HttpError } from '@/shared/errors/http-error';
+import { HttpStatusCode } from '@/shared/protocols/http-client';
 
 export class InvalidCredentialsError extends HttpError {
   constructor(public readonly message: string = 'Invalid Credentials') {

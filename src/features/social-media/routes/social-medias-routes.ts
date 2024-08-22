@@ -1,9 +1,8 @@
 /* istanbul ignore file -- @preserve */
 import { Router } from 'express';
 
+import { socialMediasControllerFactory } from '@/features/social-media/routes/social-medias-controller-factory';
 import { authJwtFactory } from '@/middlewares/auth/auth-jwt-factory';
-
-import { socialMediasControllerFactory } from './social-medias-controller-factory';
 
 const router = Router();
 const { authJwt } = authJwtFactory();

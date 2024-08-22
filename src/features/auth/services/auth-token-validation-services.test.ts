@@ -1,13 +1,12 @@
 import { mock } from 'vitest-mock-extended';
 
+import { AuthTokenValidationService } from '@/features/auth/services/auth-token-validation-service';
 import type { UserRepository } from '@/features/user/repositories/user-repository';
 import { EmailAlreadyActiveError } from '@/shared/errors/email-already-active-error';
 import { UserNotFound } from '@/shared/errors/user-not-found-error';
 import { JWTHelper } from '@/shared/infra/jwt/jwt';
 import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
 import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
-
-import { AuthTokenValidationService } from './auth-token-validation-service';
 
 describe('Auth email token validation service sut', () => {
   let sut: AuthTokenValidationService;

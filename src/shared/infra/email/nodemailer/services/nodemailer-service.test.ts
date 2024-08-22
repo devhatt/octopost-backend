@@ -2,8 +2,7 @@ import type { SentMessageInfo } from 'nodemailer';
 
 import { env } from '@/config/env';
 import { transporter } from '@/shared/infra/email/nodemailer/config/transporter';
-
-import { NodemailerService } from './nodemailer-service';
+import { NodemailerService } from '@/shared/infra/email/nodemailer/services/nodemailer-service';
 
 describe('NodemailerService', () => {
   it('sends email correctly', async () => {

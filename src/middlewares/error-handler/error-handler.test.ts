@@ -2,9 +2,8 @@ import type { NextFunction, Response } from 'express';
 import express from 'express';
 import request from 'supertest';
 
+import { errorHandler } from '@/middlewares/error-handler/error-handler';
 import { HttpError } from '@/shared/errors/http-error.js';
-
-import { errorHandler } from './error-handler.js';
 
 const makeSut = () => {
   const app = express();

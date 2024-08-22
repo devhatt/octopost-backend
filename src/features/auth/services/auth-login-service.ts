@@ -1,10 +1,9 @@
+import type { AuthLoginModel } from '@/features/auth/models/auth-login-models';
+import type { AuthRepository } from '@/features/auth/repositories/auth-repository/auth-repository';
 import { InvalidCredentialsError } from '@/shared/errors/invalid-credentials-error';
 import type { CryptoAdapter } from '@/shared/infra/crypto/crypto-adapter';
 import type { JWTHelper } from '@/shared/infra/jwt/jwt';
 import type { Service } from '@/shared/protocols/service';
-
-import type { AuthLoginModel } from '../models/auth-login-models';
-import type { AuthRepository } from '../repositories/auth-repository/auth-repository';
 
 type Input = {
   password: string;

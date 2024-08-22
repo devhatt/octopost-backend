@@ -1,7 +1,6 @@
+import { DeleteUserAccountsService } from '@/features/account/services/delete-user-accounts-service';
 import { AccountMock } from '@/shared/test-helpers/mocks/account.mock';
 import { accountRepositoryMock } from '@/shared/test-helpers/mocks/repositories/account-repository.mock';
-
-import { DeleteUserAccountsService } from './delete-user-accounts-service';
 
 const makeSut = () => {
   const deleteUserAccountsService = new DeleteUserAccountsService(

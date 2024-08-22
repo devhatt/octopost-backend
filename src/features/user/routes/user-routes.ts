@@ -1,7 +1,7 @@
 /* istanbul ignore file -- @preserve */
 import { Router } from 'express';
 
-import { userControllerFactory } from './user-controller-factory';
+import { userControllerFactory } from '@/features/user/routes/user-controller-factory';
 
 const router = Router();
 

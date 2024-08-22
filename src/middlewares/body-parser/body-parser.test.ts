@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import request from 'supertest';
 
-import { bodyParser } from './body-parser';
+import { bodyParser } from '@/middlewares/body-parser/body-parser';
 
 const makeSut = () => {
   const app = express();
