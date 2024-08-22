@@ -82,7 +82,7 @@ describe('deleteAccountById', () => {
     expect(res.send).not.toHaveBeenCalled();
   });
 
-  describe('accountDelteByschema', () => {
+  describe('accountDeleteByschema', () => {
     it('should pass validation when id is a valid number', () => {
       const validInput = { id: 123 };
       const parsedData = accountDeleteBySchema.parse(validInput);
