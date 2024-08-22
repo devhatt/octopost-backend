@@ -63,15 +63,6 @@ describe('deleteAccountById', () => {
     expect(next).not.toHaveBeenCalled();
   });
 
-  describe('accountDelteByschema', () => {
-    it('should pass validation when id is a valid number', () => {
-      const validInput = { id: 123 };
-      const parsedData = accountDeleteBySchema.parse(validInput);
-
-      expect(parsedData).toEqual({ id: validInput.id });
-    });
-  });
-
   it('should call next with an error when service throws', async () => {
     const { accountController, deleteUserAccountService, next, req, res } =
       makeSut();
@@ -89,5 +80,14 @@ describe('deleteAccountById', () => {
 
     expect(res.status).not.toHaveBeenCalled();
     expect(res.send).not.toHaveBeenCalled();
+  });
+
+  describe('accountDelteByschema', () => {
+    it('should pass validation when id is a valid number', () => {
+      const validInput = { id: 123 };
+      const parsedData = accountDeleteBySchema.parse(validInput);
+
+      expect(parsedData).toEqual({ id: validInput.id });
+    });
   });
 });
