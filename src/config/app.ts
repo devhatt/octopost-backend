@@ -9,4 +9,5 @@ const app = Express();
 setupHealthCheck(app);
 setupMiddlewares(app);
 setupRoutes(app);
+
 export { app };
