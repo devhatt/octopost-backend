@@ -6,8 +6,7 @@ import { setupRoutes } from '@/config/routes';
 
 const app = Express();
 
-setupRoutes(app);
-setupMiddlewares(app);
 setupHealthCheck(app);
-
+setupMiddlewares(app);
+setupRoutes(app);
 export { app };
