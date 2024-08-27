@@ -1,34 +1,32 @@
 services:
   db-dev: &db
-    container_name: octopost-db-dev
     profiles:
       - dev
-    image: mongo:latest
+    image: mongo:7.0.14-rc0-jammy
     ports:
       - '27017:27017'
     environment:
-      MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
-      MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_ROOT_PASSWORD
     volumes:
       - db:/var/lib/mongodb/mydata
     networks:
       - octopost
-  
-  mongo-express:
+
+  mongo-express-dev: &mg-express
+    profiles:
+      - dev
     image: mongo-express
-    depends_on: [db-dev]
     ports:
       - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: $ME_CONFIG_MONGODB_ADMINUSERNAME
-      ME_CONFIG_MONGODB_ADMINPASSWORD: $ME_CONFIG_MONGODB_ADMINPASSWORD
-      ME_CONFIG_MONGODB_URL: $ME_CONFIG_MONGODB_URL
+      ME_CONFIG_MONGODB_ADMINUSERNAME: $MONGODB_ADMINUSERNAME
+      ME_CONFIG_MONGODB_ADMINPASSWORD: $MONGODB_ADMINPASSWORD
+      ME_CONFIG_MONGODB_URL: 'mongodb://octopost:1234@db-dev:27017'
       ME_CONFIG_BASICAUTH: false
-    links:
-      - db-dev
     networks:
       - octopost
-  
+
   api:
     build:
       context: ./
@@ -37,15 +35,22 @@ services:
     profiles:
       - prod
     ports:
-      - 3000:3000
+      - '${PORT}:${PORT}'
     depends_on:
       - db-prod
     networks:
       - octopost
 
+  mongo-express-prod:
+    <<: *mg-express
+    profiles:
+      - prod
+    environment:
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_MONGODB_URL: 'mongodb://octopost:1234@db-prod:27017'
+
   db-prod:
     <<: *db
-    container_name: octopost-db
     profiles:
       - prod
 
