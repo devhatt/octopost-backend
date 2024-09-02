@@ -5,6 +5,11 @@ export type TwitterTokenResponse = {
   token_type: 'bearer';
 };
 
+export type TwitterPostResponse = {
+  file?: File;
+  text?: string;
+};
+
 export type TwitterUser = {
   id: string;
   name: string;
