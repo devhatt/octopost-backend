@@ -1,16 +1,16 @@
 services:
-  db-dev: &db
-    container_name: octopost-db-dev
+  db-dev:
+    container_name: octopost-db
     profiles:
       - dev
     image: postgres:alpine3.19
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'password'
-      POSTGRES_DB: 'octopost'
-      PGDATA: '/var/lib/postgresql/mydata'
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "octopost"
+      PGDATA: "/var/lib/postgresql/mydata"
     volumes:
       - db:/var/lib/postgresql/mydata
     networks:
@@ -25,16 +25,8 @@ services:
       - prod
     ports:
       - 3000:3000
-    depends_on:
-      - db-prod
     networks:
       - octopost
-
-  db-prod:
-    <<: *db
-    container_name: octopost-db
-    profiles:
-      - prod
 
 networks:
   octopost:
