@@ -17,8 +17,8 @@ export class UserCreateService implements Service<Input, void> {
   async execute({ email, name, password, repeatPassword, username }: Input) {
     if (password != repeatPassword) {
       throw new ValidationError(
-        '400',
-        'Cannot process the request because of validation errors'
+        'Cannot process the request because of validation errors',
+        ['password', 'repeatPassword']
       );
     }
 
