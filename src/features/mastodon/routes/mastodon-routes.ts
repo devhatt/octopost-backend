@@ -5,11 +5,11 @@ import { MastodonService } from '../service';
 
 const router = Router();
 
-const { authenticate, callback, createApp } = new MastodonService();
+const { authenticate, authorize, hello } = new MastodonService();
 
-router.post('/', authenticate);
-router.post('/callback', callback);
-router.post('/app', createApp);
+router.get('/authorize', authorize);
+router.get('/hello', hello);
+router.get('/callback', authenticate);
 
 export default {
   prefix: 'mastodon',

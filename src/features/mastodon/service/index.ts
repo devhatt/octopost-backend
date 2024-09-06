@@ -7,32 +7,40 @@ import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
 
 //FIXME: ORGNIZATION SERV/CONTROLLER....
 export class MastodonService {
-  // eslint-disable-next-line @typescript-eslint/require-await
   authenticate: AsyncRequestHandler = async (
+    req: Request,
+    res: Response,
+    _: NextFunction
+  ) => {
+    const { code } = req.query;
+
+    const { data } = await axios.post(
+      `https://mastodon.social/oauth/token?grant_type=client_credentials&client_id=${env.MASTODON_CLIENT_KEY}&client_secret=${env.MASTODON_CLIENT_SECRET}&redirect_uri=${env.MASTODON_REDIRECT_URL}&code=${code}`
+    );
+
+    console.log(data);
+
+    res.send(data);
+  };
+
+  authorize: AsyncRequestHandler = (
     _: Request,
     res: Response,
     __: NextFunction
   ) => {
-    const url = 'https://mastodon.social/oauth/authorize/';
+    //FIXME: CHANGE TO RES.REDIRECT()
 
-    const urlMastodon = new URLSearchParams({
-      client_id: 'devhatt',
-      code: 'auth-code',
-      grant_type: 'authorization_code',
-      redirect_uris: 'http://localhost:3000/api/mastodon/callback',
-      response_type: 'code',
-      scopes: 'read write follow',
-    });
+    const { url } = {
+      url: `https://mastodon.social/oauth/authorize?response_type=code&client_id=${env.MASTODON_CLIENT_KEY}&redirect_uri=${env.MASTODON_REDIRECT_URL}`,
+    };
 
-    res.json({
-      urlMastodon: url + urlMastodon.toString(),
-    });
+    res.json(url);
   };
 
-  callback: AsyncRequestHandler = async (
+  hello: AsyncRequestHandler = async (
     req: Request,
     res: Response,
-    _: NextFunction
+    __: NextFunction
   ) => {
     const { message } = req.body;
 
@@ -46,28 +54,5 @@ export class MastodonService {
     });
 
     res.status(200).send(status);
-  };
-
-  createApp: AsyncRequestHandler = async (
-    req: Request,
-    res: Response,
-    _: NextFunction
-  ) => {
-    const { client_name, client_uris } = req.query;
-
-    const urlMastodonCreateApp = new URLSearchParams({
-      client_name: String(client_name),
-      redirect_uris: String(client_uris),
-      scopes: 'read write follow',
-    });
-
-    const { data } = await axios.post(
-      `https://mastodon.social/api/v1/apps?` + urlMastodonCreateApp.toString()
-    );
-
-    console.log(data);
-    res.json({
-      url: data,
-    });
   };
 }
