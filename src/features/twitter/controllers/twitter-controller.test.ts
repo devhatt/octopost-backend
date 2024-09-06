@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
@@ -19,6 +19,7 @@ describe('[Controller] Twitter', () => {
   let req: Request;
   let res: Response;
   let next: NextFunction;
+
   beforeEach(() => {
     mockLogger = mock<Logger>(loggerMock);
 
@@ -39,21 +40,15 @@ describe('[Controller] Twitter', () => {
     authController = new TwitterController(authorizeTwitterService);
 
     req = mockDeep<Request>();
-
     res = {
       json: vi.fn(),
       send: vi.fn(),
       status: vi.fn().mockReturnThis(),
     } as unknown as Response;
-
     next = vi.fn() as unknown as NextFunction;
   });
-
   describe('callback', () => {
     it('returns code', async () => {
-      const { authController, authorizeTwitterService, next, req, res } =
-        makeSut();
-
       const spyAuthorizeTwitter = vi
         .spyOn(authorizeTwitterService, 'execute')
         .mockReturnThis();
@@ -71,7 +66,6 @@ describe('[Controller] Twitter', () => {
 
   describe('login', () => {
     it('return URLs when the token is valid', async () => {
-      const { authController, next, req, res } = makeSut();
       const mockPayload = {
         name: 'John Doe',
         userId: '12345',
@@ -90,8 +84,6 @@ describe('[Controller] Twitter', () => {
     });
 
     it('returns 401 when token is invalid', () => {
-      const { authController, next, req, res } = makeSut();
-
       req.headers.authorization = undefined;
 
       authController.login(req, res, next);
