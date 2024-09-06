@@ -72,20 +72,17 @@ describe('[Controller] Twitter', () => {
   describe('login', () => {
     it('return URLs when the token is valid', async () => {
       const { authController, next, req, res } = makeSut();
-
-      req.headers.authorization =
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJ1c2VySWQiOiIxMjM0NSIsInVzZXJuYW1lIjoiam9obmRvZSIsImlhdCI6MTY2NTMzMjM0NCwiZXhwIjoxNjY1MzM1OTQ0fQ.S5ReMBrQqVAD6UCD6Q9Vj9fK9J-Q9r_a9f3zRmpDsxM';
-
       const mockPayload = {
         name: 'John Doe',
         userId: '12345',
         username: 'johndoe',
       };
+      const expectedUrl = `https://twitter.com/i/oauth2/authorize?client_id=mockClientId123&code_challenge=-a4-ROPIVaUBVj1qqB2O6eN_qSC0WvET0EdUEhSFqrI&code_challenge_method=S256&redirect_uri=http%3A%2F%2Fwww.localhost%3A3000%2Fapi%2Ftwitter%2Fcallback&response_type=code&state=${mockPayload.userId}&scope=tweet.write%20tweet.read%20users.read`;
+      process.env.TWITTER_CLIENT_ID = 'mockClientId123';
+      req.headers.authorization =
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJ1c2VySWQiOiIxMjM0NSIsInVzZXJuYW1lIjoiam9obmRvZSIsImlhdCI6MTY2NTMzMjM0NCwiZXhwIjoxNjY1MzM1OTQ0fQ.S5ReMBrQqVAD6UCD6Q9Vj9fK9J-Q9r_a9f3zRmpDsxM';
 
       vi.spyOn(jwt, 'verify').mockReturnValue(mockPayload as any);
-      process.env.TWITTER_CLIENT_ID = 'mockClientId123';
-
-      const expectedUrl = `https://twitter.com/i/oauth2/authorize?client_id=mockClientId123&code_challenge=-a4-ROPIVaUBVj1qqB2O6eN_qSC0WvET0EdUEhSFqrI&code_challenge_method=S256&redirect_uri=http%3A%2F%2Fwww.localhost%3A3000%2Fapi%2Ftwitter%2Fcallback&response_type=code&state=${mockPayload.userId}&scope=tweet.write%20tweet.read%20users.read`;
 
       await authController.login(req, res, next);
 
