@@ -1,14 +1,15 @@
 /* istanbul ignore file -- @preserve */
 import { Router } from 'express';
 
-import { MastodonService } from '../service';
+import { MastodonService } from '@/features/mastodon/service/index';
 
 const router = Router();
 
-const { authenticate, authorize, status } = new MastodonService();
+const { authenticate, authorize, getUserId, status } = new MastodonService();
 
 router.get('/authorize', authorize);
 router.get('/status', status);
+router.get('/getUserId', getUserId);
 router.get('/authenticate', authenticate);
 
 export default {
