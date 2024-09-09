@@ -16,7 +16,7 @@ export class MastodonService {
     const { code } = req.query;
 
     const { data } = await axios.post(
-      `https://mastodon.social/oauth/token?grant_type=client_credentials&client_id=${env.MASTODON_CLIENT_KEY}&client_secret=${env.MASTODON_CLIENT_SECRET}&redirect_uri=${env.MASTODON_REDIRECT_URL}&code=${code}`
+      `https://mastodon.social/oauth/token?grant_type=authorization_code&client_id=${env.MASTODON_CLIENT_KEY}&client_secret=${env.MASTODON_CLIENT_SECRET}&redirect_uri=${env.MASTODON_REDIRECT_URL}&scope=${env.MASTODON_SCOPES}&code=${code}`
     );
 
     res.send(data);
@@ -27,13 +27,12 @@ export class MastodonService {
     res: Response,
     __: NextFunction
   ) => {
-    //FIXME: CHANGE TO RES.REDIRECT()
-
     const { url } = {
-      url: `https://mastodon.social/oauth/authorize?response_type=code&client_id=${env.MASTODON_CLIENT_KEY}&redirect_uri=${env.MASTODON_REDIRECT_URL}`,
+      url: `https://mastodon.social/oauth/authorize?response_type=code&client_id=${env.MASTODON_CLIENT_KEY}&redirect_uri=${env.MASTODON_REDIRECT_URL}&code=user_authzcode_here`,
     };
 
-    res.json(url);
+    //FIXME: CHANGE TO RES.REDIRECT() NO FINAL DA API
+    res.json({ url: url });
   };
 
   status: AsyncRequestHandler = async (
@@ -42,7 +41,7 @@ export class MastodonService {
     __: NextFunction
   ) => {
     const body = {
-      media_ids: req.query.media_ids,
+      media_ids: req.body.media_ids,
       poll: {
         expires_in: 3600,
         options: 3600,

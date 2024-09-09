@@ -8,8 +8,8 @@ const router = Router();
 const { authenticate, authorize, status } = new MastodonService();
 
 router.get('/authorize', authorize);
-router.get('/hello', status);
-router.get('/callback', authenticate);
+router.get('/status', status);
+router.get('/authenticate', authenticate);
 
 export default {
   prefix: 'mastodon',
