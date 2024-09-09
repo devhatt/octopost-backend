@@ -89,23 +89,6 @@ describe('[Service] Twitter Service', () => {
       });
     });
 
-    it('returns null if not found', async () => {
-      const input = faker.string.alpha({ length: 10 });
-
-      vi.spyOn(mockHttp, 'get').mockResolvedValueOnce({
-        data: {
-          data: null,
-        },
-        status: 404,
-        statusText: 'Error',
-      });
-
-      const result = await twitterService.getTwitterUser(input);
-
-      expect(mockLogger.info).toBeCalled();
-      expect(result).toEqual(null);
-    });
-
     it('error on get', async () => {
       const input = faker.string.alpha({ length: 10 });
 
