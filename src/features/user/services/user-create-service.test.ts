@@ -18,52 +18,50 @@ describe('[Services] UserCreateService', () => {
     userCreateService = new UserCreateService(userRepository, bcryptAdapter);
   });
 
-  describe('UserCreateService', () => {
-    it('should call userRepository with correct params', async () => {
-      const repositorySpy = vi.spyOn(userRepository, 'create');
+  it('should call userRepository with correct params', async () => {
+    const repositorySpy = vi.spyOn(userRepository, 'create');
 
-      vi.spyOn(bcryptAdapter, 'encrypt').mockResolvedValue('valid_password');
+    vi.spyOn(bcryptAdapter, 'encrypt').mockResolvedValue('valid_password');
 
-      await userCreateService.execute({
-        email: 'valid_email@email.com',
-        name: 'valid_name',
-        password: 'valid_password',
-        repeatPassword: 'valid_password',
-        username: 'valid_username',
-      });
-
-      expect(repositorySpy).toHaveBeenCalledWith({
-        email: 'valid_email@email.com',
-        name: 'valid_name',
-        password: 'valid_password',
-        username: 'valid_username',
-      });
+    await userCreateService.execute({
+      email: 'valid_email@email.com',
+      name: 'valid_name',
+      password: 'valid_password',
+      repeatPassword: 'valid_password',
+      username: 'valid_username',
     });
 
-    it('should throw when userRepository throws', async () => {
-      vi.spyOn(userRepository, 'create').mockRejectedValue(new Error('error'));
+    expect(repositorySpy).toHaveBeenCalledWith({
+      email: 'valid_email@email.com',
+      name: 'valid_name',
+      password: 'valid_password',
+      username: 'valid_username',
+    });
+  });
 
-      const response = userCreateService.execute({
-        email: 'valid_email@email.com',
-        name: 'valid_name',
-        password: 'valid_password',
-        repeatPassword: 'valid_password',
-        username: 'valid_username',
-      });
+  it('should throw when userRepository throws', async () => {
+    vi.spyOn(userRepository, 'create').mockRejectedValue(new Error('error'));
 
-      await expect(response).rejects.toThrowError();
+    const response = userCreateService.execute({
+      email: 'valid_email@email.com',
+      name: 'valid_name',
+      password: 'valid_password',
+      repeatPassword: 'valid_password',
+      username: 'valid_username',
     });
 
-    it('should conflict when password and repeatPassword dont match', async () => {
-      const response = userCreateService.execute({
-        email: 'valid_email@email.com',
-        name: 'valid_name',
-        password: 'valid_password',
-        repeatPassword: 'invalid_password',
-        username: 'valid_username',
-      });
+    await expect(response).rejects.toThrowError();
+  });
 
-      await expect(response).rejects.toThrowError();
+  it('should conflict when password and repeatPassword dont match', async () => {
+    const response = userCreateService.execute({
+      email: 'valid_email@email.com',
+      name: 'valid_name',
+      password: 'valid_password',
+      repeatPassword: 'invalid_password',
+      username: 'valid_username',
     });
+
+    await expect(response).rejects.toThrowError();
   });
 });
