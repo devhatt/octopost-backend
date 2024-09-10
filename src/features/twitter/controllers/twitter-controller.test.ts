@@ -78,7 +78,7 @@ describe('[Controller] Twitter', () => {
 
       vi.spyOn(jwt, 'verify').mockReturnValue(mockPayload as any);
 
-      await authController.login(req, res, next);
+      authController.login(req, res, next);
 
       expect(res.json).toHaveBeenCalledWith(expectedUrl);
     });
