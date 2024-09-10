@@ -7,6 +7,7 @@ import { accountRepositoryMock } from '@/shared/test-helpers/mocks/repositories/
 import { tokenRepositoryMock } from '@/shared/test-helpers/mocks/repositories/token-repository.mock';
 
 import { AuthorizeTwitterService } from '../services/authorize-twitter-service';
+import { LoginTwitterService } from '../services/login-twitter-service';
 import type { TwitterService } from '../services/twitter-service';
 import { TwitterController } from './twitter-controller';
 
@@ -26,7 +27,14 @@ const makeSut = () => {
     )
   );
 
-  const authController = new TwitterController(authorizeTwitterService);
+  const loginTwitterService = mock<LoginTwitterService>(
+    new LoginTwitterService()
+  );
+
+  const authController = new TwitterController(
+    authorizeTwitterService,
+    loginTwitterService
+  );
 
   const req = mockDeep<Request>();
   const res = {
@@ -39,6 +47,7 @@ const makeSut = () => {
   return {
     authController,
     authorizeTwitterService,
+    loginTwitterService,
     mockLogger,
     next,
     req,
@@ -69,15 +78,30 @@ describe('[Controller] Twitter', () => {
   });
 
   describe('login', () => {
-    it('should be return 401', () => {
-      const { authController, next, req, res } = makeSut();
+    it('should be return link', () => {
+      const { authController, loginTwitterService, next, req, res } = makeSut();
 
-      req.headers.authorization = undefined;
+      req.headers.authorization = 'Bearer token';
 
+      const serviceSpy = vi
+        .spyOn(loginTwitterService, 'execute')
+        .mockReturnValue('url');
       authController.login(req, res, next);
 
-      expect(res.status).toHaveBeenCalledWith(401);
-      expect(res.json).toHaveBeenCalledWith({ message: 'Unauthorized' });
-    });
+      expect(serviceSpy).toHaveBeenCalledWith({
+        authorization: 'Bearer token',
+      });
+      expect(res.json).toHaveBeenCalledWith('url');
+    }),
+      it('should be return 401', () => {
+        const { authController, next, req, res } = makeSut();
+
+        req.headers.authorization = undefined;
+
+        authController.login(req, res, next);
+
+        expect(res.status).toHaveBeenCalledWith(401);
+        expect(res.json).toHaveBeenCalledWith({ message: 'Unauthorized' });
+      });
   });
 });

@@ -1,11 +1,8 @@
-import jwt from 'jsonwebtoken';
-
-import type { TokenPayload } from '@/shared/infra/jwt/jwt';
 import type { Controller } from '@/shared/protocols/controller';
 import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
 
-import { generateAuthURL } from '../helpers/generate-auth-url';
 import type { AuthorizeTwitterService } from '../services/authorize-twitter-service';
+import type { LoginTwitterService } from '../services/login-twitter-service';
 
 export class TwitterController implements Controller {
   callback: AsyncRequestHandler = async (req, res) => {
@@ -20,20 +17,19 @@ export class TwitterController implements Controller {
   };
 
   login: AsyncRequestHandler = (req, res) => {
-    const authorization = req.headers.authorization;
+    try {
+      const url = this.loginTwitter.execute({
+        authorization: req.headers.authorization,
+      });
 
-    if (!authorization) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return res.json(url);
+    } catch (err) {
+      return res.status(401).json({ message: (err as Error).message });
     }
-
-    const [, token] = authorization.split(' ');
-
-    const payload = jwt.verify(token, 'secret_key') as TokenPayload;
-
-    const url = generateAuthURL({ id: payload.userId });
-
-    return res.json(url);
   };
 
-  constructor(private readonly authorizeTwitter: AuthorizeTwitterService) {}
+  constructor(
+    private readonly authorizeTwitter: AuthorizeTwitterService,
+    private readonly loginTwitter: LoginTwitterService
+  ) {}
 }
