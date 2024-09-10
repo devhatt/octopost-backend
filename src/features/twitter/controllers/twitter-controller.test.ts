@@ -78,7 +78,7 @@ describe('[Controller] Twitter', () => {
   });
 
   describe('login', () => {
-    it('should be return link', () => {
+    it('return a URL link on successful login', () => {
       const { authController, loginTwitterService, next, req, res } = makeSut();
 
       req.headers.authorization = 'Bearer token';
@@ -93,7 +93,7 @@ describe('[Controller] Twitter', () => {
       });
       expect(res.json).toHaveBeenCalledWith('url');
     }),
-      it('should be return 401', () => {
+      it('should return 401 if authorization header is missing', () => {
         const { authController, next, req, res } = makeSut();
 
         req.headers.authorization = undefined;
