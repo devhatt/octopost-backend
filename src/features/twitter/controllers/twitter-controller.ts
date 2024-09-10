@@ -1,8 +1,7 @@
+import type { AuthorizeTwitterService } from '@/features/twitter/services/authorize-twitter-service';
+import type { LoginTwitterService } from '@/features/twitter/services/login-twitter-service';
 import type { Controller } from '@/shared/protocols/controller';
 import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
-
-import type { AuthorizeTwitterService } from '../services/authorize-twitter-service';
-import type { LoginTwitterService } from '../services/login-twitter-service';
 
 export class TwitterController implements Controller {
   callback: AsyncRequestHandler = async (req, res) => {
