@@ -19,7 +19,9 @@ export class MastodonService {
       `https://mastodon.social/oauth/token?grant_type=authorization_code&client_id=${env.MASTODON_CLIENT_KEY}&client_secret=${env.MASTODON_CLIENT_SECRET}&redirect_uri=${env.MASTODON_REDIRECT_URL}&scope=${env.MASTODON_SCOPES}&code=${code}`
     );
 
-    res.send(data);
+    // const tokenAcess = data.access_token;
+    //TODO: ESPERAR O BANCO SUBIR PRA PODER ENVIAR O TOKEN E SALVAR
+    res.status(200).send(data);
   };
 
   authorize: AsyncRequestHandler = (
@@ -28,51 +30,28 @@ export class MastodonService {
     __: NextFunction
   ) => {
     const { url } = {
-      url: `https://mastodon.social/oauth/authorize?response_type=code&client_id=${env.MASTODON_CLIENT_KEY}&redirect_uri=${env.MASTODON_REDIRECT_URL}&code=user_authzcode_here`,
+      url: `https://mastodon.social/oauth/authorize?response_type=code&client_id=${env.MASTODON_CLIENT_KEY}&redirect_uri=${env.MASTODON_REDIRECT_URL}&scope=${env.MASTODON_SCOPES}`,
     };
 
     //FIXME: CHANGE TO RES.REDIRECT() NO FINAL DA API
     res.json({ url: url });
   };
 
-  getUserId: AsyncRequestHandler = async (
+  status: AsyncRequestHandler = async (
     req: Request,
     res: Response,
     __: NextFunction
   ) => {
-    const { name } = req.query;
-
-    const { data } = await axios.get(
-      `https://www.mastodon.social/api/v1/accounts/lookup?acct=${name}`
-    );
-
-    res.send({ data });
-  };
-
-  status: AsyncRequestHandler = async (
-    req: Request,
-    _: Response,
-    __: NextFunction
-  ) => {
-    const body = {
-      media_ids: req.body.media_ids,
-      poll: {
-        expires_in: 3600,
-        options: 3600,
-      },
+    const params = new URLSearchParams({
+      media_ids: req.body.media_ids || null,
       status: req.body.status,
-    };
+    });
+    //preciso do auth do user
+
     await axios.post(
-      'https://mastodon.social/api/v1/statuses',
-      {
-        ...body,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${req.query.access_token}`,
-          'Content-Type': 'application/json',
-        },
-      }
+      `https://mastodon.social/api/v1/statuses?${params.toString()}`
     );
+
+    res.status(200).send({ Message: 'Mensagem enviada com sucesso!' });
   };
 }
