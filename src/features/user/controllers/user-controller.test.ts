@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
 import { GetUserAccountsService } from '@/features/account/services/get-user-accounts-service';
@@ -9,54 +9,55 @@ import { UserFindByIdService } from '@/features/user/services/user-find-by-id-se
 import { HttpError } from '@/shared/errors/http-error';
 import { UserNotFound } from '@/shared/errors/user-not-found-error';
 import { HttpStatusCode } from '@/shared/protocols/http-client';
+import { bcryptAdapteMock } from '@/shared/test-helpers/mocks/bcryptAdapter.mock';
 import { accountRepositoryMock } from '@/shared/test-helpers/mocks/repositories/account-repository.mock';
 import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/user-repository.mock';
 
-const makeSut = () => {
-  const mockUserCreateService = mock<UserCreateService>(
-    new UserCreateService(userRepositoryMock, {
-      compare: vi.fn(),
-      encrypt: vi.fn(),
-    })
-  );
-  const mockUserFindByIdService = mock<UserFindByIdService>(
-    new UserFindByIdService(userRepositoryMock)
-  );
-
-  const mockGetUserAccountsService = mock<GetUserAccountsService>(
-    new GetUserAccountsService(userRepositoryMock, accountRepositoryMock)
-  );
-
-  const userController = new UserController(
-    mockUserCreateService,
-    mockUserFindByIdService,
-    mockGetUserAccountsService
-  );
-
-  const req = mockDeep<Request>();
-  const res = {
-    json: vi.fn(),
-    status: vi.fn().mockReturnThis(),
-  } as unknown as Response;
-  const next = vi.fn();
-
-  return {
-    getUserAccountsService: mockGetUserAccountsService,
-    next,
-    req,
-    res,
-    userController,
-    userCreateService: mockUserCreateService,
-    userFindByIdService: mockUserFindByIdService,
-  };
-};
-
 describe('[Controllers] UserController', () => {
+  let mockUserCreateService: UserCreateService;
+  let mockUserFindByIdService: UserFindByIdService;
+  let mockGetUserAccountsService: GetUserAccountsService;
+  let userController: UserController;
+
+  let req: Request;
+  let res: Response;
+  let next: NextFunction;
+  let error: HttpError;
+
+  beforeEach(() => {
+    mockUserCreateService = mock<UserCreateService>(
+      new UserCreateService(userRepositoryMock, bcryptAdapteMock)
+    );
+
+    mockUserFindByIdService = mock<UserFindByIdService>(
+      new UserFindByIdService(userRepositoryMock)
+    );
+
+    mockGetUserAccountsService = mock<GetUserAccountsService>(
+      new GetUserAccountsService(userRepositoryMock, accountRepositoryMock)
+    );
+
+    userController = new UserController(
+      mockUserCreateService,
+      mockUserFindByIdService,
+      mockGetUserAccountsService
+    );
+
+    req = mockDeep<Request>();
+
+    res = {
+      json: vi.fn(),
+      status: vi.fn().mockReturnThis(),
+    } as unknown as Response;
+
+    next = vi.fn() as unknown as NextFunction;
+
+    error = new HttpError(HttpStatusCode.serverError, 'error');
+  });
+
   describe('create', () => {
     it('should call service with correctly params', async () => {
-      const { next, req, res, userController, userCreateService } = makeSut();
-
-      const serviceSpy = vi.spyOn(userCreateService, 'execute');
+      const serviceSpy = vi.spyOn(mockUserCreateService, 'execute');
 
       const body = {
         email: 'valid_email@domain.com',
@@ -80,8 +81,6 @@ describe('[Controllers] UserController', () => {
     });
 
     it('should throw error', async () => {
-      const { next, req, res, userController, userCreateService } = makeSut();
-
       const body = {
         email: 'valid_email@domain.com',
         name: 'valid_name',
@@ -92,22 +91,14 @@ describe('[Controllers] UserController', () => {
 
       req.body = body;
 
-      const userCreateSpy = vi
-        .spyOn(userCreateService, 'execute')
-        .mockRejectedValueOnce(new HttpError(500, 'error'));
+      vi.spyOn(mockUserCreateService, 'execute').mockRejectedValueOnce(error);
 
       await userController.create(req, res, next);
 
-      expect(userCreateSpy).toHaveBeenCalled();
-      expect(next).toHaveBeenCalledWith(expect.any(Error));
-
-      await userController.create(req, res, next);
-
-      expect(userCreateSpy).toHaveBeenCalled();
-      expect(next).toHaveBeenCalledWith(expect.any(Error));
+      expect(next).toHaveBeenCalledWith(error);
     });
+
     it('calls next when validation fails', async () => {
-      const { next, req, res, userController } = makeSut();
       const invalidBody = {
         email: 'invalid_email@domain.com',
         name: 1,
@@ -125,9 +116,7 @@ describe('[Controllers] UserController', () => {
 
   describe('userFindById', () => {
     it('should call service with correctly params', async () => {
-      const { next, req, res, userController, userFindByIdService } = makeSut();
-
-      const serviceSpy = vi.spyOn(userFindByIdService, 'execute');
+      const serviceSpy = vi.spyOn(mockUserFindByIdService, 'execute');
 
       const uuid = randomUUID();
 
@@ -143,24 +132,20 @@ describe('[Controllers] UserController', () => {
     });
 
     it('should call next when an error', async () => {
-      const { next, req, res, userController, userFindByIdService } = makeSut();
-
       req.params = {
         id: randomUUID(),
       };
 
       const userFindSpy = vi
-        .spyOn(userFindByIdService, 'execute')
-        .mockRejectedValueOnce(new HttpError(500, 'error'));
+        .spyOn(mockUserFindByIdService, 'execute')
+        .mockRejectedValueOnce(error);
 
       await userController.userFindById(req, res, next);
 
       expect(userFindSpy).toHaveBeenCalled();
-      expect(next).toHaveBeenCalledWith(expect.any(Error));
+      expect(next).toHaveBeenCalledWith(error);
     });
     it('calls next when validation fails', async () => {
-      const { next, req, res, userController } = makeSut();
-
       req.params = { id: 'invalid-uuid' };
 
       await userController.userFindById(req, res, next);
@@ -171,10 +156,7 @@ describe('[Controllers] UserController', () => {
 
   describe('getAccounts', () => {
     it('should call next with an error if user not found', async () => {
-      const { getUserAccountsService, next, req, res, userController } =
-        makeSut();
-
-      vi.spyOn(getUserAccountsService, 'execute').mockRejectedValueOnce(
+      vi.spyOn(mockGetUserAccountsService, 'execute').mockRejectedValueOnce(
         new UserNotFound()
       );
 
@@ -188,8 +170,6 @@ describe('[Controllers] UserController', () => {
       expect(next).toHaveBeenCalledWith(new Error('User not found'));
     });
     it('calls next when validation fails', async () => {
-      const { next, req, res, userController } = makeSut();
-
       req.params = { id: 'invalid-uuid' };
 
       await userController.getAccounts(req, res, next);
@@ -198,9 +178,6 @@ describe('[Controllers] UserController', () => {
     });
 
     it('should return accounts from user', async () => {
-      const { getUserAccountsService, next, req, res, userController } =
-        makeSut();
-
       const accounts = [
         {
           avatarUrl: 'avatar-url',
@@ -213,7 +190,7 @@ describe('[Controllers] UserController', () => {
           socialMedia: { id: 2, name: 'social-name' },
         },
       ];
-      vi.spyOn(getUserAccountsService, 'execute').mockResolvedValueOnce({
+      vi.spyOn(mockGetUserAccountsService, 'execute').mockResolvedValueOnce({
         accounts,
       });
 

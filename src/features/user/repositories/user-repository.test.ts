@@ -3,17 +3,14 @@ import { prisma } from 'mocks/prisma';
 import { UserRepository } from '@/features/user/repositories/user-repository';
 import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
 
-const makeSut = () => {
-  const repository = new UserRepository();
-
-  return { repository };
-};
-
 describe('[Repositories] UserRepository', () => {
+  let repository: UserRepository;
+  beforeEach(() => {
+    repository = new UserRepository();
+  });
+
   describe('create', () => {
     it('should call service with correctly params', async () => {
-      const { repository } = makeSut();
-
       const input = {
         email: 'test@test.com',
         name: 'test',
@@ -31,8 +28,6 @@ describe('[Repositories] UserRepository', () => {
 
   describe('findById', () => {
     it('return user if found', async () => {
-      const { repository } = makeSut();
-
       const user = UserMock.create();
 
       prisma.user.findUnique.mockResolvedValue(user);
@@ -49,8 +44,6 @@ describe('[Repositories] UserRepository', () => {
     });
 
     it('return null if user is not found', async () => {
-      const { repository } = makeSut();
-
       prisma.user.findUnique.mockResolvedValue(null);
 
       const result = await repository.findById('non_existent_id');
@@ -68,8 +61,6 @@ describe('[Repositories] UserRepository', () => {
 
   describe('findByEmail', () => {
     it('return user if found', async () => {
-      const { repository } = makeSut();
-
       const user = UserMock.create();
 
       prisma.user.findUnique.mockResolvedValue(user);
@@ -87,8 +78,6 @@ describe('[Repositories] UserRepository', () => {
     });
 
     it('return null if user is not found', async () => {
-      const { repository } = makeSut();
-
       prisma.user.findUnique.mockResolvedValue(null);
 
       const result = await repository.findByEmail('non_existent_email');
@@ -106,8 +95,6 @@ describe('[Repositories] UserRepository', () => {
 
   describe('updateIsActiveStatus', () => {
     it('should call service with correctly params', async () => {
-      const { repository } = makeSut();
-
       const user = UserMock.create();
 
       await repository.updateIsActiveStatus(user.id);
@@ -123,8 +110,6 @@ describe('[Repositories] UserRepository', () => {
     });
 
     it('should throw an error if an error occurs', async () => {
-      const { repository } = makeSut();
-
       const user = UserMock.create();
 
       prisma.user.update.mockImplementationOnce(() => {

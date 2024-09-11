@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
 import type { Logger } from '@/shared/infra/logger/logger';
@@ -10,49 +10,46 @@ import { AuthorizeTwitterService } from '../services/authorize-twitter-service';
 import type { TwitterService } from '../services/twitter-service';
 import { TwitterController } from './twitter-controller';
 
-const makeSut = () => {
-  const mockLogger: Logger = mock<Logger>(loggerMock);
-  const twitterServiceMock = mock<TwitterService>({
-    getTwitterOAuthToken: vi.fn(),
-    getTwitterUser: vi.fn(),
+describe('[Controller] Twitter', () => {
+  let mockLogger: Logger;
+  let twitterServiceMock: TwitterService;
+  let authorizeTwitterService: AuthorizeTwitterService;
+  let authController: TwitterController;
+  let req: Request;
+  let res: Response;
+  let next: NextFunction;
+  beforeEach(() => {
+    mockLogger = mock<Logger>(loggerMock);
+
+    twitterServiceMock = mock<TwitterService>({
+      getTwitterOAuthToken: vi.fn(),
+      getTwitterUser: vi.fn(),
+    });
+
+    authorizeTwitterService = mock<AuthorizeTwitterService>(
+      new AuthorizeTwitterService(
+        mockLogger,
+        twitterServiceMock,
+        accountRepositoryMock,
+        tokenRepositoryMock
+      )
+    );
+
+    authController = new TwitterController(authorizeTwitterService);
+
+    req = mockDeep<Request>();
+
+    res = {
+      json: vi.fn(),
+      send: vi.fn(),
+      status: vi.fn().mockReturnThis(),
+    } as unknown as Response;
+
+    next = vi.fn() as unknown as NextFunction;
   });
 
-  const authorizeTwitterService = mock<AuthorizeTwitterService>(
-    new AuthorizeTwitterService(
-      mockLogger,
-      twitterServiceMock,
-      accountRepositoryMock,
-      tokenRepositoryMock
-    )
-  );
-
-  const authController = new TwitterController(authorizeTwitterService);
-
-  const req = mockDeep<Request>();
-  const res = {
-    json: vi.fn(),
-    send: vi.fn(),
-    status: vi.fn().mockReturnThis(),
-  } as unknown as Response;
-  const next = vi.fn();
-
-  return {
-    authController,
-    authorizeTwitterService,
-    mockLogger,
-    next,
-    req,
-    res,
-    twitterServiceMock,
-  };
-};
-
-describe('[Controller] Twitter', () => {
   describe('callback', () => {
     it('should be return code', async () => {
-      const { authController, authorizeTwitterService, next, req, res } =
-        makeSut();
-
       const spyAuthorizeTwitter = vi
         .spyOn(authorizeTwitterService, 'execute')
         .mockReturnThis();
@@ -70,8 +67,6 @@ describe('[Controller] Twitter', () => {
 
   describe('login', () => {
     it('should be return 401', () => {
-      const { authController, next, req, res } = makeSut();
-
       req.headers.authorization = undefined;
 
       authController.login(req, res, next);

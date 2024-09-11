@@ -1,39 +1,41 @@
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
 import { SocialMediasController } from '@/features/social-media/controllers/social-medias-controller';
 import { ListSocialMediasService } from '@/features/social-media/services/list-social-medias';
 import { HttpError } from '@/shared/errors/http-error';
+import { HttpStatusCode } from '@/shared/protocols/http-client';
 import { socialMediasRepositoryMock } from '@/shared/test-helpers/mocks/repositories/social-medias-repository.mock';
 
-const makeSut = () => {
-  const findAllServiceMock = mock<ListSocialMediasService>(
-    new ListSocialMediasService(socialMediasRepositoryMock)
-  );
-
-  const socialMediasController = new SocialMediasController(findAllServiceMock);
-
-  const req = mockDeep<Request>();
-  const res = {
-    json: vi.fn(),
-    status: vi.fn().mockReturnThis(),
-  } as unknown as Response;
-
-  const next = vi.fn();
-
-  return {
-    next,
-    req,
-    res,
-    serviceFindAll: findAllServiceMock,
-    socialMediasController,
-  };
-};
-
 describe('[Controllers] SocialMediasController', () => {
-  const { next, req, res, serviceFindAll, socialMediasController } = makeSut();
+  let findAllServiceMock: ListSocialMediasService;
+  let socialMediasController: SocialMediasController;
+  let req: Request;
+  let res: Response;
+  let next: NextFunction;
+  let error: HttpError;
+
+  beforeEach(() => {
+    findAllServiceMock = mock<ListSocialMediasService>(
+      new ListSocialMediasService(socialMediasRepositoryMock)
+    );
+
+    socialMediasController = new SocialMediasController(findAllServiceMock);
+
+    req = mockDeep<Request>();
+
+    res = {
+      json: vi.fn(),
+      status: vi.fn().mockReturnThis(),
+    } as unknown as Response;
+
+    next = vi.fn() as unknown as NextFunction;
+
+    error = new HttpError(HttpStatusCode.serverError, 'error');
+  });
+
   it('should call service with correctly params', async () => {
-    const serviceFindAllSpy = vi.spyOn(serviceFindAll, 'execute');
+    const serviceFindAllSpy = vi.spyOn(findAllServiceMock, 'execute');
 
     await socialMediasController.findAll(req, res, next);
 
@@ -46,7 +48,7 @@ describe('[Controllers] SocialMediasController', () => {
       { description: 'Insta', id: 2, name: 'Instagram' },
     ];
 
-    vi.spyOn(serviceFindAll, 'execute').mockResolvedValue({
+    vi.spyOn(findAllServiceMock, 'execute').mockResolvedValue({
       socialMedias: response,
     });
 
@@ -59,11 +61,7 @@ describe('[Controllers] SocialMediasController', () => {
   });
 
   it('should call next when an service error occurs', async () => {
-    const error = new HttpError(500, 'error');
-
-    vi.spyOn(serviceFindAll, 'execute').mockRejectedValueOnce(
-      new HttpError(500, 'error')
-    );
+    vi.spyOn(findAllServiceMock, 'execute').mockRejectedValueOnce(error);
 
     await socialMediasController.findAll(req, res, next);
 
