@@ -65,7 +65,7 @@ export class TwitterService {
         url: '/2/users/me',
       });
 
-      return data.data;
+      return data.data ?? null;
     } catch (err) {
       this.logger.error(`Error on getTwitterUser in twitter service -${err}`);
       throw err;
