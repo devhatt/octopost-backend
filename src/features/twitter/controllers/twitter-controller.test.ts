@@ -48,7 +48,7 @@ describe('[Controller] Twitter', () => {
     next = vi.fn() as unknown as NextFunction;
   });
   describe('callback', () => {
-    it('returns code', async () => {
+    it('should return code', async () => {
       const spyAuthorizeTwitter = vi
         .spyOn(authorizeTwitterService, 'execute')
         .mockReturnThis();
@@ -65,7 +65,7 @@ describe('[Controller] Twitter', () => {
   });
 
   describe('login', () => {
-    it('return URLs when the token is valid', async () => {
+    it('should return URLs when the token is valid', async () => {
       const mockPayload = {
         name: 'John Doe',
         userId: '12345',
@@ -83,7 +83,7 @@ describe('[Controller] Twitter', () => {
       expect(res.json).toHaveBeenCalledWith(expectedUrl);
     });
 
-    it('returns 401 when token is invalid', () => {
+    it('should returns 401 when the token is valid', () => {
       req.headers.authorization = undefined;
 
       authController.login(req, res, next);
