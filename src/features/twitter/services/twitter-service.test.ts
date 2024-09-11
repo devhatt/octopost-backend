@@ -9,23 +9,19 @@ import { loggerMock } from '@/shared/test-helpers/mocks/logger.mock';
 import { TwitterService } from './twitter-service';
 
 describe('[Service] Twitter Service', () => {
-  let twitterService: TwitterService;
-
-  let mockLogger: Logger;
-  let mockHttp: HttpAdapter;
+  let sut: TwitterService;
+  const mockLogger = mock<Logger>(loggerMock);
+  const mockHttp = mock<HttpAdapter>(httpAdapterMock);
 
   beforeEach(() => {
-    mockLogger = mock<Logger>(loggerMock);
-    mockHttp = mock(httpAdapterMock);
-
-    twitterService = new TwitterService(mockLogger, mockHttp);
+    sut = new TwitterService(mockLogger, mockHttp);
   });
 
   describe('getTwitterOAuthToken', () => {
     it('return data with success', async () => {
       const input = faker.string.alpha({ length: 10 });
 
-      vi.spyOn(mockHttp, 'post').mockResolvedValueOnce({
+      mockHttp.post.mockResolvedValueOnce({
         data: {
           access_token: faker.string.alpha({ length: 10 }),
           expires_in: 7200,
@@ -36,7 +32,7 @@ describe('[Service] Twitter Service', () => {
         statusText: 'OK',
       });
 
-      const result = await twitterService.getTwitterOAuthToken(input);
+      const result = await sut.getTwitterOAuthToken(input);
 
       expect(mockLogger.info).toBeCalled();
       expect(result).toEqual({
@@ -50,13 +46,11 @@ describe('[Service] Twitter Service', () => {
     it('error on post', async () => {
       const input = faker.string.alpha({ length: 10 });
 
-      vi.spyOn(mockHttp, 'post').mockRejectedValueOnce(
-        new Error('Error on post')
-      );
+      mockHttp.post.mockRejectedValueOnce(new Error('Error on post'));
 
-      await expect(
-        twitterService.getTwitterOAuthToken(input)
-      ).rejects.toThrowError('Error on post');
+      await expect(sut.getTwitterOAuthToken(input)).rejects.toThrowError(
+        'Error on post'
+      );
       expect(mockLogger.error).toBeCalledWith(
         'Error on getTwitterOAuthToken in twitter service -Error: Error on post'
       );
@@ -67,7 +61,7 @@ describe('[Service] Twitter Service', () => {
     it('return data with success', async () => {
       const input = faker.string.alpha({ length: 10 });
 
-      vi.spyOn(mockHttp, 'get').mockResolvedValueOnce({
+      mockHttp.get.mockResolvedValueOnce({
         data: {
           data: {
             id: faker.string.alpha(),
@@ -79,7 +73,7 @@ describe('[Service] Twitter Service', () => {
         statusText: 'OK',
       });
 
-      const result = await twitterService.getTwitterUser(input);
+      const result = await sut.getTwitterUser(input);
 
       expect(mockLogger.info).toBeCalled();
       expect(result).toEqual({
@@ -92,11 +86,9 @@ describe('[Service] Twitter Service', () => {
     it('error on get', async () => {
       const input = faker.string.alpha({ length: 10 });
 
-      vi.spyOn(mockHttp, 'get').mockRejectedValueOnce(
-        new Error('Error on get')
-      );
+      mockHttp.get.mockRejectedValueOnce(new Error('Error on get'));
 
-      await expect(twitterService.getTwitterUser(input)).rejects.toThrowError(
+      await expect(sut.getTwitterUser(input)).rejects.toThrowError(
         'Error on get'
       );
       expect(mockLogger.error).toBeCalledWith(
