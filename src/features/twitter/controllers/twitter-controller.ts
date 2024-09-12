@@ -15,7 +15,7 @@ export class TwitterController implements Controller {
     return res.send();
   };
 
-  login: AsyncRequestHandler = (req, res) => {
+  login: AsyncRequestHandler = (req, res, next) => {
     try {
       const url = this.loginTwitter.execute({
         authorization: req.headers.authorization,
@@ -23,7 +23,7 @@ export class TwitterController implements Controller {
 
       return res.json(url);
     } catch (err) {
-      return res.status(401).json({ message: (err as Error).message });
+      next(err);
     }
   };
 

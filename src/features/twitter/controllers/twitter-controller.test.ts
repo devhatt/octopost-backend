@@ -1,7 +1,9 @@
 import type { Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
+import { HttpError } from '@/shared/errors/http-error';
 import type { Logger } from '@/shared/infra/logger/logger';
+import { HttpStatusCode } from '@/shared/protocols/http-client';
 import { loggerMock } from '@/shared/test-helpers/mocks/logger.mock';
 import { accountRepositoryMock } from '@/shared/test-helpers/mocks/repositories/account-repository.mock';
 import { tokenRepositoryMock } from '@/shared/test-helpers/mocks/repositories/token-repository.mock';
@@ -97,11 +99,11 @@ describe('[Controller] Twitter', () => {
         const { authController, next, req, res } = makeSut();
 
         req.headers.authorization = undefined;
+        const error = new HttpError(HttpStatusCode.badRequest, 'Unauthorized');
 
         authController.login(req, res, next);
 
-        expect(res.status).toHaveBeenCalledWith(401);
-        expect(res.json).toHaveBeenCalledWith({ message: 'Unauthorized' });
+        expect(next).toHaveBeenCalledWith(error);
       });
   });
 });

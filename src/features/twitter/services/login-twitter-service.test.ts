@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken';
 import type { Mock } from 'vitest';
 
+import { InvalidCredentialsError } from '@/shared/errors/invalid-credentials-error';
+import { JWTHelper } from '@/shared/infra/jwt/jwt';
+
 import { LoginTwitterService } from './login-twitter-service';
 
 vi.mock('jsonwebtoken', () => ({
@@ -15,7 +18,9 @@ describe('LoginTwitterService', () => {
   const jsonwebtoken = jwt;
 
   beforeEach(() => {
-    sut = new LoginTwitterService();
+    sut = new LoginTwitterService({
+      secretKey: 'secret_key',
+    });
     mockVerify = vi.fn(() => ({ userId: `123` }));
     jsonwebtoken.verify = mockVerify;
   });
@@ -30,5 +35,17 @@ describe('LoginTwitterService', () => {
 
   it('should throw an error if authorization header is missing', () => {
     expect(() => sut.execute({ authorization: '' })).toThrow('Unauthorized');
+  });
+
+  it('should throw an error if invalid token', () => {
+    vi.spyOn(JWTHelper.prototype, 'parseToken').mockImplementation(() => {
+      throw new Error('Invalid token');
+    });
+
+    const authorization = `Bearer invalid_token`;
+
+    expect(() => sut.execute({ authorization })).toThrow(
+      InvalidCredentialsError
+    );
   });
 });
