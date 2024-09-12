@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
 import { AccountController } from '@/features/account/controllers/account-controller';
@@ -7,47 +7,41 @@ import { accountDeleteBySchema } from '@/features/account/validators/account-fin
 import { HttpError } from '@/shared/errors/http-error';
 import { HttpStatusCode } from '@/shared/protocols/http-client';
 
-const makeSut = () => {
-  const deleteUserAccountServiceMock = mock<DeleteUserAccountsService>({
-    execute: vi.fn(),
-  });
-
-  const accountController = new AccountController(deleteUserAccountServiceMock);
-
-  const req = mockDeep<Request>();
-
-  const res = {
-    send: vi.fn(),
-
-    status: vi.fn().mockReturnThis(),
-  } as unknown as Response;
-
-  const next = vi.fn();
-
-  return {
-    accountController,
-
-    deleteUserAccountService: deleteUserAccountServiceMock,
-
-    next,
-
-    req,
-
-    res,
-  };
-};
-
 describe('deleteAccountById', () => {
-  it('should delete an account and return no content status', async () => {
-    const { accountController, deleteUserAccountService, next, req, res } =
-      makeSut();
+  let deleteUserAccountServiceMock: DeleteUserAccountsService;
 
+  let accountController: AccountController;
+
+  let req: Request;
+  let res: Response;
+  let next: NextFunction;
+  let error: HttpError;
+
+  beforeEach(() => {
+    deleteUserAccountServiceMock = mock<DeleteUserAccountsService>({
+      execute: vi.fn(),
+    });
+    accountController = new AccountController(deleteUserAccountServiceMock);
+
+    req = mockDeep<Request>();
+
+    res = {
+      json: vi.fn(),
+      send: vi.fn(),
+      status: vi.fn().mockReturnThis(),
+    } as unknown as Response;
+
+    next = vi.fn() as unknown as NextFunction;
+
+    error = new HttpError(HttpStatusCode.serverError, 'error');
+  });
+  it('should delete an account and return no content status', async () => {
     const socialMediaId = '123';
 
     req.params = { id: socialMediaId };
 
     const executeSpy = vi
-      .spyOn(deleteUserAccountService, 'execute')
+      .spyOn(deleteUserAccountServiceMock, 'execute')
       .mockResolvedValue();
 
     await accountController.deleteAccountById(req, res, next);
@@ -64,15 +58,12 @@ describe('deleteAccountById', () => {
   });
 
   it('should call next with an error when service throws', async () => {
-    const { accountController, deleteUserAccountService, next, req, res } =
-      makeSut();
-
     const socialMediaId = '123';
     req.params = { id: socialMediaId };
 
-    const error = new HttpError(HttpStatusCode.badRequest, 'Service error');
-
-    vi.spyOn(deleteUserAccountService, 'execute').mockRejectedValueOnce(error);
+    vi.spyOn(deleteUserAccountServiceMock, 'execute').mockRejectedValueOnce(
+      error
+    );
 
     await accountController.deleteAccountById(req, res, next);
 
@@ -89,5 +80,16 @@ describe('deleteAccountById', () => {
 
       expect(parsedData).toEqual({ id: validInput.id });
     });
+  });
+
+  it('should call next with an error if deleteUserAccountService.execute throws', async () => {
+    vi.spyOn(deleteUserAccountServiceMock, 'execute').mockRejectedValueOnce(
+      error
+    );
+
+    await accountController.deleteAccountById(req, res, next);
+
+    expect(res.send).not.toHaveBeenCalled();
+    expect(next).toBeCalledTimes(1);
   });
 });

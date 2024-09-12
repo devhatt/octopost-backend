@@ -7,17 +7,17 @@ import { userRepositoryMock } from '@/shared/test-helpers/mocks/repositories/use
 
 import { UserCreateService } from './user-create-service';
 
-let userCreateService: UserCreateService;
+describe('[Services] UserCreateService', () => {
+  let userCreateService: UserCreateService;
 
-let userRepository = mock<UserRepository>(userRepositoryMock);
+  let userRepository = mock<UserRepository>(userRepositoryMock);
 
-let bcryptAdapter = mock<BcryptAdapter>(bcryptAdapteMock);
+  let bcryptAdapter = mock<BcryptAdapter>(bcryptAdapteMock);
 
-beforeEach(() => {
-  userCreateService = new UserCreateService(userRepository, bcryptAdapter);
-});
+  beforeEach(() => {
+    userCreateService = new UserCreateService(userRepository, bcryptAdapter);
+  });
 
-describe('UserCreateService', () => {
   it('should call userRepository with correct params', async () => {
     const repositorySpy = vi.spyOn(userRepository, 'create');
 

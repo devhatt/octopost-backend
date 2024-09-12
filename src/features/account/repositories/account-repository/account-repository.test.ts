@@ -1,36 +1,39 @@
+import type { Account } from '@prisma/client';
 import { prisma } from 'mocks/prisma';
 
 import { AccountRepository } from '@/features/account/repositories/account-repository/account-repository';
 import { database } from '@/shared/infra/database/database';
 import { AccountMock } from '@/shared/test-helpers/mocks/account.mock';
 
-const makeSut = () => {
-  const repository = new AccountRepository();
-
-  return { repository };
-};
-
 describe('[Repositories] AccountRepository', () => {
+  let repository: AccountRepository;
+  let account: Account;
+
+  beforeEach(() => {
+    repository = new AccountRepository();
+    account = AccountMock.create();
+  });
+
   describe('getAccounts', () => {
     it('returns user accounts if found', async () => {
-      const { repository } = makeSut();
-
-      const account = AccountMock.create();
-
       const expectedResult = [
         {
           avatarUrl: account.avatarUrl,
           createdAt: new Date(),
+          favorite: false,
           id: account.id,
+          name: null,
           socialMediaId: account.socialMediaId,
+          socialMediaUserId: null,
           updatedAt: new Date(),
           userId: account.userId,
+          username: null,
         },
       ];
 
       prisma.account.findMany.mockResolvedValue(expectedResult);
 
-      const result = await repository.getAccounts(account.userId);
+      const result = await repository.getAccounts(account.userId!);
 
       expect(result[0]).toEqual(expectedResult[0]);
       expect(prisma.account.findMany).toHaveBeenCalledWith({
@@ -41,8 +44,6 @@ describe('[Repositories] AccountRepository', () => {
     });
 
     it('returns an empty array if user accounts are not found', async () => {
-      const { repository } = makeSut();
-
       const userId = 'non_existent_user_id';
 
       prisma.account.findMany.mockResolvedValue([]);
@@ -60,8 +61,6 @@ describe('[Repositories] AccountRepository', () => {
 
   describe('deleteAccountsBySocialMediaId', () => {
     it('deletes accounts associated with the given social media id', async () => {
-      const { repository } = makeSut();
-
       const socialMediaId = 123;
 
       const expectedResult = {
@@ -84,70 +83,77 @@ describe('[Repositories] AccountRepository', () => {
 
   describe('Create', () => {
     it('creates an account', async () => {
-      const { repository } = makeSut();
-
-      const { avatarUrl, id, socialMediaId, userId } = AccountMock.create();
-
       prisma.account.create.mockResolvedValue({
-        avatarUrl,
-        createdAt: new Date(),
-        id,
-        socialMediaId,
-        updatedAt: new Date(),
-        userId,
+        avatarUrl: 'avatar-url',
+        createdAt: account.createdAt,
+        favorite: false,
+        id: account.id,
+        name: 'account-name',
+        socialMediaId: 1,
+        socialMediaUserId: 'social-media-user-id',
+        updatedAt: account.updatedAt,
+        userId: 'account-id',
+        username: 'account-social-media-username',
       });
 
       const result = await repository.create({
-        avatarUrl,
-        socialMediaId,
-        userId,
+        avatarUrl: 'avatar-url',
+        socialMediaId: 1,
+        socialMediaUserId: 'social-media-user-id',
+        userId: 'account-id',
       });
 
       expect(result).toEqual({
-        avatarUrl,
+        avatarUrl: 'avatar-url',
         createdAt: expect.any(Date),
-        id,
-        socialMediaId,
+        favorite: false,
+        id: account.id,
+        name: 'account-name',
+        socialMediaId: 1,
+        socialMediaUserId: 'social-media-user-id',
         updatedAt: expect.any(Date),
-        userId,
+        userId: 'account-id',
+        username: 'account-social-media-username',
       });
     });
   });
 
   describe('findAccountByUser', () => {
     it('returns an account if found', async () => {
-      const { repository } = makeSut();
-
-      const { avatarUrl, id, socialMediaId, userId } = AccountMock.create();
-
       prisma.account.findMany.mockResolvedValue([
         {
-          avatarUrl,
+          avatarUrl: 'avatar-url',
           createdAt: new Date(),
-          id,
-          socialMediaId,
+          favorite: false,
+          id: 'account-id',
+          name: null,
+          socialMediaId: 1,
+          socialMediaUserId: null,
           updatedAt: new Date(),
-          userId,
+          userId: 'account-user-id',
+          username: null,
         },
       ]);
 
-      const result = await repository.findAccountsByUserId(userId);
+      const result = await repository.findAccountsByUserId(account.userId!);
 
       expect(result).toEqual([
         {
-          avatarUrl,
+          avatarUrl: 'avatar-url',
           createdAt: expect.any(Date),
-          id,
-          socialMediaId,
+          favorite: false,
+          id: 'account-id',
+          name: null,
+          socialMediaId: 1,
+          socialMediaUserId: null,
           updatedAt: expect.any(Date),
-          userId,
+          userId: 'account-user-id',
+          username: null,
         },
       ]);
     });
 
     it('returns null if account is not found', async () => {
-      const { repository } = makeSut();
-
       const userId = 'non_existent_user_id';
 
       prisma.account.findMany.mockResolvedValue([]);

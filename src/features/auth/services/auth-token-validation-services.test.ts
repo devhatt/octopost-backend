@@ -10,34 +10,53 @@ import { UserMock } from '@/shared/test-helpers/mocks/user.mock';
 
 describe('Auth email token validation service sut', () => {
   let sut: AuthTokenValidationService;
-  const jwt = new JWTHelper('secret-test-key');
-  const userRepository = mock<UserRepository>(userRepositoryMock);
+  let jwt: JWTHelper;
+  let userRepository: UserRepository;
 
   beforeEach(() => {
+    jwt = new JWTHelper('secret-test-key');
+    userRepository = mock<UserRepository>(userRepositoryMock);
     sut = new AuthTokenValidationService(userRepositoryMock, jwt);
   });
 
   describe('Success', () => {
     it('should validate the email confirmation and update the status', async () => {
-      const userMock = UserMock.create({ isActive: false });
-      const token = jwt.createToken({ userId: userMock.id });
+      const user = UserMock.create({
+        isActive: false,
+      });
 
-      vi.spyOn(userRepository, 'findById').mockResolvedValue(userMock);
-      vi.spyOn(userRepository, 'updateIsActiveStatus').mockResolvedValue();
+      vi.spyOn(jwt, 'parseToken').mockResolvedValue({
+        name: user.name!,
+        userId: user.id,
+        username: user.username,
+      });
 
-      await sut.execute({ token });
+      vi.spyOn(userRepository, 'findById').mockResolvedValue(user);
 
-      expect(userRepository.findById).toHaveBeenCalledWith(userMock.id);
-      expect(userRepository.updateIsActiveStatus).toHaveBeenCalledWith(
-        userMock.id
+      vi.spyOn(userRepository, 'updateIsActiveStatus').mockImplementationOnce(
+        (userId) => {
+          if (user.id === userId) {
+            user.isActive = true;
+          }
+          return Promise.resolve();
+        }
       );
+
+      await sut.execute({ token: 'token' });
+
+      expect(userRepository.updateIsActiveStatus).toHaveBeenCalledWith(user.id);
+
+      expect(user.isActive).toBe(true);
     });
   });
 
   describe('Error', () => {
     it('should throw UserNotFound error if user is not found', async () => {
-      const userMock = UserMock.create({ isActive: false });
-      const token = jwt.createToken({ userId: userMock.id });
+      const token = jwt.createToken({
+        name: 'John Doe',
+        userId: '1',
+        username: 'johndoe',
+      });
 
       vi.spyOn(userRepository, 'findById').mockResolvedValue(null);
 
@@ -45,17 +64,22 @@ describe('Auth email token validation service sut', () => {
         UserNotFound
       );
     });
-  });
 
-  it('should throw EmailAlreadyActiveError if user is already active', async () => {
-    const userMock = UserMock.create({ isActive: true });
-    const token = jwt.createToken({ userId: userMock.id });
+    it('should throw EmailAlreadyActiveError if user is already active', async () => {
+      const user = UserMock.create({ isActive: true });
 
-    vi.spyOn(userRepository, 'findById').mockResolvedValue(userMock);
-    vi.spyOn(userRepository, 'updateIsActiveStatus').mockResolvedValue();
+      vi.spyOn(userRepository, 'findById').mockResolvedValue(user);
+      vi.spyOn(userRepository, 'updateIsActiveStatus').mockResolvedValue();
+      vi.spyOn(jwt, 'parseToken').mockResolvedValue({
+        name: user.name!,
+        userId: user.id,
+        username: user.username,
+      });
 
-    await expect(() => sut.execute({ token })).rejects.toBeInstanceOf(
-      EmailAlreadyActiveError
-    );
+      expect(userRepository.updateIsActiveStatus).not.toHaveBeenCalled();
+      await expect(sut.execute({ token: 'token' })).rejects.toThrow(
+        EmailAlreadyActiveError
+      );
+    });
   });
 });
