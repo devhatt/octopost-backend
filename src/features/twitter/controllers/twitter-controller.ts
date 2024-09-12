@@ -3,9 +3,11 @@ import jwt from 'jsonwebtoken';
 import type { TokenPayload } from '@/shared/infra/jwt/jwt';
 import type { Controller } from '@/shared/protocols/controller';
 import type { AsyncRequestHandler } from '@/shared/protocols/handlers';
+import { HttpStatusCode } from '@/shared/protocols/http-client';
 
 import { generateAuthURL } from '../helpers/generate-auth-url';
 import type { AuthorizeTwitterService } from '../services/authorize-twitter-service';
+import type { PostTwitterService } from '../services/post-twitter-service';
 
 export class TwitterController implements Controller {
   callback: AsyncRequestHandler = async (req, res) => {
@@ -35,5 +37,18 @@ export class TwitterController implements Controller {
     return res.json(url);
   };
 
-  constructor(private readonly authorizeTwitter: AuthorizeTwitterService) {}
+  tweet: AsyncRequestHandler = (req, res) => {
+    const authorization = req.headers.authorization; // token bearer user
+
+    const { file, text } = req.body; // talvez tenha a localização também
+
+    const tweet = this.postTwitterService.execute({ file, text });
+
+    return res.status(HttpStatusCode.ok).json();
+  };
+
+  constructor(
+    private readonly authorizeTwitter: AuthorizeTwitterService,
+    private readonly postTwitterService: PostTwitterService
+  ) {}
 }

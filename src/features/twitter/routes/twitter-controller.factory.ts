@@ -6,6 +6,7 @@ import { Logger } from '@/shared/infra/logger/logger';
 
 import { TwitterController } from '../controllers/twitter-controller';
 import { AuthorizeTwitterService } from '../services/authorize-twitter-service';
+import { PostTwitterService } from '../services/post-twitter-service';
 import { TwitterService } from '../services/twitter-service';
 
 export function twitterControllerFactory() {
@@ -28,7 +29,15 @@ export function twitterControllerFactory() {
     tokenRepository
   );
 
-  const twitterController = new TwitterController(authorizeTwitterService);
+  const postTwitterService = new PostTwitterService(
+    new Logger({ service: 'postTwitterService' }),
+    axiosAdapter
+  );
+
+  const twitterController = new TwitterController(
+    authorizeTwitterService,
+    postTwitterService
+  );
 
   return {
     twitterController,
