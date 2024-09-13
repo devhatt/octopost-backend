@@ -15,7 +15,7 @@ describe('[Service] Email', () => {
   });
 
   describe('List', () => {
-    it('Calling the sendEmail method', async () => {
+    it('Should call the sendEmail method', async () => {
       const data = {
         parameters: { name: 'John Doe' },
         recipient: 'johndoe@example.com',
