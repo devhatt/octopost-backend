@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
+import { LoginTwitterService } from '@/features/twitter/services/login-twitter-service';
 import { HttpError } from '@/shared/errors/http-error';
 import type { Logger } from '@/shared/infra/logger/logger';
 import { HttpStatusCode } from '@/shared/protocols/http-client';
@@ -9,55 +10,52 @@ import { accountRepositoryMock } from '@/shared/test-helpers/mocks/repositories/
 import { tokenRepositoryMock } from '@/shared/test-helpers/mocks/repositories/token-repository.mock';
 
 import { AuthorizeTwitterService } from '../services/authorize-twitter-service';
-import { LoginTwitterService } from '../services/login-twitter-service';
 import type { TwitterService } from '../services/twitter-service';
 import { TwitterController } from './twitter-controller';
 
-const makeSut = () => {
-  const mockLogger: Logger = mock<Logger>(loggerMock);
-  const twitterServiceMock = mock<TwitterService>({
-    getTwitterOAuthToken: vi.fn(),
-    getTwitterUser: vi.fn(),
-  });
-  const authorizeTwitterService = mock<AuthorizeTwitterService>(
-    new AuthorizeTwitterService(
-      mockLogger,
-      twitterServiceMock,
-      accountRepositoryMock,
-      tokenRepositoryMock
-    )
-  );
-
-  const loginTwitterService = mock<LoginTwitterService>(
-    new LoginTwitterService({
-      secretKey: 'secret_key',
-    })
-  );
-
-  const authController = new TwitterController(
-    authorizeTwitterService,
-    loginTwitterService
-  );
-
-  const req = mockDeep<Request>();
-  const res = {
-    json: vi.fn(),
-    send: vi.fn(),
-    status: vi.fn().mockReturnThis(),
-  } as unknown as Response;
-  const next = vi.fn();
-  return {
-    authController,
-    authorizeTwitterService,
-    loginTwitterService,
-    mockLogger,
-    next,
-    req,
-    res,
-    twitterServiceMock,
-  };
-};
 describe('[Controller] Twitter', () => {
+  const makeSut = () => {
+    const mockLogger: Logger = mock<Logger>(loggerMock);
+    const twitterServiceMock = mock<TwitterService>({
+      getTwitterOAuthToken: vi.fn(),
+      getTwitterUser: vi.fn(),
+    });
+    const authorizeTwitterService = mock<AuthorizeTwitterService>(
+      new AuthorizeTwitterService(
+        mockLogger,
+        twitterServiceMock,
+        accountRepositoryMock,
+        tokenRepositoryMock
+      )
+    );
+
+    const loginTwitterService = mock<LoginTwitterService>(
+      new LoginTwitterService()
+    );
+
+    const authController = new TwitterController(
+      authorizeTwitterService,
+      loginTwitterService
+    );
+
+    const req = mockDeep<Request>();
+    const res = {
+      json: vi.fn(),
+      send: vi.fn(),
+      status: vi.fn().mockReturnThis(),
+    } as unknown as Response;
+    const next = vi.fn();
+    return {
+      authController,
+      authorizeTwitterService,
+      loginTwitterService,
+      mockLogger,
+      next,
+      req,
+      res,
+      twitterServiceMock,
+    };
+  };
   describe('callback', () => {
     it('should be return code', async () => {
       const { authController, authorizeTwitterService, next, req, res } =
@@ -79,23 +77,18 @@ describe('[Controller] Twitter', () => {
     it('should be return a URL link on successful login', () => {
       const { authController, loginTwitterService, next, req, res } = makeSut();
 
-      req.headers.authorization = 'Bearer token';
-
-      const serviceSpy = vi
-        .spyOn(loginTwitterService, 'execute')
-        .mockReturnValue('url');
+      vi.spyOn(loginTwitterService, 'execute').mockReturnValue('url');
       authController.login(req, res, next);
 
-      expect(serviceSpy).toHaveBeenCalledWith({
-        authorization: 'Bearer token',
-      });
       expect(res.json).toHaveBeenCalledWith('url');
     }),
-      it('should return 401 if authorization header is missing', () => {
-        const { authController, next, req, res } = makeSut();
-        const error = new HttpError(HttpStatusCode.badRequest, 'Unauthorized');
-
-        req.headers.authorization = undefined;
+      it('should be return a error', () => {
+        const { authController, loginTwitterService, next, req, res } =
+          makeSut();
+        const error = new HttpError(HttpStatusCode.badRequest, 'Message Error');
+        vi.spyOn(loginTwitterService, 'execute').mockImplementation(() => {
+          throw error;
+        });
 
         authController.login(req, res, next);
 
