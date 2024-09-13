@@ -1,15 +1,16 @@
 import type { Service } from '@/shared/protocols/service';
 
-import { GenerateAuthURL } from '../helpers/generate-auth-url';
+import type { GenerateAuthURL } from '../helpers/generate-auth-url';
 
 type Input = {
   userId: string;
 };
 
 export class LoginTwitterService implements Service<Input, string> {
+  constructor(private readonly generateAuthUrl: GenerateAuthURL) {}
+
   execute({ userId }: Input) {
-    const generateAuthURL = new GenerateAuthURL();
-    const url = generateAuthURL.twitter({ id: userId });
+    const url = this.generateAuthUrl.twitter({ id: userId });
 
     return url;
   }

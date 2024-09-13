@@ -1,11 +1,14 @@
+import { GenerateAuthURL } from '../helpers/generate-auth-url';
 import { LoginTwitterService } from './login-twitter-service';
 
 describe('LoginTwitterService', () => {
   let sut: LoginTwitterService;
+  let generateAuthUrl: GenerateAuthURL;
   let id: string;
 
   beforeEach(() => {
-    sut = new LoginTwitterService();
+    generateAuthUrl = new GenerateAuthURL();
+    sut = new LoginTwitterService(generateAuthUrl);
     id = '1';
   });
 
