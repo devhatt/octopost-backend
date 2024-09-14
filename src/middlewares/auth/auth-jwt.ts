@@ -14,7 +14,6 @@ export class AuthenticationJWT {
       const { userId } = this.jwtHelper.parseToken(token);
 
       const user = await this.userRepository.findById(userId);
-      console.log('asdasdasd');
       if (!user) {
         return res.status(401).json({ error: 'Invalid user' });
       }
