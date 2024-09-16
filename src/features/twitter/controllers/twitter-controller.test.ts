@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from 'express';
 import { mock, mockDeep } from 'vitest-mock-extended';
 
+import type { AuthorizeTwitterService } from '@/features/twitter/services/authorize-twitter-service';
 import type { LoginTwitterService } from '@/features/twitter/services/login-twitter-service';
 import { HttpError } from '@/shared/errors/http-error';
 import { HttpStatusCode } from '@/shared/protocols/http-client';
 
-import type { AuthorizeTwitterService } from '../services/authorize-twitter-service';
 import { TwitterController } from './twitter-controller';
 
 describe('[Controller] Twitter', () => {
