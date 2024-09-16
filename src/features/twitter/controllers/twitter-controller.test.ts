@@ -12,6 +12,7 @@ describe('[Controller] Twitter', () => {
   let authorizeTwitterService: AuthorizeTwitterService;
   let loginTwitterService: LoginTwitterService;
   let authController: TwitterController;
+  let error: HttpError;
 
   let req: Request;
   let res: Response;
@@ -38,6 +39,7 @@ describe('[Controller] Twitter', () => {
       authorizeTwitterService,
       loginTwitterService
     );
+    error = new HttpError(HttpStatusCode.serverError, 'error');
   });
 
   describe('callback', () => {
@@ -63,7 +65,6 @@ describe('[Controller] Twitter', () => {
       expect(res.json).toHaveBeenCalledWith('url');
     }),
       it('should be return a error', () => {
-        const error = new HttpError(HttpStatusCode.badRequest, 'Message Error');
         vi.spyOn(loginTwitterService, 'execute').mockImplementation(() => {
           throw error;
         });
