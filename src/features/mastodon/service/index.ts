@@ -20,7 +20,6 @@ export class MastodonService {
     );
 
     // const tokenAcess = data.access_token;
-    //TODO: ESPERAR O BANCO SUBIR PRA PODER ENVIAR O TOKEN E SALVAR
     res.status(200).send(data);
   };
 
