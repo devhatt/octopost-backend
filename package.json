@@ -30,7 +30,7 @@
     "docker-dev": "docker compose --profile dev up",
     "docker-prod": "docker compose --profile prod up --build",
     "prisma:generate": "npx prisma generate",
-    "pisma:push": "npx primsa db push"
+    "prisma:push": "npx prisma db push"
   },
   "devDependencies": {
     "@commitlint/cli": "19.3.0",
