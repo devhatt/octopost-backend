@@ -10,12 +10,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String    @id @default(uuid())
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   email     String    @unique
   name      String?
   username  String    @unique
@@ -30,14 +30,14 @@ model User {
 }
 
 model Account {
-  id                String   @id @default(uuid())
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
   name              String?
   username          String?
   socialMediaUserId String?  @map("social_media_user_id") //Referes to the social media user id -> Twitter ID
   avatarUrl         String?  @map("avatar_url")
-  userId            String?  @map("user_id")
+  userId            String?  @map("user_id") @db.ObjectId
   favorite          Boolean
-  socialMediaId     Int      @map("social_media_id")
+  socialMediaId     String   @map("social_media_id") @db.ObjectId
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 
@@ -49,12 +49,12 @@ model Account {
 }
 
 model Token {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   authToken String?   @map("auth_token")
   token     String?
   issuedAt  DateTime? @map("issued_at")
   expiresIn Int?      @map("expire_in")
-  accountId String    @unique @map("account_id")
+  accountId String    @unique @map("account_id") @db.ObjectId
 
   account Account? @relation(fields: [accountId], references: [id])
 
@@ -62,7 +62,7 @@ model Token {
 }
 
 model SocialMedia {
-  id          Int     @id @default(autoincrement())
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String?
 
